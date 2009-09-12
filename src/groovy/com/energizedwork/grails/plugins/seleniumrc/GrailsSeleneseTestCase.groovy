@@ -25,7 +25,7 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     void setUp() {
 		super.setUp()
         selenium = SeleniumHolder.selenium
-		selenium.showContextualBanner()
+		setTestContext()
     }
 
     @Override
