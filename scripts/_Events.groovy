@@ -1,8 +1,3 @@
-import org.openqa.selenium.server.SeleniumServer
-import org.openqa.selenium.server.RemoteControlConfiguration
-import com.thoughtworks.selenium.DefaultSelenium
-import com.thoughtworks.selenium.GroovySelenium
-
 eventAllTestsStart = {
 	if (binding.variables.containsKey("functionalTests")) {
 		functionalTests << "selenium"
@@ -19,30 +14,28 @@ eventTestSuiteStart = {String type ->
 		seleniumConfig.port = 4444
 		seleniumConfig.browser = "*safari"
 		seleniumConfig.browserUrl = config.grails.serverURL
-		seleniumConfig.slowResources = true
+		seleniumConfig.slowResources = false
 		event("StatusUpdate", ["selenium config: $seleniumConfig"])
 
 		event("StatusUpdate", ["starting selenium server"])
-		def conf = new RemoteControlConfiguration()
+		def conf = new org.openqa.selenium.server.RemoteControlConfiguration()
 		conf.port = seleniumConfig.port
 		conf.singleWindow = true
-		seleniumServer = new SeleniumServer(seleniumConfig.slowResources, conf)
+		seleniumServer = new org.openqa.selenium.server.SeleniumServer(seleniumConfig.slowResources, conf)
 		seleniumServer.start()
 
 		event("StatusUpdate", ["starting selenium instance"])
 
-		def holder = Thread.currentThread().contextClassLoader.loadClass(SELENIUM_HOLDER_CLASS)
-		holder.selenium = new GroovySelenium(new DefaultSelenium(seleniumConfig.host, seleniumConfig.port, seleniumConfig.browser, seleniumConfig.browserUrl))
-		holder.selenium.start()
+		com.energizedwork.grails.plugins.seleniumrc.SeleniumHolder.selenium = new com.thoughtworks.selenium.GroovySelenium(new com.thoughtworks.selenium.DefaultSelenium(seleniumConfig.host, seleniumConfig.port, seleniumConfig.browser, seleniumConfig.browserUrl))
+		com.energizedwork.grails.plugins.seleniumrc.SeleniumHolder.selenium.start()
 	}
 }
 
 eventTestSuiteEnd = {String type, testSuite ->
 	if (type == "selenium") {
 		event("StatusUpdate", ["stopping selenium instance"])
-		def holder = Thread.currentThread().contextClassLoader.loadClass(SELENIUM_HOLDER_CLASS)
-		holder.selenium?.stop()
-		holder.selenium = null
+		com.energizedwork.grails.plugins.seleniumrc.SeleniumHolder.selenium?.stop()
+		com.energizedwork.grails.plugins.seleniumrc.SeleniumHolder.selenium = null
 
 		event("StatusUpdate", ["stopping selenium server"])
 		seleniumServer?.stop()

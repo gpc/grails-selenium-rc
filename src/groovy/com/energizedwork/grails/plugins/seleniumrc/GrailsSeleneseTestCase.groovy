@@ -1,6 +1,8 @@
 package com.energizedwork.grails.plugins.seleniumrc
 
-import com.thoughtworks.selenium.*
+import com.energizedwork.grails.plugins.seleniumrc.SeleniumHolder
+import com.thoughtworks.selenium.GroovySelenium
+import com.thoughtworks.selenium.SeleneseTestBase
 
 /**
  * The Groovy equivalent of SeleneseTestCase, as a GroovyTestCase.
@@ -23,7 +25,7 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     void setUp() {
 		super.setUp()
         selenium = SeleniumHolder.selenium
-		selenium.setContext "${getClass().simpleName}.$name"
+		selenium.showContextualBanner()
     }
 
     @Override
