@@ -1,12 +1,11 @@
 package selenium.test
 
-import com.thoughtworks.selenium.SeleneseTestCase
-import com.thoughtworks.selenium.GroovySeleneseTestCase
+import com.energizedwork.grails.plugins.seleniumrc.GrailsSeleneseTestCase
 
-class HomepageTests extends GroovySeleneseTestCase {
+class HomepageTests extends GrailsSeleneseTestCase {
 
 	void setUp() {
-		super.setUp("http://localhost:8080/selenium-test/", "*firefox")
+		super.setUp()
 	}
 
 	void testHomepageLoads() {
