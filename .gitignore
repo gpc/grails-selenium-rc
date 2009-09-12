@@ -1,0 +1,4 @@
+*.iws
+*.log
+test/reports
+test/projects/selenium-test/target/
