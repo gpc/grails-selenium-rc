@@ -3,4 +3,6 @@
    - slow mode
    - host & port
    - screenshot dir
-- Set URL based on project name
+   - screenshot capture (always, onfailure, off)
+- Nice delegation of calls from GrailsSeleneseTestCase to Selenium and SeleniumTestBase instances
+- Dynamic(?) assert* verify* & waitFor* methods
