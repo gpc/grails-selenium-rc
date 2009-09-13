@@ -6,3 +6,4 @@
 - Dynamic(?) assert* verify* & waitFor* methods
 - ensure not loaded in war / non test mode
 - test data setup & tear down using build-test-data
+- handle context path automatically
