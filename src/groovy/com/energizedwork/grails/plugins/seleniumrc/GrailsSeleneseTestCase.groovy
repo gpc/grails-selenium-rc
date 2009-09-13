@@ -1,6 +1,5 @@
 package com.energizedwork.grails.plugins.seleniumrc
 
-import com.energizedwork.grails.plugins.seleniumrc.SeleniumHolder
 import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
 
@@ -10,7 +9,7 @@ import com.thoughtworks.selenium.SeleneseTestBase
 class GrailsSeleneseTestCase extends GroovyTestCase {
     public static final BASE_METHODS = SeleneseTestBase.class.methods
 
-    protected GroovySelenium selenium
+    static GroovySelenium selenium
 
     private SeleneseTestBase base
     private int defaultTimeout
@@ -24,7 +23,6 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     @Override
     void setUp() {
 		super.setUp()
-        selenium = SeleniumHolder.selenium
 		setTestContext()
     }
 

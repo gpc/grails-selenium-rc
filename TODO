@@ -1,8 +1,8 @@
 - Configuration for
-   - browser
-   - slow mode
-   - host & port
    - screenshot dir
    - screenshot capture (always, onfailure, off)
+- Config override via system properties
 - Nice delegation of calls from GrailsSeleneseTestCase to Selenium and SeleniumTestBase instances
 - Dynamic(?) assert* verify* & waitFor* methods
+- ensure not loaded in war / non test mode
+- test data setup & tear down using build-test-data

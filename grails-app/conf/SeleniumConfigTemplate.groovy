@@ -1,0 +1,12 @@
+selenium {
+/*
+	slowResources = false	// true to run tests in slow resources mode
+	singleWindow = true		// true for single window mode, false for multi-window mode
+	host = "localhost"		// the host the selenium server will run on
+	port = 4444				// the port the selenium server will run on
+	browser = "*firefox"	// can include full path to executable, default value is *firefox or *iexplore on Windows
+	url = null				// the base URL for tests, defaults to Grails server url
+	screenshots = "fail"	// one of no, yes, fail
+	screenshotDir = "./target/screenshots"		// directory where screenshots are placed relative to project root
+*/
+}	

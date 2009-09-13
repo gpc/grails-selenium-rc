@@ -1,0 +1,3 @@
+selenium {
+	browser = "*safari"
+}
