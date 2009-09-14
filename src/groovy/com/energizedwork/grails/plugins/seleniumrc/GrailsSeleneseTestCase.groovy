@@ -2,6 +2,8 @@ package com.energizedwork.grails.plugins.seleniumrc
 
 import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
+import org.apache.commons.lang.StringUtils
+import com.thoughtworks.selenium.Selenium
 
 /**
  * The Groovy equivalent of SeleneseTestCase, as a GroovyTestCase.
@@ -9,9 +11,9 @@ import com.thoughtworks.selenium.SeleneseTestBase
 class GrailsSeleneseTestCase extends GroovyTestCase {
     public static final BASE_METHODS = SeleneseTestBase.class.methods
 
-    static GroovySelenium selenium
+    static def selenium
 
-    private SeleneseTestBase base
+    @Delegate private SeleneseTestBase base
     private int defaultTimeout
 
     GrailsSeleneseTestCase() {
@@ -91,11 +93,21 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
      * possible.
      */
     def methodMissing(String name, args) {
-        def method = BASE_METHODS.find { it.getName() == name }
-        if (method) {
-            return method.invoke(base, args)
-        }
-
-        throw new MissingMethodException(name, getClass(), args)
+		boolean handled = false
+		switch (name) {
+			case ~/^assert\w+/:
+				def condition = StringUtils.substringAfter(name, "assert")
+				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
+					println "ya it works"
+					handled = true
+					assertTrue selenium."is$condition"(args)
+				}
+				break
+			case ~/^verify\w+/:
+				break
+			case ~/^waitFor\w+/:
+				break
+		}
+		if (!handled) throw new MissingMethodException(name, getClass(), args)
     }
 }
