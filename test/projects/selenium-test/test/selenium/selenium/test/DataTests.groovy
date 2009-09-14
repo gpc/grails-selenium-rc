@@ -16,12 +16,19 @@ class DataTests extends GrailsSeleneseTestCase {
 		selenium.open "/selenium-test/song/list"
 	}
 
+	void tearDown() {
+		super.tearDown()
+		Song.withTransaction {
+			Song.list()*.delete()
+		}
+	}
+
 	void testCorrectColumnsAndRowsAppear() {
 		assertEquals "Title", selenium.getText("//table/thead/tr/th[2]")
 		assertEquals "Artist", selenium.getText("//table/thead/tr/th[3]")
 		assertEquals "Album", selenium.getText("//table/thead/tr/th[4]")
 		assertEquals "Duration Seconds", selenium.getText("//table/thead/tr/th[5]")
-		assertEquals 3, selenium.getXPathCount("//table/tbody/tr")
+		assertEquals 3, selenium.getXpathCount("//table/tbody/tr")
 	}
 
 	void testColumnsAreSortable() {
@@ -33,9 +40,9 @@ class DataTests extends GrailsSeleneseTestCase {
 
 		selenium.click("link=Title")
 		selenium.waitForPageToLoad("5000")
-		assertEquals "Twilight Galaxy", selenium.getText("//table/tbody/tr[3]/td[1]")
+		assertEquals "Twilight Galaxy", selenium.getText("//table/tbody/tr[1]/td[2]")
 		assertEquals "I'm Confused", selenium.getText("//table/tbody/tr[2]/td[2]")
-		assertEquals "Heads Will Roll", selenium.getText("//table/tbody/tr[1]/td[3]")
+		assertEquals "Heads Will Roll", selenium.getText("//table/tbody/tr[3]/td[2]")
 
 		selenium.click("link=Artist")
 		selenium.waitForPageToLoad("5000")

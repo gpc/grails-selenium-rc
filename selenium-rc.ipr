@@ -190,7 +190,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="project:///Users/rob/IdeaProjects/grails-selenium-rc/selenium-rc.ipr" />
+    <option name="state" value="project:///home/rob/workspace/grails-selenium-rc/selenium-rc.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -248,7 +248,7 @@
     </library>
   </component>
   <UsedPathMacros>
-    <macro name="USER_HOME" description="" />
+    <macro name="USER_HOME" />
   </UsedPathMacros>
 </project>
 
