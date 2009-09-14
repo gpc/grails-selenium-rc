@@ -28,7 +28,7 @@ selenium {
 	slowResources = false
 	singleWindow = true
 	screenshots = "no"
-	screenshotDir = "./target/selenium-screenshots"
+	screenshotDir = "./test/reports/screenshots"
 }
 		"""
 		return new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)
