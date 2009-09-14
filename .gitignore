@@ -1,4 +1,5 @@
 *.iws
 *.log
+eclipse/
 test/reports
 test/projects/selenium-test/target/
