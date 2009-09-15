@@ -13,7 +13,7 @@ class DataTests extends GrailsSeleneseTestCase {
 			Song.build(title: "I'm Confused", artist: "Handsome Furs", album: "Face Control", durationSeconds: 215)
 		}
 
-		selenium.open "/selenium-test/song/list"
+		selenium.open "$rootURL/song/list"
 	}
 
 	void tearDown() {
@@ -32,20 +32,17 @@ class DataTests extends GrailsSeleneseTestCase {
 	}
 
 	void testColumnsAreSortable() {
-		selenium.click("link=Title")
-		selenium.waitForPageToLoad("5000")
+		selenium.clickAndWait("link=Title")
 		assertEquals "Heads Will Roll", selenium.getText("//table/tbody/tr[1]/td[2]")
 		assertEquals "I'm Confused", selenium.getText("//table/tbody/tr[2]/td[2]")
 		assertEquals "Twilight Galaxy", selenium.getText("//table/tbody/tr[3]/td[2]")
 
-		selenium.click("link=Title")
-		selenium.waitForPageToLoad("5000")
+		selenium.clickAndWait("link=Title")
 		assertEquals "Twilight Galaxy", selenium.getText("//table/tbody/tr[1]/td[2]")
 		assertEquals "I'm Confused", selenium.getText("//table/tbody/tr[2]/td[2]")
 		assertEquals "Heads Will Roll", selenium.getText("//table/tbody/tr[3]/td[2]")
 
-		selenium.click("link=Artist")
-		selenium.waitForPageToLoad("5000")
+		selenium.clickAndWait("link=Artist")
 		assertEquals "Handsome Furs", selenium.getText("//table/tbody/tr[1]/td[3]")
 		assertEquals "Metric", selenium.getText("//table/tbody/tr[2]/td[3]")
 		assertEquals "Yeah Yeah Yeahs", selenium.getText("//table/tbody/tr[3]/td[3]")

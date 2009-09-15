@@ -5,13 +5,13 @@ import com.energizedwork.grails.plugins.seleniumrc.GrailsSeleneseTestCase
 class TabsTests extends GrailsSeleneseTestCase {
 
 	void testFirstTabIsInitiallySelected() {
-		selenium.open "/selenium-test/tabs.gsp"
+		selenium.open "$rootURL/tabs.gsp"
 		assertTabSelected 1
 		assertTrue selenium.isVisible("tabs-1")
 	}
 
 	void testTabSelection() {
-		selenium.open "/selenium-test/tabs.gsp"
+		selenium.open "$rootURL/tabs.gsp"
 		[2, 3, 1].each { i->
 			selenium.click "//div[@id='tabs']/ul/li[$i]/a"
 			waitFor {

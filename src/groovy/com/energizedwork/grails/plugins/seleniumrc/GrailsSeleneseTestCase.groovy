@@ -4,6 +4,8 @@ import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
 import org.apache.commons.lang.StringUtils
 import com.thoughtworks.selenium.Selenium
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * The Groovy equivalent of SeleneseTestCase, as a GroovyTestCase.
@@ -11,9 +13,7 @@ import com.thoughtworks.selenium.Selenium
 class GrailsSeleneseTestCase extends GroovyTestCase {
     public static final BASE_METHODS = SeleneseTestBase.class.methods
 
-    static def selenium
-
-    @Delegate private SeleneseTestBase base
+    private SeleneseTestBase base
     private int defaultTimeout
 
     GrailsSeleneseTestCase() {
@@ -40,6 +40,17 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     SeleneseTestBase getBase() {
         return base
     }
+
+	GroovySelenium getSelenium() {
+		return SeleniumManager.instance.selenium
+	}
+
+	/**
+	 * Returns the URL context path for the application.
+	 */
+	String getRootURL() {
+		return "/${ConfigurationHolder.config."web.app.context.path" ?: ApplicationHolder.application.metadata."app.name"}"
+	}
 
     void setDefaultTimeout(int timeout) {
         assert selenium != null

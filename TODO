@@ -1,4 +1,3 @@
-- Default selenium.url from grails serverURL
 - Configuration for
    - screenshot dir
    - screenshot capture (always, onfailure, off)
