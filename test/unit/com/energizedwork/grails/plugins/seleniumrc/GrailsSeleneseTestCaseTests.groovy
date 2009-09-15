@@ -70,4 +70,28 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mockSelenium.verify()
 	}
 
+	void testVerifyDelegatesSameAsAssert() {
+		def mockSelenium = mockFor(Selenium)
+		mockSelenium.demand.isTextPresent() { String text -> true }
+		GrailsSeleneseTestCase.selenium = mockSelenium.createMock()
+		try {
+			testCase.verifyTextPresent("some string")
+		} catch(MissingMethodException e) {
+			fail "Call to verifyTextPresent was not delegated to Selenium.isTextPresent: $e.message"
+		}
+		mockSelenium.verify()
+	}
+
+	void testWaitForDelegatesSameAsAssert() {
+		def mockSelenium = mockFor(Selenium)
+		mockSelenium.demand.isTextPresent() { String text -> true }
+		GrailsSeleneseTestCase.selenium = mockSelenium.createMock()
+		try {
+			testCase.waitForTextPresent("some string")
+		} catch(MissingMethodException e) {
+			fail "Call to verifyTextPresent was not delegated to Selenium.isTextPresent: $e.message"
+		}
+		mockSelenium.verify()
+	}
+
 }
