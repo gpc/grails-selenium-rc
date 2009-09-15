@@ -13,7 +13,7 @@ class DataTests extends GrailsSeleneseTestCase {
 			Song.build(title: "I'm Confused", artist: "Handsome Furs", album: "Face Control", durationSeconds: 215)
 		}
 
-		selenium.open "/selenium-test/song/list"
+		selenium.open "$rootURL/song/list"
 	}
 
 	void tearDown() {

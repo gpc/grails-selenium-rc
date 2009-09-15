@@ -3,6 +3,8 @@ package com.energizedwork.grails.plugins.seleniumrc
 import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
 import com.thoughtworks.selenium.DefaultSelenium
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * The Groovy equivalent of SeleneseTestCase, as a GroovyTestCase.
@@ -40,6 +42,13 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 
 	GroovySelenium getSelenium() {
 		return SeleniumManager.instance.selenium
+	}
+
+	/**
+	 * Returns the URL context path for the application.
+	 */
+	String getRootURL() {
+		return "/${ConfigurationHolder.config."web.app.context.path" ?: ApplicationHolder.application.metadata."app.name"}"
 	}
 
     void setDefaultTimeout(int timeout) {
