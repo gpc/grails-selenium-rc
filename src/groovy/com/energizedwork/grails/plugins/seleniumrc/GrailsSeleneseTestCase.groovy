@@ -2,14 +2,13 @@ package com.energizedwork.grails.plugins.seleniumrc
 
 import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
+import com.thoughtworks.selenium.DefaultSelenium
 
 /**
  * The Groovy equivalent of SeleneseTestCase, as a GroovyTestCase.
  */
 class GrailsSeleneseTestCase extends GroovyTestCase {
     public static final BASE_METHODS = SeleneseTestBase.class.methods
-
-    static GroovySelenium selenium
 
     private SeleneseTestBase base
     private int defaultTimeout
@@ -38,6 +37,10 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     SeleneseTestBase getBase() {
         return base
     }
+
+	GroovySelenium getSelenium() {
+		return SeleniumManager.instance.selenium
+	}
 
     void setDefaultTimeout(int timeout) {
         assert selenium != null
