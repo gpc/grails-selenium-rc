@@ -74,7 +74,7 @@ import com.thoughtworks.selenium.DefaultSelenium
 selenium {
 	host = "localhost"
 	port = 4444
-	browser = "*firefox"
+	browser = "${getDefaultBrowser()}"
 	slowResources = false
 	singleWindow = true
 	screenshots = "no"
@@ -91,6 +91,17 @@ selenium {
 		} catch (ClassNotFoundException ex) {
 			log.warn "SeleniumConfig.groovy not found, proceeding without config file"
 			return null
+		}
+	}
+
+	private static getDefaultBrowser() {
+		switch (System.properties."os.name") {
+			case ~/^Mac OS.*/:
+				return "*safari"
+			case ~/^Windows.*/:
+				return "*iexplore"
+			default:
+				return "*firefox"
 		}
 	}
 

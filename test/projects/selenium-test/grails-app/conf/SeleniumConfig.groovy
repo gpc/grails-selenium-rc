@@ -1,3 +1,0 @@
-selenium {
-	browser = "*firefox"
-}
