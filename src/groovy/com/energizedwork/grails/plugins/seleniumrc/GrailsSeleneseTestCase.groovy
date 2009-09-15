@@ -98,9 +98,15 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 			case ~/^assert\w+/:
 				def condition = StringUtils.substringAfter(name, "assert")
 				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
-					println "ya it works"
 					handled = true
-					assertTrue selenium."is$condition"(args)
+					boolean result = selenium."is$condition"(*args)
+					base.assertTrue(result)
+				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
+					handled = true
+					def expected = args[-1]
+					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
+					def result = selenium."get$condition"(*getArgs)
+					base.assertEquals(expected, result)
 				}
 				break
 			case ~/^verify\w+/:
