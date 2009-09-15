@@ -11,9 +11,7 @@ import com.thoughtworks.selenium.Selenium
 class GrailsSeleneseTestCase extends GroovyTestCase {
 	public static final BASE_METHODS = SeleneseTestBase.class.methods
 
-	static def selenium
-
-	@Delegate private SeleneseTestBase base
+	private SeleneseTestBase base
 	private int defaultTimeout
 
 	GrailsSeleneseTestCase() {
@@ -39,6 +37,10 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 	 */
 	SeleneseTestBase getBase() {
 		return base
+	}
+
+	GroovySelenium getSelenium() {
+		return SeleniumManager.instance.selenium
 	}
 
 	void setDefaultTimeout(int timeout) {

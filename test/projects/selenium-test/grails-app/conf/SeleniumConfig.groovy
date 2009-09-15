@@ -1,3 +1,3 @@
 selenium {
-	browser = "*firefox"
+	browser = "*safari"
 }
