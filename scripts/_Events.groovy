@@ -2,6 +2,12 @@ eventAllTestsStart = {
 	if (binding.variables.containsKey("functionalTests")) {
 		functionalTests << "selenium"
 	}
+	functionalTestsPreparation = {
+		packageApp()
+		runApp()
+		def helperClass = Thread.currentThread().contextClassLoader.loadClass("com.energizedwork.grails.plugins.seleniumrc.GrailsSeleniumTestHelper")
+		return helperClass.newInstance(grailsSettings, classLoader, resolveResources)
+	}
 }
 
 def seleniumManager

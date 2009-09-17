@@ -2,18 +2,20 @@ package com.energizedwork.grails.plugins.seleniumrc
 
 import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
-import com.thoughtworks.selenium.DefaultSelenium
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
- * The Groovy equivalent of SeleneseTestCase, as a GroovyTestCase.
+ * An adaptation of GroovySeleneseTestCase that expects a Selenium instance to be injected
+ * by the test runner rather than creating its own. This means an entire suite of tests can
+ * be run in a single browser session.
  */
 class GrailsSeleneseTestCase extends GroovyTestCase {
     public static final BASE_METHODS = SeleneseTestBase.class.methods
 
     private SeleneseTestBase base
     private int defaultTimeout
+	GroovySelenium selenium
 
     GrailsSeleneseTestCase() {
         super()
@@ -39,10 +41,6 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     SeleneseTestBase getBase() {
         return base
     }
-
-	GroovySelenium getSelenium() {
-		return SeleniumManager.instance.selenium
-	}
 
 	/**
 	 * Returns the URL context path for the application.
