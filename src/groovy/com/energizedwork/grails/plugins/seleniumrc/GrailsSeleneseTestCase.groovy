@@ -11,7 +11,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
  * be run in a single browser session.
  */
 class GrailsSeleneseTestCase extends GroovyTestCase {
-    public static final BASE_METHODS = SeleneseTestBase.class.methods
+    static final BASE_METHODS = SeleneseTestBase.class.methods
 
     private SeleneseTestBase base
     private int defaultTimeout
@@ -20,13 +20,27 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
     GrailsSeleneseTestCase() {
         super()
         base = new SeleneseTestBase()
-        defaultTimeout = 60000
     }
 
     @Override
     void setUp() {
 		super.setUp()
 		setTestContext()
+		defaultTimeout = SeleniumManager.instance.config.selenium.defaultTimeout
+		switch (SeleniumManager.instance.config.selenium.screenshots) {
+			case "always":
+				alwaysCaptureScreenshots = true
+				captureScreenshotOnFailure = false
+				break
+			case "onfailure":
+				alwaysCaptureScreenshots = false
+				captureScreenshotOnFailure = true
+				break
+			default:
+				alwaysCaptureScreenshots = false
+				captureScreenshotOnFailure = false
+		}
+		selenium.screenshotDir = new File(SeleniumManager.instance.config.selenium.screenshotDir)
     }
 
     @Override

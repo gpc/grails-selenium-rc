@@ -1,6 +1,6 @@
-- Configuration for
-   - screenshot dir
-   - screenshot capture (always, onfailure, off)
+- tidy up use of config - some in SeleniumManager, some in GrailsSeleneseTestCase.setUp
+- screenshot = "always" results in an error at the end of the test suite
+- screenshot = "onfailure" doesn't capture screenshots when an assertion fails - only a selenium command
 - Config override via system properties
 - Nice delegation of calls from GrailsSeleneseTestCase to Selenium and SeleniumTestBase instances
 - Dynamic(?) assert* verify* & waitFor* methods

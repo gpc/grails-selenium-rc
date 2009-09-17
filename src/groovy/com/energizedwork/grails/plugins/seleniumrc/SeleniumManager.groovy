@@ -75,6 +75,7 @@ selenium {
 	host = "localhost"
 	port = 4444
 	browser = "${getDefaultBrowser()}"
+	defaultTimeout = 60000
 	slowResources = false
 	singleWindow = true
 	screenshots = "no"
