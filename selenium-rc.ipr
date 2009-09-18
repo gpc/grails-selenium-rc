@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project relativePaths="false" version="4">
+  <component name="AntConfiguration">
+    <defaultAnt bundledAnt="true" />
+  </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
@@ -230,21 +233,9 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
-    <library name="Grails 1.2-M2">
-      <CLASSES>
-        <root url="file://$USER_HOME$/java/grails-1.2-M2/dist" />
-        <root url="file://$USER_HOME$/java/grails-1.2-M2/lib" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="file://$USER_HOME$/java/grails-1.2-M2/src/java" />
-      </SOURCES>
-      <jarDirectory url="file://$USER_HOME$/java/grails-1.2-M2/dist" recursive="false" />
-      <jarDirectory url="file://$USER_HOME$/java/grails-1.2-M2/lib" recursive="false" />
-    </library>
     <library name="Selenium Server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/selenium-server.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/server/selenium-server.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
