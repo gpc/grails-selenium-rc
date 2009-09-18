@@ -12,10 +12,10 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
-@Mixin(SeleneseTestBase)
+@Mixin (SeleneseTestBase)
 class GrailsSeleneseTestCase extends GroovyTestCase {
 
-    private int defaultTimeout
+	private int defaultTimeout
 	GroovySelenium selenium
 
 	@Override
@@ -37,7 +37,7 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 				captureScreenshotOnFailure = false
 		}
 		selenium.screenshotDir = new File(SeleniumManager.instance.config.selenium.screenshotDir)
-    }
+	}
 
 	@Override
 	void tearDown() {

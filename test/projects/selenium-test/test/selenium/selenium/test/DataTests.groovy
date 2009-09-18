@@ -24,28 +24,28 @@ class DataTests extends GrailsSeleneseTestCase {
 	}
 
 	void testCorrectColumnsAndRowsAppear() {
-		assertEquals "Title", selenium.getText("//table/thead/tr/th[2]")
-		assertEquals "Artist", selenium.getText("//table/thead/tr/th[3]")
-		assertEquals "Album", selenium.getText("//table/thead/tr/th[4]")
-		assertEquals "Duration Seconds", selenium.getText("//table/thead/tr/th[5]")
-		assertEquals 3, selenium.getXpathCount("//table/tbody/tr")
+		assertText "//table/thead/tr/th[2]", "Title"
+		assertText "//table/thead/tr/th[3]", "Artist"
+		assertText "//table/thead/tr/th[4]", "Album"
+		assertText "//table/thead/tr/th[5]", "Duration Seconds"
+		assertXpathCount "//table/tbody/tr", 3
 	}
 
 	void testColumnsAreSortable() {
 		selenium.clickAndWait("link=Title")
-		assertEquals "Heads Will Roll", selenium.getText("//table/tbody/tr[1]/td[2]")
-		assertEquals "I'm Confused", selenium.getText("//table/tbody/tr[2]/td[2]")
-		assertEquals "Twilight Galaxy", selenium.getText("//table/tbody/tr[3]/td[2]")
+		assertText "//table/tbody/tr[1]/td[2]", "Heads Will Roll"
+		assertText "//table/tbody/tr[2]/td[2]", "I'm Confused"
+		assertText "//table/tbody/tr[3]/td[2]", "Twilight Galaxy"
 
 		selenium.clickAndWait("link=Title")
-		assertEquals "Twilight Galaxy", selenium.getText("//table/tbody/tr[1]/td[2]")
-		assertEquals "I'm Confused", selenium.getText("//table/tbody/tr[2]/td[2]")
-		assertEquals "Heads Will Roll", selenium.getText("//table/tbody/tr[3]/td[2]")
+		assertText "//table/tbody/tr[1]/td[2]", "Twilight Galaxy"
+		assertText "//table/tbody/tr[2]/td[2]", "I'm Confused"
+		assertText "//table/tbody/tr[3]/td[2]", "Heads Will Roll"
 
 		selenium.clickAndWait("link=Artist")
-		assertEquals "Handsome Furs", selenium.getText("//table/tbody/tr[1]/td[3]")
-		assertEquals "Metric", selenium.getText("//table/tbody/tr[2]/td[3]")
-		assertEquals "Yeah Yeah Yeahs", selenium.getText("//table/tbody/tr[3]/td[3]")
+		assertText "//table/tbody/tr[1]/td[3]", "Handsome Furs"
+		assertText "//table/tbody/tr[2]/td[3]", "Metric"
+		assertText "//table/tbody/tr[3]/td[3]", "Yeah Yeah Yeahs"
 	}
 
 }

@@ -6,7 +6,7 @@ class HomepageTests extends GrailsSeleneseTestCase {
 
 	void testHomepageLoads() {
 		selenium.open "$rootURL/"
-		assertTrue selenium.isTextPresent("Welcome to Grails")
+		assertTextPresent "Welcome to Grails"
 	}
 
 }
