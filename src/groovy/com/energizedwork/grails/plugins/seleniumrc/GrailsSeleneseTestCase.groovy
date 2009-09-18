@@ -12,17 +12,11 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
+@Mixin(SeleneseTestBase)
 class GrailsSeleneseTestCase extends GroovyTestCase {
-    static final BASE_METHODS = SeleneseTestBase.class.methods
 
-    private SeleneseTestBase base
     private int defaultTimeout
 	GroovySelenium selenium
-
-    GrailsSeleneseTestCase() {
-        super()
-        base = new SeleneseTestBase()
-    }
 
 	@Override
 	void setUp() {
@@ -48,14 +42,7 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 	@Override
 	void tearDown() {
 		super.tearDown()
-		base.checkForVerificationErrors()
-	}
-
-	/**
-	 * Returns the delegate for most Selenium API calls.
-	 */
-	SeleneseTestBase getBase() {
-		return base
+		checkForVerificationErrors()
 	}
 
 	/**
@@ -124,13 +111,13 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
 					handled = true
 					boolean result = selenium."is$condition"(* args)
-					base.assertTrue(result)
+					assertTrue(result)
 				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
 					handled = true
 					def expected = args[-1]
 					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
 					def result = selenium."get$condition"(* getArgs)
-					base.assertEquals(expected, result)
+					assertEquals(expected, result)
 				}
 				break
 			case ~/^verify\w+/:
@@ -138,13 +125,13 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
 					handled = true
 					boolean result = selenium."is$condition"(* args)
-					base.verifyTrue(result)
+					verifyTrue(result)
 				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
 					handled = true
 					def expected = args[-1]
 					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
 					def result = selenium."get$condition"(* getArgs)
-					base.verifyEquals(expected, result)
+					verifyEquals(expected, result)
 				}
 				break
 			case ~/^waitFor\w+/:
