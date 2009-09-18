@@ -146,7 +146,7 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 					def expected = args[-1]
 					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
 					waitFor {
-						selenium."get$condition"(* getArgs)
+						selenium."get$condition"(* getArgs) == expected
 					}
 				}
 				break
