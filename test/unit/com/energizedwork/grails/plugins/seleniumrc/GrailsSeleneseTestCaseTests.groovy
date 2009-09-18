@@ -3,8 +3,8 @@ package com.energizedwork.grails.plugins.seleniumrc
 import com.energizedwork.grails.plugins.seleniumrc.GrailsSeleneseTestCase
 import com.thoughtworks.selenium.GroovySelenium
 import grails.test.GrailsUnitTestCase
-import org.gmock.WithGMock
 import junit.framework.AssertionFailedError
+import org.gmock.WithGMock
 
 @WithGMock
 class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
@@ -16,7 +16,8 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		super.setUp()
 
 		testCase = new GrailsSeleneseTestCase()
-		testCase.selenium = mock(GroovySelenium)
+		def mockSelenium = mock(GroovySelenium)
+		testCase.metaClass.getSelenium = {-> mockSelenium }
 		testCase.@defaultTimeout = 250 // bypass delegating to selenium
 	}
 

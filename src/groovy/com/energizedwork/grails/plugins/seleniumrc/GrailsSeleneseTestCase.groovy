@@ -16,33 +16,33 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 class GrailsSeleneseTestCase extends GroovyTestCase {
 
 	private int defaultTimeout
-	GroovySelenium selenium
 
 	@Override
 	void setUp() {
 		super.setUp()
 		setTestContext()
-		defaultTimeout = SeleniumManager.instance.config.selenium.defaultTimeout
-		switch (SeleniumManager.instance.config.selenium.screenshots) {
-			case "always":
-				alwaysCaptureScreenshots = true
-				captureScreenshotOnFailure = false
-				break
-			case "onfailure":
-				alwaysCaptureScreenshots = false
-				captureScreenshotOnFailure = true
-				break
-			default:
-				alwaysCaptureScreenshots = false
-				captureScreenshotOnFailure = false
-		}
-		selenium.screenshotDir = new File(SeleniumManager.instance.config.selenium.screenshotDir)
+		defaultTimeout = config.selenium.defaultTimeout
+
+		// need to do this in every setUp/tearDown cycle or we will attempt
+		// to grab screenshots of the server stopping, etc.
+		selenium.alwaysCaptureScreenshots = config.selenium.alwaysCaptureScreenshots
+		selenium.captureScreenshotOnFailure = config.selenium.captureScreenshotOnFailure
 	}
 
 	@Override
 	void tearDown() {
 		super.tearDown()
 		checkForVerificationErrors()
+		selenium.alwaysCaptureScreenshots = false
+		selenium.captureScreenshotOnFailure = false
+	}
+
+	ConfigObject getConfig() {
+		SeleniumManager.instance.config
+	}
+
+	GroovySelenium getSelenium() {
+		SeleniumManager.instance.selenium
 	}
 
 	/**

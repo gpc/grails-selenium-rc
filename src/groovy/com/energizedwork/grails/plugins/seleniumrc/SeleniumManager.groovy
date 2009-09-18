@@ -62,6 +62,7 @@ import com.thoughtworks.selenium.DefaultSelenium
 		def url = config.selenium.url ?: serverURL
 		selenium = new GroovySelenium(new DefaultSelenium(host, port, browser, url))
 		selenium.start()
+		selenium.screenshotDir = new File(config.selenium.screenshotDir)
 	}
 
 	void stopSelenium() {
@@ -78,7 +79,8 @@ selenium {
 	defaultTimeout = 60000
 	slowResources = false
 	singleWindow = true
-	screenshots = "no"
+	alwaysCaptureScreenshots = false
+	captureScreenshotOnFailure = false
 	screenshotDir = "./test/reports/screenshots"
 }
 		"""

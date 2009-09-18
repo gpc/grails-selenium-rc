@@ -1,12 +1,13 @@
+This version...
 - remove GMock jar from plugin when built
-- tidy up use of config - some in SeleniumManager, some in GrailsSeleneseTestCase.setUp
-- screenshot = "always" results in an error at the end of the test suite
 - screenshot = "onfailure" doesn't capture screenshots when an assertion fails - only a selenium command
-- separate config values for screenshot.always and screenshot.onfailure
 - override fail() in GrailsSeleneseTestCase to take screenshot
 - can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
 - Config override via system properties
-- Dynamic(?) assert* verify* & waitFor* methods
 - ensure not loaded in war / non test mode
 - handle context path automatically
 - correct packages
+
+Long term...
+- Selenium Grid
+- Support non-JUnit frameworks e.g. EasyB, JBehave, Spock
