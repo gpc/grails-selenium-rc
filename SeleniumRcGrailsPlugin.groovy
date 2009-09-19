@@ -9,6 +9,7 @@ class SeleniumRcGrailsPlugin {
 	def pluginExcludes = [
 			"grails-app/views/error.gsp"
 	]
+	def environments = ["test"]
 
 	// TODO Fill in these fields
 	def author = "Rob Fletcher"

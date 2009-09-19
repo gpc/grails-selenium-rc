@@ -1,9 +1,14 @@
-- Default selenium.url from grails serverURL
-- Configuration for
-   - screenshot dir
-   - screenshot capture (always, onfailure, off)
+This version...
+- remove GMock jar from plugin when built
+- captureScreenshotOnFailure = false doesn't capture screenshots when an assertion fails - only a selenium command
+- can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
+- delegate "command"-type calls from GrailsSeleneseTestCase to selenium - e.g. click, clickAndWait, open, etc.
 - Config override via system properties
-- Nice delegation of calls from GrailsSeleneseTestCase to Selenium and SeleniumTestBase instances
-- Dynamic(?) assert* verify* & waitFor* methods
 - ensure not loaded in war / non test mode
 - handle context path automatically
+- correct packages
+- not sure if assertText(locator, expected), etc. should really have the args the other way round to be consistent with JUnit
+
+Long term...
+- Selenium Grid
+- Support non-JUnit frameworks e.g. EasyB, JBehave, Spock
