@@ -1,6 +1,6 @@
-package com.energizedwork.grails.plugins.seleniumrc
+package grails.plugins.selenium
 
-import com.energizedwork.grails.plugins.seleniumrc.GrailsSeleneseTestCase
+import grails.plugins.selenium.GrailsSeleneseTestCase
 import com.thoughtworks.selenium.GroovySelenium
 import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError

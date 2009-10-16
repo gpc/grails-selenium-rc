@@ -1,4 +1,4 @@
-package com.energizedwork.grails.plugins.seleniumrc
+package grails.plugins.selenium
 
 import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase

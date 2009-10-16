@@ -1,4 +1,4 @@
-package com.energizedwork.grails.plugins.seleniumrc
+package grails.plugins.selenium
 
 import grails.util.GrailsUtil
 import org.slf4j.LoggerFactory

@@ -8,7 +8,7 @@ eventAllTestsStart = {
 
 eventTestSuiteStart = {String type ->
 	if (type == "selenium") {
-		def managerClass = Thread.currentThread().contextClassLoader.loadClass("com.energizedwork.grails.plugins.seleniumrc.SeleniumManager")
+		def managerClass = Thread.currentThread().contextClassLoader.loadClass("grails.plugins.selenium.SeleniumManager")
 		seleniumManager = managerClass.instance
 		seleniumManager.loadConfig()
 

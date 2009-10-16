@@ -8,6 +8,7 @@ This version...
 - handle context path automatically
 - correct packages
 - not sure if assertText(locator, expected), etc. should really have the args the other way round to be consistent with JUnit
+- meta data to help with IDE auto completion
 
 Long term...
 - Selenium Grid

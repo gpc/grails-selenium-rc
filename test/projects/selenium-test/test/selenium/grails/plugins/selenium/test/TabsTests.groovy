@@ -1,6 +1,6 @@
-package selenium.test
+package grails.plugins.selenium.test
 
-import com.energizedwork.grails.plugins.seleniumrc.GrailsSeleneseTestCase
+import grails.plugins.selenium.GrailsSeleneseTestCase
 
 class TabsTests extends GrailsSeleneseTestCase {
 

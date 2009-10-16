@@ -1,4 +1,4 @@
-package selenium.test
+package grails.plugins.selenium.test
 
 class Song {
 

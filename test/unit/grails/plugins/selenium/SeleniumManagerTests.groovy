@@ -1,6 +1,7 @@
-package com.energizedwork.grails.plugins.seleniumrc
+package grails.plugins.selenium
 
 import grails.test.GrailsUnitTestCase
+import grails.plugins.selenium.SeleniumManager
 
 class SeleniumManagerTests extends GrailsUnitTestCase {
 
