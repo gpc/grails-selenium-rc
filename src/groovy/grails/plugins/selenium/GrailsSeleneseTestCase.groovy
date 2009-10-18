@@ -25,23 +25,23 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 
 		// need to do this in every setUp/tearDown cycle or we will attempt
 		// to grab screenshots of the server stopping, etc.
-		selenium.alwaysCaptureScreenshots = config.selenium.alwaysCaptureScreenshots
-		selenium.captureScreenshotOnFailure = config.selenium.captureScreenshotOnFailure
+//		selenium.alwaysCaptureScreenshots = config.selenium.alwaysCaptureScreenshots
+//		selenium.captureScreenshotOnFailure = config.selenium.captureScreenshotOnFailure
 	}
 
 	@Override
 	void tearDown() {
 		super.tearDown()
 		checkForVerificationErrors()
-		selenium.alwaysCaptureScreenshots = false
-		selenium.captureScreenshotOnFailure = false
+//		selenium.alwaysCaptureScreenshots = false
+//		selenium.captureScreenshotOnFailure = false
 	}
 
 	ConfigObject getConfig() {
 		SeleniumManager.instance.config
 	}
 
-	GroovySelenium getSelenium() {
+	GrailsSelenium getSelenium() {
 		SeleniumManager.instance.selenium
 	}
 
@@ -59,13 +59,13 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 		selenium.setDefaultTimeout(timeout)
 	}
 
-	void setAlwaysCaptureScreenshots(boolean capture) {
-		selenium.setAlwaysCaptureScreenshots(capture)
-	}
-
-	void setCaptureScreenshotOnFailure(boolean capture) {
-		selenium.setCaptureScreenshotOnFailure(capture)
-	}
+//	void setAlwaysCaptureScreenshots(boolean capture) {
+//		selenium.setAlwaysCaptureScreenshots(capture)
+//	}
+//
+//	void setCaptureScreenshotOnFailure(boolean capture) {
+//		selenium.setCaptureScreenshotOnFailure(capture)
+//	}
 
 	void setTestContext() {
 		selenium.setContext("${getClass().getSimpleName()}.${getName()}")
@@ -105,19 +105,20 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 	 */
 	def methodMissing(String name, args) {
 		boolean handled = false
+		// TODO: 3 branches doing almost the same thing - could benefit from refactoring
 		switch (name) {
 			case ~/^assert\w+/:
 				def condition = StringUtils.substringAfter(name, "assert")
 				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
 					handled = true
 					boolean result = selenium."is$condition"(* args)
-					assertTrue(result)
+					SeleneseTestBase.assertTrue(result)
 				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
 					handled = true
 					def expected = args[-1]
 					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
 					def result = selenium."get$condition"(* getArgs)
-					assertEquals(expected, result)
+					SeleneseTestBase.assertEquals(expected, result)
 				}
 				break
 			case ~/^verify\w+/:

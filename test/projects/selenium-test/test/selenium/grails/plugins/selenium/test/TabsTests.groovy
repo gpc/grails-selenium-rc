@@ -20,8 +20,7 @@ class TabsTests extends GrailsSeleneseTestCase {
 	}
 
 	private void assertTabSelected(int i) {
-		// TODO: should use assertAttribute "//div[@id='tabs']/ul/li[$i]@class", /regex:\bui-tabs-selected\b/ but delegation to SeleneseTestBase assertEquals doesn't work right
-		assertNotNull selenium.getAttribute("//div[@id='tabs']/ul/li[$i]@class") ==~ /\bui-tabs-selected\b/
+		assertAttribute "//div[@id='tabs']/ul/li[$i]@class", /regex:\bui-tabs-selected\b/
 	}
 
 }

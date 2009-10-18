@@ -11,7 +11,7 @@ import com.thoughtworks.selenium.DefaultSelenium
 
 	private def seleniumServer
 	ConfigObject config
-	GroovySelenium selenium
+	GrailsSelenium selenium
 
 	// TODO: sucks that these lifecycle methods have to be called in order
 	void loadConfig() {
@@ -60,9 +60,9 @@ import com.thoughtworks.selenium.DefaultSelenium
 		def port = config.selenium.port
 		def browser = config.selenium.browser
 		def url = config.selenium.url ?: serverURL
-		selenium = new GroovySelenium(new DefaultSelenium(host, port, browser, url))
+		selenium = new GrailsSelenium(host, port, browser, url)
 		selenium.start()
-		selenium.screenshotDir = new File(config.selenium.screenshotDir)
+//		selenium.screenshotDir = new File(config.selenium.screenshotDir)
 	}
 
 	void stopSelenium() {

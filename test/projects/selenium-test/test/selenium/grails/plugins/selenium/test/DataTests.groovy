@@ -24,11 +24,13 @@ class DataTests extends GrailsSeleneseTestCase {
 	}
 
 	void testCorrectColumnsAndRowsAppear() {
-		assertText "//table/thead/tr/th[2]", "Title"
-		assertText "//table/thead/tr/th[3]", "Artist"
-		assertText "//table/thead/tr/th[4]", "Album"
-		assertText "//table/thead/tr/th[5]", "Duration Seconds"
-		assertXpathCount "//table/tbody/tr", 3
+		selenium.with {
+			assertEquals "Title", getText("//table/thead/tr/th[2]")
+			assertEquals "Artist", getText("//table/thead/tr/th[3]")
+			assertEquals "Album", getText("//table/thead/tr/th[4]")
+			assertEquals "Duration Seconds", getText("//table/thead/tr/th[5]")
+			assertEquals 3, getXpathCount("//table/tbody/tr")
+		}
 	}
 
 	void testColumnsAreSortable() {

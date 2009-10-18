@@ -5,19 +5,21 @@ import com.thoughtworks.selenium.GroovySelenium
 import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
 import org.gmock.WithGMock
+import junit.framework.ComparisonFailure
 
 @WithGMock
 class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 
 	GrailsSeleneseTestCase testCase
-	def mockSelenium
+	def selenium
 
 	void setUp() {
 		super.setUp()
 
 		testCase = new GrailsSeleneseTestCase()
-		def mockSelenium = mock(GroovySelenium)
-		testCase.metaClass.getSelenium = {-> mockSelenium }
+
+		selenium = new GroovySelenium(null)
+		testCase.metaClass.getSelenium = {-> selenium }
 		testCase.@defaultTimeout = 250 // bypass delegating to selenium
 	}
 
@@ -30,7 +32,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testBooleanAssertWithOneArgDelegatedToSeleniumInstance() {
-		testCase.selenium.isTextPresent("some string").returns(true)
+		mock(selenium).isTextPresent("some string").returns(true)
 		play {
 			try {
 				testCase.assertTextPresent("some string")
@@ -41,7 +43,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testBooleanAssertWithNoArgsDelegatedToSeleniumInstance() {
-		testCase.selenium.isAlertPresent().returns(true)
+		mock(selenium).isAlertPresent().returns(true)
 		play {
 			try {
 				testCase.assertAlertPresent()
@@ -52,7 +54,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testEqualityAssertWithOneArgDelegatedToSeleniumInstance() {
-		testCase.selenium.getText("id=foo").returns("expected value")
+		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.assertText("id=foo", "expected value")
@@ -63,7 +65,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testEqualityAssertWithNoArgsDelegatedToSeleniumInstance() {
-		testCase.selenium.getLocation().returns("http://localhost:8080/foo")
+		mock(selenium).getLocation().returns("http://localhost:8080/foo")
 		play {
 			try {
 				testCase.assertLocation("http://localhost:8080/foo")
@@ -74,7 +76,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testBooleanVerifyDelegatesToSelenium() {
-		testCase.selenium.isTextPresent("some string").returns(true)
+		mock(selenium).isTextPresent("some string").returns(true)
 		play {
 			try {
 				testCase.verifyTextPresent("some string")
@@ -85,7 +87,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testBooleanWaitForDelegatesToSelenium() {
-		testCase.selenium.isTextPresent("some string").returns(true)
+		mock(selenium).isTextPresent("some string").returns(true)
 		play {
 			try {
 				testCase.waitForTextPresent("some string")
@@ -96,7 +98,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testEqualityVerifyDelegatesToSelenium() {
-		testCase.selenium.getText("id=foo").returns("expected value")
+		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.verifyText("id=foo", "expected value")
@@ -107,7 +109,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testEqualityWaitForDelegatesToSelenium() {
-		testCase.selenium.getText("id=foo").returns("expected value")
+		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.waitForText("id=foo", "expected value")
@@ -118,16 +120,16 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testAssertFailsCorrectly() {
-		testCase.selenium.getText("id=foo").returns("not what I expected")
+		mock(selenium).getText("id=foo").returns("not what I expected")
 		play {
-			shouldFail(AssertionFailedError) {
+			shouldFail(AssertionError) {
 				testCase.assertText("id=foo", "expected value")
 			}
 		}
 	}
 
 	void testVerifyFailsCorrectly() {
-		testCase.selenium.getText("id=foo").returns("not what I expected")
+		mock(selenium).getText("id=foo").returns("not what I expected")
 		play {
 			testCase.verifyText("id=foo", "expected value")
 			// TODO: SeleneseTestBase throws the wrong error type :(
@@ -138,7 +140,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testWaitForFailsCorrectly() {
-		testCase.selenium.getText("id=foo").returns("not what I expected")
+		mock(selenium).getText("id=foo").returns("not what I expected")
 		play {
 			shouldFail(AssertionFailedError) {
 				testCase.waitForText("id=foo", "expected value")
@@ -146,4 +148,16 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		}
 	}
 
+	void testEqualityAssertUsesSeleniumVersionOfAssertEquals() {
+		mock(selenium).getText("id=foo").returns("expected value")
+		play {
+			try {
+				testCase.assertText("id=foo", /regex:e[\w\s]+e/)
+			} catch (ComparisonFailure e) {
+				fail "Call to assertText was not delegated to SeleneseTextBase.assertEquals: $e.message"
+			} catch (MissingMethodException e) {
+				fail "Call to assertText was not delegated to Selenium.getText: $e.message"
+			}
+		}
+	}
 }

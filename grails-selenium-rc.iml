@@ -28,7 +28,6 @@
       <sourceFolder url="file://$MODULE_DIR$/grails-app/taglib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/selenium" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/test/reports" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -44,8 +43,6 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="selenium-test-grailsPlugins" />
-    <orderEntry type="module" module-name="grails-selenium-rc" />
   </component>
 </module>
 
