@@ -13,7 +13,7 @@ class TabsTests extends GrailsSeleneseTestCase {
 	void testTabSelection() {
 		selenium.with {
 			open "$rootURL/tabs.gsp"
-			[2, 3, 1].each {i ->
+			[3, 2, 1].each {i ->
 				click "//div[@id='tabs']/ul/li[$i]/a"
 				waitForVisible "tabs-$i"
 				assertTabSelected i
