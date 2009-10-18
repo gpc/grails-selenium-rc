@@ -23,8 +23,8 @@ class GrailsSelenium extends DefaultSelenium {
 		def match = name =~ /^(.+)AndWait$/
 		if (match.find()) {
 			def command = match[0][1]
-			def result = super."$command"(*args)
-			super.waitForPageToLoad "$defaultTimeout"
+			def result = "$command"(*args)
+			waitForPageToLoad "$defaultTimeout"
 			return result
 		}
 		throw new MissingMethodException(name, GrailsSelenium, args)
