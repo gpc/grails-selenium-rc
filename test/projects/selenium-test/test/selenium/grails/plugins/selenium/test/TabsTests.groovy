@@ -11,16 +11,18 @@ class TabsTests extends GrailsSeleneseTestCase {
 	}
 
 	void testTabSelection() {
-		selenium.open "$rootURL/tabs.gsp"
-		[2, 3, 1].each { i->
-			selenium.click "//div[@id='tabs']/ul/li[$i]/a"
-			waitForVisible "tabs-$i"
-			assertTabSelected i
+		selenium.with {
+			open "$rootURL/tabs.gsp"
+			[2, 3, 1].each {i ->
+				click "//div[@id='tabs']/ul/li[$i]/a"
+				waitForVisible "tabs-$i"
+				assertTabSelected i
+			}
 		}
 	}
 
 	private void assertTabSelected(int i) {
-		assertAttribute "//div[@id='tabs']/ul/li[$i]@class", /regex:\bui-tabs-selected\b/
+		assertAttribute(/regex:\bui-tabs-selected\b/, "//div[@id='tabs']/ul/li[$i]@class")
 	}
 
 }

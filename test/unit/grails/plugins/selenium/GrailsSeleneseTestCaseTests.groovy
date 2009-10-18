@@ -57,7 +57,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
-				testCase.assertText("id=foo", "expected value")
+				testCase.assertText("expected value", "id=foo")
 			} catch (MissingMethodException e) {
 				fail "Call to assertText was not delegated to Selenium.getText: $e.message"
 			}
@@ -101,7 +101,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
-				testCase.verifyText("id=foo", "expected value")
+				testCase.verifyText("expected value", "id=foo")
 			} catch (MissingMethodException e) {
 				fail "Call to verifyTextPresent was not delegated to Selenium.isTextPresent: $e.message"
 			}
@@ -112,7 +112,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
-				testCase.waitForText("id=foo", "expected value")
+				testCase.waitForText("expected value", "id=foo")
 			} catch (MissingMethodException e) {
 				fail "Call to verifyTextPresent was not delegated to Selenium.isTextPresent: $e.message"
 			}
@@ -123,7 +123,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mock(selenium).getText("id=foo").returns("not what I expected")
 		play {
 			shouldFail(AssertionError) {
-				testCase.assertText("id=foo", "expected value")
+				testCase.assertText("expected value", "id=foo")
 			}
 		}
 	}
@@ -131,7 +131,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 	void testVerifyFailsCorrectly() {
 		mock(selenium).getText("id=foo").returns("not what I expected")
 		play {
-			testCase.verifyText("id=foo", "expected value")
+			testCase.verifyText("expected value", "id=foo")
 			// TODO: SeleneseTestBase throws the wrong error type :(
 			shouldFail(AssertionError) {
 				testCase.checkForVerificationErrors()
@@ -143,7 +143,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mock(selenium).getText("id=foo").returns("not what I expected")
 		play {
 			shouldFail(AssertionFailedError) {
-				testCase.waitForText("id=foo", "expected value")
+				testCase.waitForText("expected value", "id=foo")
 			}
 		}
 	}
@@ -152,7 +152,7 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		mock(selenium).getText("id=foo").returns("expected value")
 		play {
 			try {
-				testCase.assertText("id=foo", /regex:e[\w\s]+e/)
+				testCase.assertText(/regex:e[\w\s]+e/, "id=foo")
 			} catch (ComparisonFailure e) {
 				fail "Call to assertText was not delegated to SeleneseTextBase.assertEquals: $e.message"
 			} catch (MissingMethodException e) {

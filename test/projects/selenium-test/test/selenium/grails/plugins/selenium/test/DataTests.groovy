@@ -35,19 +35,19 @@ class DataTests extends GrailsSeleneseTestCase {
 
 	void testColumnsAreSortable() {
 		selenium.clickAndWait("link=Title")
-		assertText "//table/tbody/tr[1]/td[2]", "Heads Will Roll"
-		assertText "//table/tbody/tr[2]/td[2]", "I'm Confused"
-		assertText "//table/tbody/tr[3]/td[2]", "Twilight Galaxy"
+		assertText "Heads Will Roll", "//table/tbody/tr[1]/td[2]"
+		assertText "I'm Confused", "//table/tbody/tr[2]/td[2]"
+		assertText "Twilight Galaxy", "//table/tbody/tr[3]/td[2]"
 
 		selenium.clickAndWait("link=Title")
-		assertText "//table/tbody/tr[1]/td[2]", "Twilight Galaxy"
-		assertText "//table/tbody/tr[2]/td[2]", "I'm Confused"
-		assertText "//table/tbody/tr[3]/td[2]", "Heads Will Roll"
+		assertText "Twilight Galaxy", "//table/tbody/tr[1]/td[2]"
+		assertText "I'm Confused", "//table/tbody/tr[2]/td[2]"
+		assertText "Heads Will Roll", "//table/tbody/tr[3]/td[2]"
 
 		selenium.clickAndWait("link=Artist")
-		assertText "//table/tbody/tr[1]/td[3]", "Handsome Furs"
-		assertText "//table/tbody/tr[2]/td[3]", "Metric"
-		assertText "//table/tbody/tr[3]/td[3]", "Yeah Yeah Yeahs"
+		assertText "Handsome Furs", "//table/tbody/tr[1]/td[3]"
+		assertText "Metric", "//table/tbody/tr[2]/td[3]"
+		assertText "Yeah Yeah Yeahs", "//table/tbody/tr[3]/td[3]"
 	}
 
 }

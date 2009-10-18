@@ -9,7 +9,6 @@ class GrailsSeleniumTests extends GroovyTestCase {
 
 	@Override void setUp() {
 		super.setUp()
-
 		selenium = new GrailsSelenium(null)
 	}
 

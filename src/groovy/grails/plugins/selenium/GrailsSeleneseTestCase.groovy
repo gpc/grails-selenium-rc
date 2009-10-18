@@ -12,7 +12,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
-@Mixin (SeleneseTestBase)
+@Mixin(SeleneseTestBase)
 class GrailsSeleneseTestCase extends GroovyTestCase {
 
 	private int defaultTimeout
@@ -115,10 +115,12 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 					SeleneseTestBase.assertTrue(result)
 				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
 					handled = true
-					def expected = args[-1]
-					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
-					def result = selenium."get$condition"(* getArgs)
-					SeleneseTestBase.assertEquals(expected, result)
+					use(ArrayCategory) {
+						def expected = args.head()
+						def getArgs = args.tail()
+						def result = selenium."get$condition"(* getArgs)
+						SeleneseTestBase.assertEquals(expected, result)
+					}
 				}
 				break
 			case ~/^verify\w+/:
@@ -129,10 +131,12 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 					verifyTrue(result)
 				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
 					handled = true
-					def expected = args[-1]
-					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
-					def result = selenium."get$condition"(* getArgs)
-					verifyEquals(expected, result)
+					use(ArrayCategory) {
+						def expected = args.head()
+						def getArgs = args.tail()
+						def result = selenium."get$condition"(* getArgs)
+						verifyEquals(expected, result)
+					}
 				}
 				break
 			case ~/^waitFor\w+/:
@@ -144,14 +148,26 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 					}
 				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
 					handled = true
-					def expected = args[-1]
-					def getArgs = args.size() > 1 ? args[0..-2] : [] as Object[]
-					waitFor {
-						selenium."get$condition"(* getArgs) == expected
+					use(ArrayCategory) {
+						def expected = args.head()
+						def getArgs = args.tail()
+						waitFor {
+							selenium."get$condition"(* getArgs) == expected
+						}
 					}
 				}
 				break
 		}
 		if (!handled) throw new MissingMethodException(name, getClass(), args)
+	}
+}
+
+@Category(Object[]) class ArrayCategory {
+	Object head() {
+		length > 0 ? this[0] : null
+	}
+
+	Object[] tail() {
+		length > 1 ? this[1..length - 1] : [] as Object[]
 	}
 }
