@@ -1,8 +1,7 @@
 package grails.plugins.selenium
 
-import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.CommandProcessor
-import java.util.regex.Matcher
+import com.thoughtworks.selenium.DefaultSelenium
 
 /**
  * Extends capabilities of {@link DefaultSelenium}. Because it extends DefaultSelenium unlike GroovySelenium code
@@ -21,12 +20,13 @@ class GrailsSelenium extends DefaultSelenium {
 	}
 
 	def methodMissing(String name, args) {
-		Matcher match = name =~ /^(.+)AndWait$/
+		def match = name =~ /^(.+)AndWait$/
 		if (match.find()) {
 			def command = match[0][1]
 			def result = super."$command"(*args)
 			super.waitForPageToLoad "$defaultTimeout"
 			return result
 		}
+		throw new MissingMethodException(name, GrailsSelenium, args)
 	}
 }

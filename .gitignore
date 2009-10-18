@@ -1,5 +1,6 @@
 *.iws
 *.log
+.idea/
 eclipse/
 plugin.xml
 target

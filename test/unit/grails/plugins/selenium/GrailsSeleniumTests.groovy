@@ -45,4 +45,10 @@ class GrailsSeleniumTests extends GroovyTestCase {
 		}
 	}
 
+	void testMissingMethodExceptionThrownProperly() {
+		shouldFail(MissingMethodException) {
+			selenium.noSuchMethod()
+		}
+	}
+
 }
