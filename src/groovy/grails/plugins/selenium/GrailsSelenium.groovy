@@ -4,8 +4,9 @@ import com.thoughtworks.selenium.CommandProcessor
 import com.thoughtworks.selenium.DefaultSelenium
 
 /**
- * Extends capabilities of {@link DefaultSelenium}. Because it extends DefaultSelenium unlike GroovySelenium code
- * completion works in IDEs.
+ * Extends capabilities of <tt>DefaultSelenium</tt> adding the ability to use <tt>*AndWait</tt> command such as
+ * <tt>clickAndWait</tt> or <tt>fireEventAndWait</tt>.
+ * Because it extends DefaultSelenium unlike GroovySelenium code completion works in IDEs.
  */
 class GrailsSelenium extends DefaultSelenium {
 
@@ -23,7 +24,7 @@ class GrailsSelenium extends DefaultSelenium {
 		def match = name =~ /^(.+)AndWait$/
 		if (match.find()) {
 			def command = match[0][1]
-			def result = "$command"(*args)
+			def result = "$command"(* args)
 			waitForPageToLoad "$defaultTimeout"
 			return result
 		}

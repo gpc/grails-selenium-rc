@@ -105,59 +105,50 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 	 */
 	def methodMissing(String name, args) {
 		boolean handled = false
-		// TODO: 3 branches doing almost the same thing - could benefit from refactoring
-		switch (name) {
-			case ~/^assert\w+/:
-				def condition = StringUtils.substringAfter(name, "assert")
-				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
-					handled = true
-					boolean result = selenium."is$condition"(* args)
-					SeleneseTestBase.assertTrue(result)
-				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
-					handled = true
-					use(ArrayCategory) {
-						def expected = args.head()
-						def getArgs = args.tail()
-						def result = selenium."get$condition"(* getArgs)
-						SeleneseTestBase.assertEquals(expected, result)
-					}
-				}
-				break
-			case ~/^verify\w+/:
-				def condition = StringUtils.substringAfter(name, "verify")
-				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
-					handled = true
-					boolean result = selenium."is$condition"(* args)
-					verifyTrue(result)
-				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
-					handled = true
-					use(ArrayCategory) {
-						def expected = args.head()
-						def getArgs = args.tail()
-						def result = selenium."get$condition"(* getArgs)
-						verifyEquals(expected, result)
-					}
-				}
-				break
-			case ~/^waitFor\w+/:
-				def condition = StringUtils.substringAfter(name, "waitFor")
-				if (Selenium.metaClass.respondsTo(selenium, "is$condition")) {
-					handled = true
-					waitFor {
-						selenium."is$condition"(* args)
-					}
-				} else if (Selenium.metaClass.respondsTo(selenium, "get$condition")) {
-					handled = true
-					use(ArrayCategory) {
-						def expected = args.head()
-						def getArgs = args.tail()
+
+		def match = name =~ /^(assert|verify|waitFor)(.+)$/
+		if (match.find()) {
+			def condition = match[0][1]
+			def command = match[0][2]
+
+			def result
+			if (Selenium.metaClass.respondsTo(selenium, "is$command")) {
+				handled = true
+				switch (condition) {
+					case "assert":
+						SeleneseTestBase.assertTrue selenium."is$command"(* args)
+						break
+					case "verify":
+						verifyTrue selenium."is$command"(* args)
+						break
+					case "waitFor":
 						waitFor {
-							selenium."get$condition"(* getArgs) == expected
+							selenium."is$command"(* args)
 						}
+						break
+				}
+			} else if (Selenium.metaClass.respondsTo(selenium, "get$command")) {
+				handled = true
+				use(ArrayCategory) {
+					def expected = args.head()
+					def getArgs = args.tail()
+					switch (condition) {
+						case "assert":
+							SeleneseTestBase.assertEquals expected, selenium."get$command"(* getArgs)
+							break
+						case "verify":
+							verifyEquals expected, selenium."get$command"(* getArgs)
+							break
+						case "waitFor":
+							waitFor {
+								expected == selenium."get$command"(* getArgs)
+							}
+							break
 					}
 				}
-				break
+			}
 		}
+		
 		if (!handled) throw new MissingMethodException(name, getClass(), args)
 	}
 }
