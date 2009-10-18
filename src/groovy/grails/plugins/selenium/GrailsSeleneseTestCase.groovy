@@ -1,8 +1,6 @@
 package grails.plugins.selenium
 
-import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
-import org.apache.commons.lang.StringUtils
 import com.thoughtworks.selenium.Selenium
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
@@ -131,24 +129,24 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 				handled = true
 				use(ArrayCategory) {
 					def expected = args.head()
-					def getArgs = args.tail()
+					def seleniumArgs = args.tail()
 					switch (condition) {
 						case "assert":
-							SeleneseTestBase.assertEquals expected, selenium."get$command"(* getArgs)
+							SeleneseTestBase.assertEquals expected, selenium."get$command"(* seleniumArgs)
 							break
 						case "verify":
-							verifyEquals expected, selenium."get$command"(* getArgs)
+							verifyEquals expected, selenium."get$command"(* seleniumArgs)
 							break
 						case "waitFor":
 							waitFor {
-								expected == selenium."get$command"(* getArgs)
+								expected == selenium."get$command"(* seleniumArgs)
 							}
 							break
 					}
 				}
 			}
 		}
-		
+
 		if (!handled) throw new MissingMethodException(name, getClass(), args)
 	}
 }
