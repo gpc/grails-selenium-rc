@@ -28,6 +28,7 @@
       <sourceFolder url="file://$MODULE_DIR$/grails-app/taglib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/test/reports" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -44,6 +45,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="grails-selenium-rc-grailsPlugins" />
+    <orderEntry type="library" name="gmock-0.8.0" level="application" />
   </component>
 </module>
 

@@ -24,6 +24,7 @@ class DataTests extends GrailsSeleneseTestCase {
 	}
 
 	void testCorrectColumnsAndRowsAppear() {
+		// This demonstrates using the selenium instance and regular assertions
 		selenium.with {
 			assertEquals "Title", getText("//table/thead/tr/th[2]")
 			assertEquals "Artist", getText("//table/thead/tr/th[3]")
@@ -34,6 +35,7 @@ class DataTests extends GrailsSeleneseTestCase {
 	}
 
 	void testColumnsAreSortable() {
+		// this demonstrates using dynamic assertion methods from GrailsSeleneseTestCase
 		selenium.clickAndWait("link=Title")
 		assertText "Heads Will Roll", "//table/tbody/tr[1]/td[2]"
 		assertText "I'm Confused", "//table/tbody/tr[2]/td[2]"
