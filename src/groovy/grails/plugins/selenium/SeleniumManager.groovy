@@ -2,8 +2,6 @@ package grails.plugins.selenium
 
 import grails.util.GrailsUtil
 import org.slf4j.LoggerFactory
-import com.thoughtworks.selenium.GroovySelenium
-import com.thoughtworks.selenium.DefaultSelenium
 
 @Singleton class SeleniumManager {
 
