@@ -17,7 +17,7 @@ class SeleniumRcGrailsPlugin {
 	def authorEmail = "rob@energizedwork.com"
 	def title = "Selenium RC Plugin"
 	def description = '''\\
-Runs Selenium tests written in Groovy in the Grails functional test suite.
+Runs Selenium RC tests written in Groovy in the Grails functional test phase.
 '''
 
 	// URL to the plugin's documentation

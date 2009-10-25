@@ -10,5 +10,6 @@ Enhancements...
 - support for comparing text with message key to make i18n based testing less brittle
 
 Long term...
+- Just inject Selenium instance into any test declaring an appropriate property
 - Selenium Grid
 - Support non-JUnit frameworks e.g. EasyB, JBehave, Spock
