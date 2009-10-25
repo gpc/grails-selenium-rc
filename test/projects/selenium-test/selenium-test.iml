@@ -33,7 +33,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="grails-1.2-M3" level="application" />
     <orderEntry type="module-library">
       <library name="Grails User Library">
         <CLASSES>
@@ -45,7 +44,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="selenium-test-grailsPlugins" />
-    <orderEntry type="module" module-name="grails-selenium-rc" />
+    <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
   </component>
 </module>
 

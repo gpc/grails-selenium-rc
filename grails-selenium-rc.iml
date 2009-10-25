@@ -44,7 +44,6 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="grails-selenium-rc-grailsPlugins" />
     <orderEntry type="library" name="gmock-0.8.0" level="application" />
   </component>
 </module>
