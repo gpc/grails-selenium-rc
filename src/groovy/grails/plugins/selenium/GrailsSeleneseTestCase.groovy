@@ -8,54 +8,28 @@ import com.thoughtworks.selenium.Selenium
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
-@Mixin(SeleneseTestBase)
 @Mixin(Selenese)
+@Mixin(SeleneseTestBase)
 class GrailsSeleneseTestCase extends GroovyTestCase {
-
-	private int defaultTimeout
 
 	@Override
 	void setUp() {
 		super.setUp()
-		setTestContext()
-		defaultTimeout = config.selenium.defaultTimeout
-
-		// need to do this in every setUp/tearDown cycle or we will attempt
-		// to grab screenshots of the server stopping, etc.
-//		selenium.alwaysCaptureScreenshots = config.selenium.alwaysCaptureScreenshots
-//		selenium.captureScreenshotOnFailure = config.selenium.captureScreenshotOnFailure
+		selenium.setContext("${getClass().simpleName}.$name")
 	}
 
 	@Override
 	void tearDown() {
 		super.tearDown()
 		checkForVerificationErrors()
-//		selenium.alwaysCaptureScreenshots = false
-//		selenium.captureScreenshotOnFailure = false
-	}
-
-	void setDefaultTimeout(int timeout) {
-		assert selenium != null
-
-		defaultTimeout = timeout
-		selenium.setDefaultTimeout(timeout)
-	}
-
-//	void setAlwaysCaptureScreenshots(boolean capture) {
-//		selenium.setAlwaysCaptureScreenshots(capture)
-//	}
-//
-//	void setCaptureScreenshotOnFailure(boolean capture) {
-//		selenium.setCaptureScreenshotOnFailure(capture)
-//	}
-
-	void setTestContext() {
-		selenium.setContext("${getClass().getSimpleName()}.${getName()}")
 	}
 
 	/**
 	 * Delegates missing method calls to the SeleneseTestBase object where
-	 * possible.
+	 * possible. Also enables direct assert, verify and waitFor calls to
+	 * be made on the running Selenium instance. Selenium.get* and Selenium.is*
+	 * can be invoked as e.g. assertTextPresent, verifyAttribute, waitForVisible,
+	 * etc.
 	 */
 	def methodMissing(String name, args) {
 		boolean handled = false

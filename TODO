@@ -8,10 +8,9 @@ This version...
 
 Enhancements...
 - option to capture screenshots when assert/verify/waitFor fails
-- handle message argument on magic assert methods, e.g. assertText "o noes", "id=element", "expected"
+- handle message argument on magic assert methods, e.g. assertText("o noes", "id=element", "expected")
 - support for comparing text with message key to make i18n based testing less brittle
 
 Long term...
-- Just inject Selenium instance into any test declaring an appropriate property
 - Selenium Grid
 - Support non-JUnit frameworks e.g. EasyB, JBehave, Spock

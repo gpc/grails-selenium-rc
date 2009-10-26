@@ -59,8 +59,9 @@ import org.slf4j.LoggerFactory
 		def browser = config.selenium.browser
 		def url = config.selenium.url ?: serverURL
 		selenium = new GrailsSelenium(host, port, browser, url)
-		selenium.start()
+		selenium.defaultTimeout = config.selenium.defaultTimeout
 //		selenium.screenshotDir = new File(config.selenium.screenshotDir)
+		selenium.start()
 	}
 
 	void stopSelenium() {
