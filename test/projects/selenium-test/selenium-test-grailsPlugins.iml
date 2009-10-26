@@ -12,19 +12,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
     <orderEntry type="module-library" exported="">
       <library name="Grails User Library">
         <CLASSES>
-          <root url="file://$USER_HOME$/.grails/1.2-M3/projects/selenium-test/plugins/tomcat-1.2-M3/lib" />
           <root url="file://$USER_HOME$/.grails/1.2-SNAPSHOT/projects/selenium-test/plugins/tomcat-1.2-SNAPSHOT/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$USER_HOME$/.grails/1.2-M3/projects/selenium-test/plugins/tomcat-1.2-M3/lib" recursive="false" />
         <jarDirectory url="file://$USER_HOME$/.grails/1.2-SNAPSHOT/projects/selenium-test/plugins/tomcat-1.2-SNAPSHOT/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
   </component>
 </module>
 
