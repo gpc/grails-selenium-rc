@@ -43,7 +43,6 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="selenium-test-grailsPlugins" />
     <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
   </component>
 </module>
