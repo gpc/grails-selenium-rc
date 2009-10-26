@@ -1,15 +1,18 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.GrailsSeleneseTestCase
+import grails.plugins.selenium.SeleneseTestCategory
 
-class DragAndDropTests extends GrailsSeleneseTestCase {
+@Mixin(SeleneseTestCategory)
+class DragAndDropTests extends GroovyTestCase {
 
 	void testDragToTarget() {
 		selenium.open "$contextPath/dragdrop.gsp"
-		assertText "Drop here", "css=#droppable p"
+		assertEquals "Drop here", selenium.getText("css=#droppable p")
 		selenium.dragAndDropToObject("draggable", "droppable")
-		waitForElementPresent("css=#droppable.ui-state-highlight")
-		assertText "Dropped!", "css=#droppable p"
+		waitFor {
+			selenium.isElementPresent("css=#droppable.ui-state-highlight")
+		}
+		assertEquals "Dropped!", selenium.getText("css=#droppable p")
 	}
 
 }

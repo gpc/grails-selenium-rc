@@ -2,6 +2,7 @@ package grails.plugins.selenium
 
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import junit.framework.Assert
 
 class SeleneseTestCategory {
 
@@ -24,6 +25,21 @@ class SeleneseTestCategory {
 	 */
 	String getContextPath() {
 		return "/${ConfigurationHolder.config.web.app.context.path ?: ApplicationHolder.application.metadata."app.name"}"
+	}
+
+	void waitFor(Closure condition) {
+		def timeoutTime = System.currentTimeMillis() + selenium.defaultTimeout
+		while (System.currentTimeMillis() < timeoutTime) {
+			try {
+				if (condition.call()) {
+					return
+				}
+			}
+			catch (e) {}
+			sleep(500)
+		}
+
+		Assert.fail "timeout"
 	}
 
 }

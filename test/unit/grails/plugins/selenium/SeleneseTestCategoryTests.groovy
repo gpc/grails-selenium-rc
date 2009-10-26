@@ -2,20 +2,27 @@ package grails.plugins.selenium
 
 import org.gmock.WithGMock
 import grails.test.GrailsUnitTestCase
+import junit.framework.AssertionFailedError
 
 @WithGMock
 class SeleneseTestCategoryTests extends GrailsUnitTestCase {
 
-	def seleniumMock
+	def testCase
 
 	void setUp() {
 		super.setUp()
-		seleniumMock = mock(GrailsSelenium)
-		SeleniumManager.instance.selenium = seleniumMock
+		testCase = new TestCaseImpl()
+	}
+
+	void tearDown() {
+		super.tearDown()
+		SeleniumManager.instance.selenium = null
+		SeleniumManager.instance.config = null
 	}
 
 	void testSeleniumInstanceIsAvailable() {
-		def testCase = new TestCaseImpl()
+		def seleniumMock = mock(GrailsSelenium)
+		SeleniumManager.instance.selenium = seleniumMock
 		seleniumMock.open("/")
 		play {
 			testCase.testOpenPage()
@@ -23,17 +30,39 @@ class SeleneseTestCategoryTests extends GrailsUnitTestCase {
 	}
 
 	void testConfigIsAvailable() {
-		def testCase = new TestCaseImpl()
 		SeleniumManager.instance.config = new ConfigSlurper().parse("selenium.browser = '*firefox'")
 		assertEquals "*firefox", testCase.config.selenium.browser
 	}
 
 	void testRootUrlIsAvailable() {
-		def testCase = new TestCaseImpl()
 		mockConfig "web.app.context.path = 'foo'"
 		assertEquals "/foo", testCase.contextPath
 	}
-	
+
+	void testWaitForSuccess() {
+		def seleniumMock = mock(GrailsSelenium)
+		SeleniumManager.instance.selenium = seleniumMock
+		seleniumMock.getDefaultTimeout().returns(1000)
+		play {
+			testCase.waitFor {
+				true
+			}
+		}
+	}
+
+	void testWaitForFailure() {
+		def seleniumMock = mock(GrailsSelenium)
+		SeleniumManager.instance.selenium = seleniumMock
+		seleniumMock.getDefaultTimeout().returns(1000)
+		play {
+			shouldFail(AssertionFailedError) {
+				testCase.waitFor {
+					false
+				}
+			}
+		}
+	}
+
 }
 
 @Mixin(SeleneseTestCategory)

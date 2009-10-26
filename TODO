@@ -3,8 +3,8 @@ This version...
 - can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
 - Config override via system properties
 - ensure not loaded in war / non test mode (script test?)
-- Make the selenium support a mixin to inject into any test case
 - test can have spock and junit tests side by side
+- Using Assert.fail in mixin is not appropriate for non junit tests
 
 Enhancements...
 - option to capture screenshots when assert/verify/waitFor fails

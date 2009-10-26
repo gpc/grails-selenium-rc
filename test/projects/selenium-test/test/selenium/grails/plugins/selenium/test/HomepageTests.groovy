@@ -1,12 +1,13 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.GrailsSeleneseTestCase
+import grails.plugins.selenium.SeleneseTestCategory
 
-class HomepageTests extends GrailsSeleneseTestCase {
+@Mixin(SeleneseTestCategory)
+class HomepageTests extends GroovyTestCase {
 
 	void testHomepageLoads() {
 		selenium.open "$contextPath/"
-		assertTextPresent "Welcome to Grails"
+		assertTrue selenium.isTextPresent("Welcome to Grails")
 	}
 
 }
