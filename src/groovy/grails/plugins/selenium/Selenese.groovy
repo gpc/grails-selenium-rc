@@ -4,7 +4,10 @@ import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import junit.framework.Assert
 
-class SeleneseTestCategory {
+/**
+ * Mixin for Selenese tests that provides access to the running Selenium instance, config, etc. 
+ */
+class Selenese {
 
 	/**
 	 * Returns Selenium configuration.

@@ -1,8 +1,8 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.SeleneseTestCategory
+import grails.plugins.selenium.Selenese
 
-@Mixin(SeleneseTestCategory)
+@Mixin(Selenese)
 class HomepageTests extends GroovyTestCase {
 
 	void testHomepageLoads() {

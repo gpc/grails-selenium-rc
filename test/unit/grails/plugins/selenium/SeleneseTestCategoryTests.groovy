@@ -65,7 +65,7 @@ class SeleneseTestCategoryTests extends GrailsUnitTestCase {
 
 }
 
-@Mixin(SeleneseTestCategory)
+@Mixin(Selenese)
 class TestCaseImpl {
 
 	void testOpenPage() {
