@@ -31,7 +31,7 @@ class SeleneseTestCategoryTests extends GrailsUnitTestCase {
 	void testRootUrlIsAvailable() {
 		def testCase = new TestCaseImpl()
 		mockConfig "web.app.context.path = 'foo'"
-		assertEquals "/foo", testCase.rootURL
+		assertEquals "/foo", testCase.contextPath
 	}
 	
 }

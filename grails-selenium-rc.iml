@@ -34,7 +34,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="grails-1.2-M3" level="application" />
+    <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
     <orderEntry type="module-library">
       <library name="Grails User Library">
         <CLASSES>

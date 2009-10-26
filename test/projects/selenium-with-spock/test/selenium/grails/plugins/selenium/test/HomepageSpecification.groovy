@@ -9,7 +9,7 @@ class HomepageSpecification extends Specification {
 
 	def "user can load application homepage"() {
 		when:
-		selenium.open(rootURL)
+		selenium.open(contextPath)
 
 		then:
 		selenium.isTextPresent("Welcome to Grails")

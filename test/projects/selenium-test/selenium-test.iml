@@ -29,6 +29,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/selenium" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/test/reports" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -44,6 +45,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
+    <orderEntry type="module" module-name="grails-selenium-rc" />
   </component>
 </module>
 

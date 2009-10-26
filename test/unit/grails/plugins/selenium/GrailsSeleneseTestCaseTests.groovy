@@ -1,6 +1,5 @@
 package grails.plugins.selenium
 
-import grails.plugins.selenium.GrailsSeleneseTestCase
 import com.thoughtworks.selenium.GroovySelenium
 import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
@@ -21,6 +20,11 @@ class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
 		selenium = new GroovySelenium(null)
 		testCase.metaClass.getSelenium = {-> selenium }
 		testCase.@defaultTimeout = 250 // bypass delegating to selenium
+	}
+
+	void testRootUrlIsBasedOnConfig() {
+		mockConfig "web.app.context.path = 'foo'"
+		assertEquals "/foo", testCase.contextPath
 	}
 
 	void testMethodsDelegateToSeleneseTestBase() {

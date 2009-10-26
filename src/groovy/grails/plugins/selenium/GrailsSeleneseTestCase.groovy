@@ -46,8 +46,8 @@ class GrailsSeleneseTestCase extends GroovyTestCase {
 	/**
 	 * Returns the URL context path for the application.
 	 */
-	String getRootURL() {
-		return "/${ConfigurationHolder.config."web.app.context.path" ?: ApplicationHolder.application.metadata."app.name"}"
+	String getContextPath() {
+		return "/${ConfigurationHolder.config.web.app.context.path ?: ApplicationHolder.application.metadata."app.name"}"
 	}
 
 	void setDefaultTimeout(int timeout) {

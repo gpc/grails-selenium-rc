@@ -5,7 +5,7 @@ import grails.plugins.selenium.GrailsSeleneseTestCase
 class HomepageTests extends GrailsSeleneseTestCase {
 
 	void testHomepageLoads() {
-		selenium.open "$rootURL/"
+		selenium.open "$contextPath/"
 		assertTextPresent "Welcome to Grails"
 	}
 

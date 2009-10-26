@@ -22,7 +22,7 @@ class SeleneseTestCategory {
 	/**
 	 * Returns the URL context path for the application.
 	 */
-	String getRootURL() {
+	String getContextPath() {
 		return "/${ConfigurationHolder.config.web.app.context.path ?: ApplicationHolder.application.metadata."app.name"}"
 	}
 
