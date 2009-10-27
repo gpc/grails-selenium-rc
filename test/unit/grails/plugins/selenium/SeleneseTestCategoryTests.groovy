@@ -55,14 +55,29 @@ class SeleneseTestCategoryTests extends GrailsUnitTestCase {
 		SeleniumManager.instance.selenium = seleniumMock
 		seleniumMock.getDefaultTimeout().returns(1000)
 		play {
-			shouldFail(AssertionFailedError) {
+			def message = shouldFail(AssertionFailedError) {
 				testCase.waitFor {
 					false
 				}
 			}
+			assertEquals "Timed out.", message
 		}
 	}
 
+	void testWaitForFailureWithMessage() {
+		def seleniumMock = mock(GrailsSelenium)
+		SeleniumManager.instance.selenium = seleniumMock
+		seleniumMock.getDefaultTimeout().returns(1000)
+		play {
+			def message = shouldFail(AssertionFailedError) {
+				testCase.waitFor("something to happen") {
+					false
+				}
+			}
+			assertEquals "Timed out waiting for: something to happen.", message
+		}
+	}
+	
 }
 
 @Mixin(Selenese)

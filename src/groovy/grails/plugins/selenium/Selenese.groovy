@@ -24,13 +24,18 @@ class Selenese {
 	}
 
 	/**
-	 * Returns the URL context path for the application.
+	 * Returns the URL context path for the application. This is required to prefix URLs, e.g. to have
+	 * <tt>selenium</tt> open the project root you would use:<pre>selenium.open("$contextPath/")</pre>
 	 */
 	String getContextPath() {
 		return "/${ConfigurationHolder.config.web.app.context.path ?: ApplicationHolder.application.metadata."app.name"}"
 	}
-
-	void waitFor(Closure condition) {
+	
+	/**
+	 * Waits for a condition to become true, failing if the condition does not hold within the default timeout
+	 * set on the <tt>selenium</tt>.
+	 */
+	void waitFor(String message = null, Closure condition) {
 		def timeoutTime = System.currentTimeMillis() + selenium.defaultTimeout
 		while (System.currentTimeMillis() < timeoutTime) {
 			try {
@@ -41,8 +46,8 @@ class Selenese {
 			catch (e) {}
 			sleep(500)
 		}
-
-		Assert.fail "timeout"
+		
+		Assert.fail message ? "Timed out waiting for: $message." : "Timed out."
 	}
 
 }

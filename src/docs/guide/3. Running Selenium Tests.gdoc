@@ -1,0 +1,2 @@
+Selenium tests are placed in @test/selenium@ and are executed as part of the functional test phase with either 
+@grails test-app@ or @grails test-app -functional@.
