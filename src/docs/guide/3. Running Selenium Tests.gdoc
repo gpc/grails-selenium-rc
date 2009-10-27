@@ -1,2 +1,7 @@
-Selenium tests are placed in @test/selenium@ and are executed as part of the functional test phase with either 
-@grails test-app@ or @grails test-app -functional@.
+Selenium tests are placed in @test/selenium@ and are executed as part of the functional test phase with the standard 
+@grails test-app@ or @grails test-app -functional@ commands. As with unit and integration tests you can run individual tests or
+groups of tests by specifying the test names without the _"Tests"_ suffix. Again, like unit and integration tests
+you can use @grails test-app -rerun@ to rerun failing tests.
+
+The plugin will automatically start Selenium Server and Selenium instances at the start of the suite and close them
+down cleanly at the end so your tests do not need to (and indeed should not) do so.  
