@@ -3,33 +3,35 @@ If you are purely running your Selenium tests against localhost this is actually
 Selenium tests are running in the same JVM as the Grails application under test, the tests have direct access to the
 application's domain objects and can set up data very easily. For example:
 {code}
-	void testSongsAppearInList() {
-		Song.withTransaction {
-			new Song(title: "Heads Will Roll", artist: "Yeah Yeah Yeahs", album: "It's Blitz!", durationSeconds: 221).save(failOnError:true)
-			new Song(title: "Twilight Galaxy", artist: "Metric", album: "Fantasies", durationSeconds: 293).save(failOnError:true)
-			new Song(title: "I'm Confused", artist: "Handsome Furs", album: "Face Control", durationSeconds: 215).save(failOnError:true)
-		}
-		selenium.open "$contextPath/song/list"
-		assertEquals 3, selenium.getXpathCount("//table/tbody/tr")
+void testSongsAppearInList() {
+	Song.withTransaction {
+		new Song(title: "Heads Will Roll", artist: "Yeah Yeah Yeahs", album: "It's Blitz!", durationSeconds: 221).save(failOnError: true)
+		new Song(title: "Twilight Galaxy", artist: "Metric", album: "Fantasies", durationSeconds: 293).save(failOnError: true)
+		new Song(title: "I'm Confused", artist: "Handsome Furs", album: "Face Control", durationSeconds: 215).save(failOnError: true)
 	}
+	selenium.open "$contextPath/song/list"
+	assertEquals 3, selenium.getXpathCount("//table/tbody/tr")
+}
 {code}
-Using a @withTransaction@ block ensures you won't have problems with lazy-loading, failed data setup will get rolled 
-back immediately and the data will be committed to the database before the browser hits the page. I also find that 
+Using a @withTransaction@ block ensures you won't have problems with lazy-loading, failed data setup will get rolled
+back immediately and the data will be committed to the database before the browser hits the page. I also find that
 errors are reported better when data setup does fail.
 
-h4. Using the Build Test Data plugin 
-The [Build Test Data plugin|http://grails.org/plugin/build-test-data] is very useful once your domain model goes beyond 
+Data can also be set up in the @setUp@ method of the test case in exactly the same way.
+
+h4. Using the Build Test Data plugin
+The [Build Test Data plugin|http://grails.org/plugin/build-test-data] is very useful once your domain model goes beyond
 a trivial level of complexity and it can also be used directly in Selenium tests:
 {code}
-	void testSongsAppearInList() {
-		Song.withTransaction {
-			3.times {
-				Song.build() // assume we have some nice defaults in TestDataConfig.groovy
-			}
+void testSongsAppearInList() {
+	Song.withTransaction {
+		3.times {
+			Song.build() // assume we have some nice defaults in TestDataConfig.groovy
 		}
-		selenium.open "$contextPath/song/list"
-		assertEquals 3, selenium.getXpathCount("//table/tbody/tr")
 	}
+	selenium.open "$contextPath/song/list"
+	assertEquals 3, selenium.getXpathCount("//table/tbody/tr")
+}
 {code}
 
 h4. Tearing data down
@@ -39,12 +41,12 @@ transactional context. Even if they were the problem would still arise as data m
 another it is _critical_ to use @tearDown@ effectively in your tests to prevent data from one test 'bleeding over' into
 the next. With the examples above I could implement @tearDown@ like this:
 {code}
-	void tearDown() {
-		super.tearDown()
-		Song.withTransaction {
-			Song.list()*.delete()
-		}
+void tearDown() {
+	super.tearDown()
+	Song.withTransaction {
+		Song.list()*.delete()
 	}
+}
 {code}
 The @withTransaction@ block ensures that the deletes are flushed and committed to the database and that any problems
 deleting will get reported right away causing the test to fail.

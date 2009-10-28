@@ -2,11 +2,11 @@ Selenium tests are placed under @test/selenium@. As with other test types you ca
 you wish.
 
 {note}
-You should _not_ extend any of the base test classes in the Selenium API such as 
+You should _not_ extend any of the base test classes in the Selenium API such as
 @[SeleneseTestCase|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestCase.html]@
-or @[GroovySeleneseTestCase|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html]@ 
-as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single 
-test! The plugin starts a Selenium instance for you when @grails test-app@ runs the functional test phase. Your tests 
+or @[GroovySeleneseTestCase|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html]@
+as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single
+test! The plugin starts a Selenium instance for you when @grails test-app@ runs the functional test phase. Your tests
 simply need to connect to that running Selenium instance.
 {note}
 
@@ -31,16 +31,16 @@ References to the @selenium@ property in the test will get the running @Selenium
 might also notice the @contextPath@ property used in the @open@ call. This is also provided by the mixin class and is a
 reference to the context that your application is running under.
 
-h4. Properties and methods of the @Selenese@ mixin
+h4. Properties and methods of the Selenese mixin
 {table}
 *Name* | *Description*
-selenium | The running @Selenium@ instance that is used to interact with the browser.
-contextPath | The URL context path of the application under test. This needs to be prepended to all URLs you open with @selenium@.
-config | The Selenium configuration object.
-waitFor(String, Closure) | A method that allows your test to wait for some condition to become true.
+*@selenium@* | The running @Selenium@ instance that is used to interact with the browser.
+*@contextPath@* | The URL context path of the application under test. This needs to be prepended to all URLs you open with @selenium@.
+*@config@* | The Selenium configuration object.
+*@waitFor(String, Closure)@* | A method that allows your test to wait for some condition to become true.
 {table}
 
-h4. Using the @waitFor@ method
+h4. Using the waitFor method
 The @waitFor@ method is particularly useful when testing rich UIs where clicks do not cause the entire page to refresh
 but instead trigger AJAX actions that update portions of the page asynchronously. For example to click a button then
 wait for some text to appear before proceeding:
@@ -50,7 +50,7 @@ waitFor("Clicking myButtonId should have updated myDiv via AJAX") {
     selenium.getText("myDiv") == "Some value"
 }
 {code}
-The @waitFor@ method will fail if the expectd condition does not hold true after the default timeout specified with
+The @waitFor@ method will fail if the expected condition does not hold true after the default timeout specified with
 @selenium.defaultTimeout@ in your @SeleniumConfig.groovy@ file or 60 seconds if you have not specified a value.
 
 The message argument is optional but greatly assists in analysing test failures so it is recommended that you always
@@ -60,51 +60,33 @@ h3. Extending GrailsSeleneseTestCase
 Instead of using the @Selenese@ mixin you can extend @grails.plugins.selenium.GrailsSeleneseTestCase@ which provides
 everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions
 provided by the @[SeleneseTestBase|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestBase.html]@
-class as well as @verify*@ and @seleniumEquals@. See the documentation for @SeleneseTestBase@ for details.
+class as well as the various @verify@ methods, @seleniumEquals@, etc. See the documentation for @SeleneseTestBase@ for
+details.
 
-In addition, @GrailsSeleneseTestCase@ enables you to directly _assert, verify_ or _waitFor_ certain Selenium
-conditions. Any @[Selenium|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html]@
-method starting with _is_ can be used as a boolean assertion by replacing the _is_ with _assert_ in the method call.
-For example, the following two commands are exactly equivalent:
-{code}
-assertTrue selenium.isTextPresent("Welcome to Grails")
-assertTextPresent("Welcome to Grails")
-{code}
-As well as _assert_ you can use _verify_ and _waitFor_ in the same way. For example, these verify commands are equivalent:
-{code}
-verifyTrue selenium.isVisible("myElement")
-verifyVisible("myElement")
-{code}
-These _waitFor_ commands are equivalent:
-{code}
-waitFor("An alert should have appeared") { 
-    selenium.isAlertPresent()
-}
-waitForAlertPresent()
-{code}
-As well as boolean conditions, any @Selenium@ method that starts with _get_ can be used in an equality condition. For 
-example, the following assertions are equivalent:
-{code}
-assertEquals("Expected text", selenium.getText("myElement"))
-assertText("Expected text", "myElement")
-{code}
-As with boolean conditions, _verify_ and _waitFor_ can be used:
-{code}
-waitFor("3 items in the list") {
-    selenium.getXpathCount("//ul[@id='myList']/li") == 3
-}
-waitForXpathCount 3, "//ul[@id='myList']/li"
-{code}
+h4. Using assert*, verify* and waitFor* convenience methods
+Extending @GrailsSeleneseTestCase@ enables you to directly _assert, verify_ or _waitFor_ certain Selenium conditions. Any
+@[Selenium|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html]@
+method starting with _is_ can be used as a boolean assertion by replacing the _is_ with _assert, verify_ or _waitFor_ in
+the method call. Likewise any @Selenium@ method starting with _get_ can be used as an equality assertion. The following
+table gives some examples:
+{table}
+*Without @GrailsSeleneseTestCase@* | *With @GrailsSeleneseTestCase@*
+@assertTrue selenium.isTextPresent("Welcome to Grails")@ | @assertTextPresent("Welcome to Grails")@
+@verifyTrue selenium.isVisible("myElement")@ | @verifyVisible("myElement")@
+@waitFor { selenium.isAlertPresent() }@ | @waitForAlertPresent()@
+@assertEquals("Expected text", selenium.getText("myElement"))@ | @assertText("Expected text", "myElement")@
+@waitFor { selenium.getXpathCount("//ul/li") == 3 }@ | @waitForXpathCount 3, "//ul/li"@
+{table}
 Currently there is no way to pass message arguments to these convenience methods, although this will hopefully be added
 in a future version of the plugin.
 
 h3. Using Other Testing Frameworks
-Selenium tests do not have to be written as JUnit test cases. Theoretically the @Selenese@ mixin could be applied to 
-almost any test case written in another framework. Currently the plugin has tested support for the 
-[Spock Plugin|http://grails.org/plugin/spock]. Other testing frameworks such as EasyB may well work already and support 
+Selenium tests do not have to be written as JUnit test cases. Theoretically the @Selenese@ mixin could be applied to
+almost any test case written in another framework. Currently the plugin has tested support for the
+[Spock Plugin|http://grails.org/plugin/spock]. Other testing frameworks such as EasyB may well work already and support
 is planned in future versions of the Selenium plugin.
 
-To write Selenium tests using Spock, simply create your specification under @test/selenium@ and use the @Selenese@ 
+To write Selenium tests using Spock, simply create your specification under @test/selenium@ and use the @Selenese@
 mixin then run tests as normal. For example:
 {code}
 import spock.lang.*
