@@ -14,10 +14,28 @@ Runs Selenium RC tests written in Groovy in the Grails functional test phase.
   </resources>
   <dependencies>
     <resolvers>
+      <resolver type='mavenLocal' />
       <resolver type='mavenCentral' />
     </resolvers>
-    <dependency group='org.seleniumhq.selenium.client-drivers' name='selenium-java-client-driver' version='1.0.1' conf='provided' transitive='true' />
+    <dependency group='org.hibernate' name='hibernate-commons-annotations' version='3.3.0.ga' conf='compile' transitive='true'>
+      <excludes group='*' name='hibernate' />
+    </dependency>
+    <dependency group='javassist' name='javassist' version='3.4.GA' conf='runtime' transitive='true' />
     <dependency group='org.gmock' name='gmock' version='0.8.0' conf='test' transitive='true' />
+    <dependency group='antlr' name='antlr' version='2.7.6' conf='runtime' transitive='true' />
+    <dependency group='org.hibernate' name='hibernate-annotations' version='3.4.0.GA' conf='compile' transitive='true' />
+    <dependency group='org.seleniumhq.selenium.client-drivers' name='selenium-java-client-driver' version='1.0.1' conf='build' transitive='true' />
+    <dependency group='org.hibernate' name='hibernate-ehcache' version='3.3.1.GA' conf='runtime' transitive='true'>
+      <excludes group='*' name='ehcache' />
+    </dependency>
+    <dependency group='org.hibernate' name='hibernate-core' version='3.3.1.GA' conf='compile' transitive='true'>
+      <excludes group='*' name='ehcache' />
+      <excludes group='*' name='xml-apis' />
+      <excludes group='*' name='commons-logging' />
+    </dependency>
+    <dependency group='dom4j' name='dom4j' version='1.6.1' conf='runtime' transitive='true'>
+      <excludes group='*' name='xml-apis' />
+    </dependency>
   </dependencies>
   <behavior />
 </plugin>
