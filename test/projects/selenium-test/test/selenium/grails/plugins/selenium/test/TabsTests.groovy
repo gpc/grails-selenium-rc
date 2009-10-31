@@ -1,8 +1,8 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.Selenese
+import grails.plugins.selenium.*
 
-@Mixin(Selenese)
+@Mixin(SeleniumTest)
 class TabsTests extends GroovyTestCase {
 
 	void testFirstTabIsInitiallySelected() {

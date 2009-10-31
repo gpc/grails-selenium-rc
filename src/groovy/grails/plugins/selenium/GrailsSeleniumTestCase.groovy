@@ -8,9 +8,9 @@ import com.thoughtworks.selenium.Selenium
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
-@Mixin(Selenese)
+@Mixin(SeleniumTest)
 @Mixin(SeleneseTestBase)
-class GrailsSeleneseTestCase extends GroovyTestCase {
+class GrailsSeleniumTestCase extends GroovyTestCase {
 
 	@Override
 	void setUp() {

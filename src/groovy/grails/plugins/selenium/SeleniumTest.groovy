@@ -7,7 +7,7 @@ import junit.framework.Assert
 /**
  * Mixin for Selenese tests that provides access to the running Selenium instance, config, etc. 
  */
-class Selenese {
+class SeleniumTest {
 
 	/**
 	 * Returns Selenium configuration.
