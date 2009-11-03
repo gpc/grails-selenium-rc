@@ -7,15 +7,15 @@ import org.gmock.WithGMock
 import junit.framework.ComparisonFailure
 
 @WithGMock
-class GrailsSeleneseTestCaseTests extends GrailsUnitTestCase {
+class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
-	GrailsSeleneseTestCase testCase
+	GrailsSeleniumTestCase testCase
 	def selenium
 
 	void setUp() {
 		super.setUp()
 
-		testCase = new GrailsSeleneseTestCase()
+		testCase = new GrailsSeleniumTestCase()
 
 		selenium = new GroovySelenium(null)
 		testCase.metaClass.getSelenium = {-> selenium }

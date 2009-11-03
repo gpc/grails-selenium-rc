@@ -5,7 +5,7 @@ import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
 
 @WithGMock
-class SeleneseTestCategoryTests extends GrailsUnitTestCase {
+class SeleniumTestTests extends GrailsUnitTestCase {
 
 	def testCase
 
@@ -80,7 +80,7 @@ class SeleneseTestCategoryTests extends GrailsUnitTestCase {
 	
 }
 
-@Mixin(Selenese)
+@Mixin(SeleniumTest)
 class TestCaseImpl {
 
 	void testOpenPage() {

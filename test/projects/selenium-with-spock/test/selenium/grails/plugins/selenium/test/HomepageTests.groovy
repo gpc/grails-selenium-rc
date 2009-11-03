@@ -2,7 +2,7 @@ package grails.plugins.selenium.test
 
 import grails.plugins.selenium.*
 
-class HomepageTests extends GrailsSeleneseTestCase {
+class HomepageTests extends GrailsSeleniumTestCase {
 
 	def testUserCanLoadApplicationHomePage() {
 		selenium.open(contextPath)

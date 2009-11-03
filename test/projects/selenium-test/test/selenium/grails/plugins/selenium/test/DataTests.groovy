@@ -1,8 +1,8 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.GrailsSeleneseTestCase
+import grails.plugins.selenium.*
 
-class DataTests extends GrailsSeleneseTestCase {
+class DataTests extends GrailsSeleniumTestCase {
 
 	void setUp() {
 		super.setUp()

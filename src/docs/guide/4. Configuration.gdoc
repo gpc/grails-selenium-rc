@@ -8,5 +8,5 @@ customised according to your requirements. Configuration values are:
 @selenium.port@ | The port the Selenium Server will run on. | @4444@
 @selenium.browser@ | The browser Selenium will use. | @*firefox@ on Linux, @*safari@ on OSX, @*iexplore@ on Windows
 @selenium.url@ | The base URL where the tests will be run. | The Grails server URL (@grails.serverURL@ in the application config)
-@selenium.defaultTimeout@ | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the @waitFor@ method in @Selenese@ | @60000@
+@selenium.defaultTimeout@ | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the @waitFor@ method in @SeleniumTest@ | @60000@
 {table}

@@ -1,8 +1,8 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.Selenese
+import grails.plugins.selenium.SeleniumTest
 
-@Mixin(Selenese)
+@Mixin(SeleniumTest)
 class DragAndDropTests extends GroovyTestCase {
 
 	void testDragToTarget() {
