@@ -12,12 +12,24 @@ import org.slf4j.LoggerFactory
 	GrailsSelenium selenium
 
 	// TODO: sucks that these lifecycle methods have to be called in order
+
 	void loadConfig() {
 		config = loadDefaultConfiguration()
 		def configClass = getSeleniumConfigClass()
 		if (configClass) {
 			def slurper = new ConfigSlurper(GrailsUtil.environment)
 			config.merge(slurper.parse(configClass))
+		}
+		config.selenium.each {key, value ->
+			def override = System.properties."selenium.$key"
+			if (override) {
+				if (override in ["true", "false"]) {
+					override = override.toBoolean()
+				} else if (override.isInteger()) {
+					override = override.toInteger()
+				}
+				config.selenium."$key" = override
+			}
 		}
 		log.debug "Selenium config: ${config.flatten()}"
 	}
@@ -27,8 +39,8 @@ import org.slf4j.LoggerFactory
 		// loader because the "selenium-server.jar" includes its own
 		// dependencies which conflict with some of the Grails ones.
 		def serverClassLoader = new URLClassLoader(
-				[ new File(serverJar).toURI().toURL() ] as URL[],
-			    ClassLoader.systemClassLoader)
+				[new File(serverJar).toURI().toURL()] as URL[],
+				ClassLoader.systemClassLoader)
 
 		// HACK - It seems that Jetty will load classes using the thread
 		// context class loader, so we temporarily make the server class#
@@ -70,18 +82,17 @@ import org.slf4j.LoggerFactory
 	}
 
 	private static ConfigObject loadDefaultConfiguration() {
-		// TODO: can we merge system properties afterwards? this is unreadable
 		def defaultConfig = """
 selenium {
-	host = System.properties.'selenium.host' ?: "localhost"
-	port = System.properties.'selenium.port'?.toInteger() ?: 4444
-	browser = System.properties.'selenium.browser' ?: "${getDefaultBrowser()}"
-	defaultTimeout = System.properties.'selenium.defaultTimeout'?.toInteger() ?: 60000
-	slowResources = System.properties.'selenium.slowResources'?.toBoolean() ?: false
-	singleWindow = System.properties.'selenium.singleWindow'?.toBoolean() ?: true
-	alwaysCaptureScreenshots = System.properties.'selenium.alwaysCaptureScreenshots'?.toBoolean() ?: false
-	captureScreenshotOnFailure = System.properties.'selenium.captureScreenshotOnFailure'?.toBoolean() ?: false
-	screenshotDir = System.properties.'selenium.screenshotDir' ?: "./test/reports/screenshots"
+	host = "localhost"
+	port = 4444
+	browser = "${getDefaultBrowser()}"
+	defaultTimeout = 60000
+	slowResources = false
+	singleWindow = true
+	alwaysCaptureScreenshots = false
+	captureScreenshotOnFailure = false
+	screenshotDir = "./test/reports/screenshots"
 }
 		"""
 		return new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)

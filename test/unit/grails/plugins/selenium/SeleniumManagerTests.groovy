@@ -24,7 +24,12 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 	}
 
 	void testDefaultConfigOverriddenBySystemProperties() {
-		mock(System).static.properties.returns(["selenium.host": "my.host.bv", "selenium.port": "1234"]).atLeastOnce()
+		def props = [
+				"selenium.host": "my.host.bv",
+				"selenium.port": "1234",
+				"selenium.slowResources": "true"
+		]
+		mock(System).static.properties.returns(props).atLeastOnce()
 
 		play {
 			seleniumManager.loadConfig()
@@ -32,6 +37,7 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 
 		assertEquals "my.host.bv", seleniumManager.config.selenium.host
 		assertEquals 1234, seleniumManager.config.selenium.port
+		assertTrue seleniumManager.config.selenium.slowResources
 	}
 
 }
