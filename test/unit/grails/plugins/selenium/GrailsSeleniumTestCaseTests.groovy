@@ -1,10 +1,12 @@
-
 package grails.plugins.selenium
+
 import com.thoughtworks.selenium.GroovySelenium
+import com.thoughtworks.selenium.SeleneseTestBase
+import grails.plugins.selenium.GrailsSeleniumTestCase
 import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
-import org.gmock.WithGMock
 import junit.framework.ComparisonFailure
+import org.gmock.WithGMock
 
 @WithGMock
 class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
@@ -16,6 +18,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		super.setUp()
 
 		testCase = new GrailsSeleniumTestCase()
+		testCase.name = "testSomething"
 
 		selenium = new GroovySelenium(null)
 		testCase.metaClass.getSelenium = {-> selenium }
@@ -24,6 +27,17 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 	void testRootUrlIsBasedOnConfig() {
 		mockConfig "web.app.context.path = 'foo'"
 		assertEquals "/foo", testCase.contextPath
+	}
+
+	void testDoesNotDelegateToSeleneseTestBaseWhenGroovyTestCaseHasSameMethod() {
+		testCase.@base = mock(SeleneseTestBase)
+		mock(selenium).setContext("SeleniumTest.testSomething")
+		play {
+			// non-static method that exists on both GroovyTestCase and SeleneseTestBase
+			testCase.setUp()
+			// static method that exists on both GroovyTestCase and SeleneseTestBase
+			testCase.assertEquals "foo", "foo"
+		}
 	}
 
 	void testMethodsDelegateToSeleneseTestBase() {

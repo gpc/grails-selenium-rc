@@ -9,8 +9,9 @@ import com.thoughtworks.selenium.Selenium
  * be run in a single browser session.
  */
 @Mixin(SeleniumTest)
-@Mixin(SeleneseTestBase)
 class GrailsSeleniumTestCase extends GroovyTestCase {
+
+	@Delegate private final SeleneseTestBase base = new SeleneseTestBase()
 
 	@Override
 	void setUp() {
@@ -47,7 +48,7 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 						SeleneseTestBase.assertTrue selenium."is$command"(* args)
 						break
 					case "verify":
-						verifyTrue selenium."is$command"(* args)
+						base.verifyTrue selenium."is$command"(* args)
 						break
 					case "waitFor":
 						waitFor {
@@ -65,7 +66,7 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 							SeleneseTestBase.assertEquals expected, selenium."get$command"(* seleniumArgs)
 							break
 						case "verify":
-							verifyEquals expected, selenium."get$command"(* seleniumArgs)
+							base.verifyEquals expected, selenium."get$command"(* seleniumArgs)
 							break
 						case "waitFor":
 							waitFor {

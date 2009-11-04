@@ -1,9 +1,6 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.*
-
-@Mixin(SeleniumTest)
-class TabsTests extends GroovyTestCase {
+class TabsTests extends AbstractTabsTestCase {
 
 	void testFirstTabIsInitiallySelected() {
 		selenium.open "$contextPath/tabs.gsp"
@@ -20,10 +17,6 @@ class TabsTests extends GroovyTestCase {
 			}
 			assertTabSelected i
 		}
-	}
-
-	private void assertTabSelected(int i) {
-		assertNotNull selenium.getAttribute("//div[@id='tabs']/ul/li[$i]@class") =~ /\bui-tabs-selected\b/
 	}
 
 }
