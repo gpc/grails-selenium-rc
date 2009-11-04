@@ -1,0 +1,6 @@
+h3. Source Code
+Source code for the plugin is hosted on [GitHub|http://github.com/robfletcher/grails-selenium-rc]. Please feel free to
+fork the project and submit pull requests back to the trunk.
+
+h3. Bugs and Feature Requests
+Please raise bugs and feature requests against [Grails-Selenium-RC on JIRA|http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229].

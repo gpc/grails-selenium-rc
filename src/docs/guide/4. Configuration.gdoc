@@ -10,3 +10,7 @@ customised according to your requirements. Configuration values are:
 @selenium.url@ | The base URL where the tests will be run. | The Grails server URL (@grails.serverURL@ in the application config)
 @selenium.defaultTimeout@ | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the @waitFor@ method in @SeleniumTest@ | @60000@
 {table}
+All configuration values can be overridden using system properties. This is probably most useful for overriding the
+browser used on individual developers' machines or on continuous integration environments. For example to run Selenium
+tests using Firefox instead of your platform's default browser you can use @grails -Dselenium.browser=*firefox test-app@
+or add @export JAVA_OPTS="$JAVA_OPTS -Dselenium.browser=*firefox"@ to your profile followed by running tests as normal.

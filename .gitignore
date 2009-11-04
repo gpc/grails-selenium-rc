@@ -4,6 +4,7 @@ docs/
 .idea/
 eclipse/
 out/
+plugin.xml
 target
 test/reports
 test/projects/selenium-test/target
