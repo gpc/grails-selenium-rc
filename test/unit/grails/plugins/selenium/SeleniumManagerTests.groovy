@@ -1,8 +1,9 @@
 package grails.plugins.selenium
 
 import grails.test.GrailsUnitTestCase
-import grails.plugins.selenium.SeleniumManager
+import org.gmock.WithGMock
 
+@WithGMock
 class SeleniumManagerTests extends GrailsUnitTestCase {
 
 	SeleniumManager seleniumManager
@@ -20,7 +21,17 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 	}
 
 	void testDefaultConfigOverriddenWhenSeleniumConfigFileFound() {
-		
+	}
+
+	void testDefaultConfigOverriddenBySystemProperties() {
+		mock(System).static.properties.returns(["selenium.host": "my.host.bv", "selenium.port": "1234"]).atLeastOnce()
+
+		play {
+			seleniumManager.loadConfig()
+		}
+
+		assertEquals "my.host.bv", seleniumManager.config.selenium.host
+		assertEquals 1234, seleniumManager.config.selenium.port
 	}
 
 }

@@ -1,7 +1,6 @@
 This version...
 - remove GMock jar from plugin when built
 - can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
-- Config override via system properties
 - ensure not loaded in war / non test mode (script test?)
 - test can have spock and junit tests side by side
 - Using Assert.fail in mixin is not appropriate for non junit tests

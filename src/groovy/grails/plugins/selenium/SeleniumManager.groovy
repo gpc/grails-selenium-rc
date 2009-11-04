@@ -70,17 +70,18 @@ import org.slf4j.LoggerFactory
 	}
 
 	private static ConfigObject loadDefaultConfiguration() {
+		// TODO: can we merge system properties afterwards? this is unreadable
 		def defaultConfig = """
 selenium {
-	host = "localhost"
-	port = 4444
-	browser = "${getDefaultBrowser()}"
-	defaultTimeout = 60000
-	slowResources = false
-	singleWindow = true
-	alwaysCaptureScreenshots = false
-	captureScreenshotOnFailure = false
-	screenshotDir = "./test/reports/screenshots"
+	host = System.properties.'selenium.host' ?: "localhost"
+	port = System.properties.'selenium.port'?.toInteger() ?: 4444
+	browser = System.properties.'selenium.browser' ?: "${getDefaultBrowser()}"
+	defaultTimeout = System.properties.'selenium.defaultTimeout'?.toInteger() ?: 60000
+	slowResources = System.properties.'selenium.slowResources'?.toBoolean() ?: false
+	singleWindow = System.properties.'selenium.singleWindow'?.toBoolean() ?: true
+	alwaysCaptureScreenshots = System.properties.'selenium.alwaysCaptureScreenshots'?.toBoolean() ?: false
+	captureScreenshotOnFailure = System.properties.'selenium.captureScreenshotOnFailure'?.toBoolean() ?: false
+	screenshotDir = System.properties.'selenium.screenshotDir' ?: "./test/reports/screenshots"
 }
 		"""
 		return new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)
