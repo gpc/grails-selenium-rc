@@ -1,4 +1,5 @@
 h3. Roadmap
+ - Allow Selenium Server and browser to be started and tests to be run interactively against them.
  - Support automatic generation of screenshots when assertions fail.
  - [Selenium Grid|http://selenium-grid.seleniumhq.org/] support.
  - Support for other testing frameworks such as [EasyB|http://www.easyb.org/], [TestNG|http://testng.org/], etc.
