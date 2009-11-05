@@ -5,11 +5,6 @@ import grails.plugins.selenium.SeleniumTest
 @Mixin(SeleniumTest)
 class DragAndDropTests extends GroovyTestCase {
 
-	void setUp() {
-		super.setUp()
-		selenium.windowMaximize() // workaround IE issue where dragAndDropToObject screws up when target is outside viewport
-	}
-
 	void testDragToTarget() {
 		selenium.open "$contextPath/dragdrop.gsp"
 		assertEquals "Drop here", selenium.getText("css=#droppable p")

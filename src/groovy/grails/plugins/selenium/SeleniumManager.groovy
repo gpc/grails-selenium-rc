@@ -74,6 +74,9 @@ import org.slf4j.LoggerFactory
 		selenium.defaultTimeout = config.selenium.defaultTimeout
 //		selenium.screenshotDir = new File(config.selenium.screenshotDir)
 		selenium.start()
+		if (config.selenium.windowMaximize) {
+			selenium.windowMaximize()
+		}
 	}
 
 	void stopSelenium() {
@@ -90,6 +93,7 @@ selenium {
 	defaultTimeout = 60000
 	slowResources = false
 	singleWindow = true
+	windowMaximize = false
 	alwaysCaptureScreenshots = false
 	captureScreenshotOnFailure = false
 	screenshotDir = "./test/reports/screenshots"
