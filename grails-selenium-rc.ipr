@@ -249,7 +249,7 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <UsedPathMacros>
-    <macro name="USER_HOME" />
+    <macro name="USER_HOME" description="" />
   </UsedPathMacros>
 </project>
 

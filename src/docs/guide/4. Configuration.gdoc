@@ -11,6 +11,18 @@ customised according to your requirements. Configuration values are:
 @selenium.defaultTimeout@ | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the @waitFor@ method in @SeleniumTest@ | @60000@
 @selenium.windowMaximize@ | If set to @true@ the browser window will be maximized when opened. This has no effect in single window mode. | @false@
 {table}
+Environment specific configuration can be included in @SeleniumConfig.groovy@ just as it can in Grails' regular
+@Config.groovy@ file. For example:
+{code}
+environments {
+    test {
+        selenium.host = "my.host.bv"
+        selenium.port = 5678
+    }
+}
+{code}
+
+h3. Using System Properties
 All configuration values can be overridden using system properties. This is probably most useful for overriding the
 browser used on individual developers' machines or on continuous integration environments without affecting the
 project-wide settings. For example to run Selenium tests using Firefox instead of your platform's default browser you
