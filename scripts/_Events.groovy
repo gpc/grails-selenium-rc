@@ -5,8 +5,8 @@ eventAllTestsStart = {
 		functionalTests << "selenium"
 	}
 	// support the custom phase in the spock plugin
-	if (binding.variables.containsKey("functional-speckTests")) {
-		binding.'functional-speckTests' << "selenium"
+	if (binding.variables.containsKey("functional-specTests")) {
+		binding.'functional-specTests' << "selenium"
 	}
 }
 

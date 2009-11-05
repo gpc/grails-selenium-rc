@@ -1,6 +1,7 @@
 package grails.plugins.selenium.test
 
 import grails.plugins.selenium.*
+import spock.lang.Specification
 
 @Mixin(SeleniumTest)
 class HomepageSpecification extends Specification {
