@@ -1,5 +1,4 @@
 This version...
-- Default selenium.singleWindow based on browser
 - remove GMock jar from plugin when built
 - can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
 - ensure not loaded in war / non test mode (script test?)

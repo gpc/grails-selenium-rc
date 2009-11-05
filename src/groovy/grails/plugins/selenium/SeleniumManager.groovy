@@ -51,7 +51,20 @@ import org.slf4j.LoggerFactory
 		// Create a configuration and start the server.
 		def conf = serverClassLoader.loadClass("org.openqa.selenium.server.RemoteControlConfiguration").newInstance()
 		conf.port = config.selenium.port
-		conf.singleWindow = config.selenium.singleWindow
+		// some nasty browser specific forced config
+		switch (config.selenium.browser) {
+			case ~/^\*safari/:
+				if (!config.selenium.singleWindow) log.warn "selenium.singleWindow=false is not supported in Safari"
+				conf.singleWindow = true
+				break
+			case ~/^\*iexplore/:
+				if (config.selenium.singleWindow) log.warn "selenium.singleWindow=true is not supported in Internet Explorer"
+				conf.singleWindow = false
+				break
+			default:
+				conf.singleWindow = config.selenium.singleWindow
+		}
+
 		seleniumServer = serverClassLoader.loadClass("org.openqa.selenium.server.SeleniumServer").newInstance(config.selenium.slowResources, conf)
 		seleniumServer.start()
 
@@ -73,6 +86,7 @@ import org.slf4j.LoggerFactory
 		selenium = new GrailsSelenium(host, port, browser, url)
 		selenium.defaultTimeout = config.selenium.defaultTimeout
 //		selenium.screenshotDir = new File(config.selenium.screenshotDir)
+
 		selenium.start()
 		if (config.selenium.windowMaximize) {
 			selenium.windowMaximize()
