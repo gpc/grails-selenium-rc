@@ -1,7 +1,7 @@
 package grails.plugins.selenium
 
-import com.thoughtworks.selenium.GroovySelenium
 import com.thoughtworks.selenium.SeleneseTestBase
+import grails.plugins.selenium.GrailsSelenium
 import grails.plugins.selenium.GrailsSeleniumTestCase
 import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
@@ -20,7 +20,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		testCase = new GrailsSeleniumTestCase()
 		testCase.name = "testSomething"
 
-		selenium = new GroovySelenium(null)
+		selenium = new GrailsSelenium(null)
 		testCase.metaClass.getSelenium = {-> selenium }
 	}
 
@@ -175,6 +175,12 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 			} catch (MissingMethodException e) {
 				fail "Call to assertText was not delegated to Selenium.getText: $e.message"
 			}
+		}
+	}
+
+	void testFailsCleanlyWhenWrongArgumentTypesPassedToDelegatedSeleniumMethod() {
+		shouldFail(MissingMethodException) {
+			testCase.assertText("expected", 3)
 		}
 	}
 }
