@@ -2729,15 +2729,18 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="grails-1.2-M4" level="application" />
     <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
     <orderEntry type="module-library">
       <library name="Grails User Library">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
           <root url="file://$USER_HOME$/.grails/1.2-SNAPSHOT/projects/selenium-with-spock/plugins/tomcat-1.2-SNAPSHOT/lib" />
+          <root url="file://$USER_HOME$/.grails/1.2-SNAPSHOT/projects/selenium-with-spock/plugins/joda-time-0.5/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$USER_HOME$/.grails/1.2-SNAPSHOT/projects/selenium-with-spock/plugins/joda-time-0.5/lib" recursive="false" />
         <jarDirectory url="file://$USER_HOME$/.grails/1.2-SNAPSHOT/projects/selenium-with-spock/plugins/tomcat-1.2-SNAPSHOT/lib" recursive="false" />
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
