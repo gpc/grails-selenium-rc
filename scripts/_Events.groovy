@@ -18,8 +18,10 @@ eventTestSuiteStart = {String type ->
 
 		event("StatusUpdate", ["starting selenium server"])
 		seleniumManager.startServer("${seleniumRcPluginDir}/lib/server/selenium-server.jar")
-		event("StatusUpdate", ["starting selenium instance"])
-		seleniumManager.startSelenium(config.grails.serverURL)
+
+		def url = "http://${serverHost ?: 'localhost'}:${serverPort}$serverContextPath"
+		event("StatusUpdate", ["starting selenium instance against $url"])
+		seleniumManager.startSelenium(url)
 	}
 }
 
