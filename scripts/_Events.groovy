@@ -19,8 +19,8 @@ eventTestSuiteStart = {String type ->
 		event("StatusUpdate", ["starting selenium server"])
 		seleniumManager.startServer("${seleniumRcPluginDir}/lib/server/selenium-server.jar")
 
-		def url = "http://${serverHost ?: 'localhost'}:${serverPort}$serverContextPath"
-		event("StatusUpdate", ["starting selenium instance against $url"])
+		event("StatusUpdate", ["starting selenium instance"])
+		def url = "http://${serverHost ?: 'localhost'}:${serverPort}$serverContextPath/"
 		seleniumManager.startSelenium(url)
 	}
 }

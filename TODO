@@ -9,6 +9,8 @@ Enhancements...
 - option to capture screenshots when assert/verify/waitFor fails
 - can waitFor's message be defaulted based on the code in the closure?
 - handle message argument on magic assert methods, e.g. assertText("o noes", "id=element", "expected")
+- Run against running Selenium Server
+- Run interactively against running app
 - support for comparing text with message key to make i18n based testing less brittle
 
 Long term...

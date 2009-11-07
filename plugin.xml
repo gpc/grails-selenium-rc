@@ -1,0 +1,20 @@
+<plugin name='selenium-rc' version='0.2-SNAPSHOT' grailsVersion='1.1 &gt; *'>
+  <author>Rob Fletcher</author>
+  <authorEmail>rob@energizedwork.com</authorEmail>
+  <title>Selenium RC Plugin</title>
+  <description>\
+Runs Selenium RC tests written in Groovy in the Grails functional test phase.
+</description>
+  <documentation>http://grails.org/SeleniumRc+Plugin</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+  </resources>
+  <dependencies>
+    <resolvers>
+      <resolver type='mavenCentral' />
+    </resolvers>
+    <dependency group='org.gmock' name='gmock' version='0.8.0' conf='test' transitive='true' />
+    <dependency group='org.seleniumhq.selenium.client-drivers' name='selenium-java-client-driver' version='1.0.1' conf='build' transitive='true' />
+  </dependencies>
+  <behavior />
+</plugin>
