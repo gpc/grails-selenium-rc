@@ -34,9 +34,14 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 		assertEquals "*firefox", testCase.config.selenium.browser
 	}
 
-	void testRootUrlIsAvailable() {
-		mockConfig "web.app.context.path = 'foo'"
+	void testContextPathIsAvailable() {
+		mockConfig "app.context = 'foo'"
 		assertEquals "/foo", testCase.contextPath
+	}
+
+	void testRootContextPathWorks() {
+		mockConfig "app.context = '/'"
+		assertEquals "/", testCase.contextPath
 	}
 
 	void testWaitForSuccess() {

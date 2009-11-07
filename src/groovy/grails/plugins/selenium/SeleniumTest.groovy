@@ -28,7 +28,9 @@ class SeleniumTest {
 	 * <tt>selenium</tt> open the project root you would use:<pre>selenium.open("$contextPath/")</pre>
 	 */
 	String getContextPath() {
-		return "/${ConfigurationHolder.config.web.app.context.path ?: ApplicationHolder.application.metadata."app.name"}"
+		def appContext = ConfigurationHolder.config.app.context ?: ApplicationHolder.application.metadata."app.name"
+		if (!appContext.startsWith("/")) appContext = "/$appContext"
+		return appContext
 	}
 	
 	/**

@@ -25,7 +25,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 	}
 
 	void testRootUrlIsBasedOnConfig() {
-		mockConfig "web.app.context.path = 'foo'"
+		mockConfig "app.context = '/foo'"
 		assertEquals "/foo", testCase.contextPath
 	}
 
