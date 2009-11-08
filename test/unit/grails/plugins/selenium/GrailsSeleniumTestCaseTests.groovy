@@ -48,7 +48,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		}
 	}
 
-	void testBooleanAssertWithOneArgDelegatedToSeleniumInstance() {
+	void testDynamicBooleanAssertWithOneArg() {
 		mock(selenium).isTextPresent("some string").returns(true)
 		play {
 			try {
@@ -58,7 +58,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 			}
 		}
 	}
-
+	
 	void testBooleanAssertWithNoArgsDelegatedToSeleniumInstance() {
 		mock(selenium).isAlertPresent().returns(true)
 		play {
@@ -183,4 +183,71 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 			testCase.assertText("expected", 3)
 		}
 	}
+
+	void testBooleanDynamicAssertCanBeNegated() {
+		mock(selenium).isTextPresent("some string").returns(false)
+		play {
+			try {
+				testCase.assertNotTextPresent("some string")
+			} catch (MissingMethodException e) {
+				fail "Call to assertNotTextPresent was not delegated to Selenium.isTextPresent: $e.message"
+			}
+		}
+	}
+
+	void testBooleanDynamicVerifyCanBeNegated() {
+		mock(selenium).isTextPresent("some string").returns(false)
+		play {
+			try {
+				testCase.verifyNotTextPresent("some string")
+			} catch (MissingMethodException e) {
+				fail "Call to verifyNotTextPresent was not delegated to Selenium.isTextPresent: $e.message"
+			}
+		}
+	}
+
+	void testBooleanDynamicWaitForCanBeNegated() {
+		mock(selenium).isTextPresent("some string").returns(false)
+		play {
+			try {
+				testCase.waitForNotTextPresent("some string")
+			} catch (MissingMethodException e) {
+				fail "Call to waitForNotTextPresent was not delegated to Selenium.isTextPresent: $e.message"
+			}
+		}
+	}
+
+	void testEqualityDynamicAssertCanBeNegated() {
+		mock(selenium).getText("id=foo").returns("expected value")
+		play {
+			try {
+				testCase.assertNotText("not expected", "id=foo")
+			} catch (MissingMethodException e) {
+				fail "Call to assertNotText was not delegated to Selenium.getText: $e.message"
+			}
+		}
+	}
+
+	void testEqualityDynamicVerifyCanBeNegated() {
+		mock(selenium).getText("id=foo").returns("expected value")
+		play {
+			try {
+				testCase.verifyNotText("not expected", "id=foo")
+			} catch (MissingMethodException e) {
+				fail "Call to verifyNotText was not delegated to Selenium.getText: $e.message"
+			}
+		}
+	}
+
+	void testEqualityDynamicWaitForCanBeNegated() {
+		mock(selenium).getText("id=foo").returns("expected value")
+		play {
+			try {
+				testCase.waitForNotText("not expected", "id=foo")
+			} catch (MissingMethodException e) {
+				fail "Call to waitForNotText was not delegated to Selenium.getText: $e.message"
+			}
+		}
+	}
+
 }

@@ -1,0 +1,8 @@
+0.1 Initial Release
+
+0.1.1
+Fixes...
+ - Fixed default Selenium URL to respect server.port setting, etc.
+ - Fixed contextPath handling when app.context is set in Config
+New Features...
+ - Can now negate dynamic assert/verify/waitFor calls in GrailsSeleniumTestCase

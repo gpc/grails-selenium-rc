@@ -3,7 +3,6 @@ Bugs...
 - can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
 - not able can have spock and junit tests side by side
 - Using Assert.fail in mixin is not appropriate for non junit tests
-- Need to be able to use 'Not' in dynamic assert/verify/waitFor
 - Can't use SeleniumTest.waitFor inside selenium.with block
 
 Enhancements...

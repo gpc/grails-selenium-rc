@@ -8,7 +8,7 @@ import com.thoughtworks.selenium.Selenium
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
-@Mixin(SeleniumTest)
+@Mixin (SeleniumTest)
 class GrailsSeleniumTestCase extends GroovyTestCase {
 
 	@Delegate private final SeleneseTestBase base = new SeleneseTestBase()
@@ -35,24 +35,25 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 	def methodMissing(String name, args) {
 		boolean handled = false
 
-		def match = name =~ /^(assert|verify|waitFor)(.+)$/
+		def match = name =~ /^(assert|verify|waitFor)(Not)?(.+)$/
 		if (match.find()) {
 			def condition = match[0][1]
-			def command = match[0][2]
+			boolean negated = match[0][2] == "Not"
+			def command = match[0][3]
 
 			def result
 			if (Selenium.metaClass.respondsTo(selenium, "is$command")) {
 				handled = true
 				switch (condition) {
 					case "assert":
-						SeleneseTestBase.assertTrue selenium."is$command"(* args)
+						SeleneseTestBase."assert${negated ? 'False' : 'True'}" selenium."is$command"(* args)
 						break
 					case "verify":
-						base.verifyTrue selenium."is$command"(* args)
+						base."verify${negated ? 'False' : 'True'}" selenium."is$command"(* args)
 						break
 					case "waitFor":
 						waitFor {
-							selenium."is$command"(* args)
+							negated ^ selenium."is$command"(* args)
 						}
 						break
 				}
@@ -63,14 +64,14 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 					def seleniumArgs = args.tail()
 					switch (condition) {
 						case "assert":
-							SeleneseTestBase.assertEquals expected, selenium."get$command"(* seleniumArgs)
+							SeleneseTestBase."assert${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
 							break
 						case "verify":
-							base.verifyEquals expected, selenium."get$command"(* seleniumArgs)
+							base."verify${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
 							break
 						case "waitFor":
 							waitFor {
-								expected == selenium."get$command"(* seleniumArgs)
+								negated ^ expected == selenium."get$command"(* seleniumArgs)
 							}
 							break
 					}
