@@ -4,5 +4,6 @@
 Fixes...
  - Fixed default Selenium URL to respect server.port setting, etc.
  - Fixed contextPath handling when app.context is set in Config
+ - Removed ArrayCategory class causing VerifyError in some odd circumstances
 New Features...
  - Can now negate dynamic assert/verify/waitFor calls in GrailsSeleniumTestCase
