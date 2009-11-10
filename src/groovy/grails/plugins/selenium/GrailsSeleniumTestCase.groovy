@@ -33,6 +33,7 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 	 * etc.
 	 */
 	def methodMissing(String name, args) {
+//		args = args as List
 		boolean handled = false
 
 		def match = name =~ /^(assert|verify|waitFor)(Not)?(.+)$/
@@ -59,22 +60,20 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 				}
 			} else if (Selenium.metaClass.respondsTo(selenium, "get$command")) {
 				handled = true
-				use(ArrayCategory) {
-					def expected = args.head()
-					def seleniumArgs = args.tail()
-					switch (condition) {
-						case "assert":
-							SeleneseTestBase."assert${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
-							break
-						case "verify":
-							base."verify${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
-							break
-						case "waitFor":
-							waitFor {
-								negated ^ expected == selenium."get$command"(* seleniumArgs)
-							}
-							break
-					}
+				def expected = args[0]
+				def seleniumArgs = args.length > 1 ? args[1..-1] : [] as Object[]
+				switch (condition) {
+					case "assert":
+						SeleneseTestBase."assert${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
+						break
+					case "verify":
+						base."verify${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
+						break
+					case "waitFor":
+						waitFor {
+							negated ^ expected == selenium."get$command"(* seleniumArgs)
+						}
+						break
 				}
 			}
 		}

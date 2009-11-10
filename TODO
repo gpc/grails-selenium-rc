@@ -1,6 +1,5 @@
 Bugs...
 - GMock jar is bundled with the plugin and should not be
-- can we get rid of SeleneseTestBase? Some calls don't delegate to it correctly
 - not able can have spock and junit tests side by side
 - Using Assert.fail in mixin is not appropriate for non junit tests
 - Can't use SeleniumTest.waitFor inside selenium.with block
