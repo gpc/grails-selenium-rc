@@ -221,6 +221,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/grails-selenium-rc.iml" filepath="$PROJECT_DIR$/grails-selenium-rc.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-test/selenium-test.iml" filepath="$PROJECT_DIR$/test/projects/selenium-test/selenium-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-easyb/selenium-with-easyb.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-easyb/selenium-with-easyb.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock.iml" />
     </modules>
   </component>
