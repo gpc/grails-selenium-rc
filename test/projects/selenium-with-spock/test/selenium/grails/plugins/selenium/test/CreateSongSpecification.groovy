@@ -33,8 +33,10 @@ class CreateSongSpecification extends Specification {
 		selenium.clickAndWait "create"
 
 		then: "a song is saved"
-		selenium.getText("css=.message") ==~ /Song (\d+) created/
-		def song = Song.findByTitle(title)
+		def id = selenium.getText("css=.message").find(/Song (\d+) created/) { match, id -> id }
+		id != null
+		def song = Song.read(id)
+		song.title == title
 		song.artist == artist
 		song.album == (album ?: null)
 
