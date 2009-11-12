@@ -5,7 +5,7 @@ import grails.plugins.selenium.*
 class HomepageTests extends GrailsSeleniumTestCase {
 
 	def testUserCanLoadApplicationHomePage() {
-		selenium.open(contextPath)
+		selenium.open "/"
 		assertTrue selenium.isTextPresent("Welcome to Grails")
 	}
 	

@@ -3,15 +3,15 @@ package grails.plugins.selenium.test
 import grails.plugins.selenium.*
 import spock.lang.Specification
 
-@Mixin(SeleniumTest)
+@Mixin (SeleniumTest)
 class HomepageSpecification extends Specification {
 
 	def "user can load application homepage"() {
 		when:
-		selenium.open(contextPath)
+		selenium.open "/"
 
 		then:
-		selenium.isTextPresent("Welcome to Grails")
+		selenium.isTextPresent "Welcome to Grails"
 	}
 
 }
