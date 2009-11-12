@@ -6,6 +6,10 @@ import spock.lang.Specification
 @Mixin(SeleniumTest)
 class CreateSongSpecification extends Specification {
 
+	def cleanupSpeck() {
+		Song.list()*.delete()
+	}
+
 	def "title and artist are required"() {
 		given: "a user is on the create song page"
 		selenium.open "/song/create"
