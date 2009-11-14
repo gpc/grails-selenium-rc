@@ -1,32 +1,26 @@
-package grails.plugins.selenium.test
+package grails.plugins.selenium.test.pageobjects
 
 import grails.plugins.selenium.SeleniumTest
-import grails.plugins.selenium.GrailsSelenium
+import grails.plugins.selenium.test.Song
+import grails.plugins.selenium.test.pageobjects.Page
 
 @Mixin (SeleniumTest)
 class PageObjectTests extends GroovyTestCase {
 
-	CreateSongPage page
-
-	void setUp() {
-		super.setUp()
-		page = new CreateSongPage(selenium)
-	}
-
 	void testUserMustEnterTitleAndArtist() {
-		page.open()
+		def page = CreateSongPage.open()
 
-		page.submit()
+		page.submitExpectingFailure()
 
 		assertTrue page.errorMessages.contains("Property [title] of class [class grails.plugins.selenium.test.Song] cannot be blank")
 		assertTrue page.errorMessages.contains("Property [artist] of class [class grails.plugins.selenium.test.Song] cannot be blank")
 
-		assertTrue "title field should be highlighted", page.isHighlighted("title")
-		assertTrue "artist field should be highlighted", page.isHighlighted("artist")
+		assertTrue "title field should be highlighted", page.hasFieldErrors("title")
+		assertTrue "artist field should be highlighted", page.hasFieldErrors("artist")
 	}
 
 	void testUserCanCreateSongWithAlbum() {
-		page.open()
+		def page = CreateSongPage.open()
 
 		page.title = "Queen Bitch"
 		page.artist = "David Bowie"
@@ -43,7 +37,7 @@ class PageObjectTests extends GroovyTestCase {
 	}
 
 	void testUserCanCreateSongWithoutAlbum() {
-		page.open()
+		def page = CreateSongPage.open()
 
 		page.title = "A Song From Under The Floorboards"
 		page.artist = "Magazine"
@@ -60,46 +54,30 @@ class PageObjectTests extends GroovyTestCase {
 
 }
 
-class CreateSongPage {
+class CreateSongPage extends Page {
 
-	private final GrailsSelenium selenium
-
-	CreateSongPage(GrailsSelenium selenium) {
-		this.selenium = selenium
+	static CreateSongPage open() {
+		def page = new CreateSongPage()
+		page.selenium.open "/song/create"
+		return page
 	}
 
-	void open() {
-		selenium.open "/song/create"
-	}
-
-	void submit() {
+	ListSongPage submit() {
 		selenium.clickAndWait "create"
 	}
 
-	List<String> getErrorMessages() {
-		def messages = []
-		def i = 1
-		while (selenium.isElementPresent("css=.errors ul li:nth-child($i)")) {
-			messages << selenium.getText("css=.errors ul li:nth-child($i)")
-			i++
-		}
-		return messages
+	CreateSongPage submitExpectingFailure() {
+		selenium.clickAndWait "create"
 	}
 
-	String getFlashMessage() {
-		selenium.isElementPresent("css=.message") ? selenium.getText("css=.message") : null
-	}
+}
 
-	boolean isHighlighted(String field) {
-		selenium.isElementPresent "css=.errors input[name=$field]"
-	}
+class ListSongPage extends Page {
 
-	def propertyMissing(String name) {
-		selenium.getValue(name)
-	}
-
-	def propertyMissing(String name, value) {
-		selenium.type(name, value)
+	static ListSongPage open() {
+		def page = new ListSongPage()
+		page.selenium.open "/song/list"
+		return page
 	}
 
 }
