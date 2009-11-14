@@ -62,7 +62,7 @@ class PageObjectTests extends GroovyTestCase {
 
 class CreateSongPage {
 
-	private GrailsSelenium selenium
+	private final GrailsSelenium selenium
 
 	CreateSongPage(GrailsSelenium selenium) {
 		this.selenium = selenium
@@ -87,7 +87,7 @@ class CreateSongPage {
 	}
 
 	String getFlashMessage() {
-		selenium.getText "css=.message"
+		selenium.isElementPresent("css=.message") ? selenium.getText("css=.message") : null
 	}
 
 	boolean isHighlighted(String field) {
