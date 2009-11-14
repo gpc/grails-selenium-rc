@@ -34,6 +34,8 @@ grails.logging.jul.usebridge = true
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
 
+grails.app.context = "/"
+
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
