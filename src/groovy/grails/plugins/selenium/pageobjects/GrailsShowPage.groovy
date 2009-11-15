@@ -17,8 +17,11 @@ class GrailsShowPage extends GrailsPage {
 	 * Intercepts property getters to return data from table based on the field name.
 	 */
 	def propertyMissing(String name) {
-		if (!fieldNames) readFieldNames()
 		def i = fieldNames.indexOf(name)
-		selenium.getTable "//table.$i.1"
+		if (i >= 0) {
+			selenium.getTable "//table.$i.1"
+		} else {
+			throw new MissingPropertyException(name)
+		}
 	}
 }
