@@ -27,7 +27,7 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 		def props = [
 				"selenium.host": "my.host.bv",
 				"selenium.port": "1234",
-				"selenium.slowResources": "true"
+				"selenium.slow": "true"
 		]
 		mock(System).static.properties.returns(props).atLeastOnce()
 
@@ -37,7 +37,7 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 
 		assertEquals "my.host.bv", seleniumManager.config.selenium.host
 		assertEquals 1234, seleniumManager.config.selenium.port
-		assertTrue seleniumManager.config.selenium.slowResources
+		assertTrue seleniumManager.config.selenium.slow
 	}
 
 }
