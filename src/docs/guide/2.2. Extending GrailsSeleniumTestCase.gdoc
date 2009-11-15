@@ -1,0 +1,27 @@
+h2. Extending GrailsSeleniumTestCase
+Instead of using the @SeleniumTest@ mixin you can extend @grails.plugins.selenium.GrailsSeleniumTestCase@ which provides
+everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions
+provided by the @[SeleneseTestBase|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestBase.html]@
+class as well as the various @verify@ methods, the @seleniumEquals@ method, etc. See the documentation for @SeleneseTestBase@ for
+details.
+
+h3. Using assert, verify and waitFor convenience methods
+Extending @GrailsSeleniumTestCase@ enables you to directly _assert, verify_ or _waitFor_ certain Selenium conditions. Any
+@[Selenium|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html]@
+method starting with _is_ can be used as a boolean assertion by replacing the _is_ with _assert, verify_ or _waitFor_ in
+the method call. Likewise any @Selenium@ method starting with _get_ can be used as an equality assertion. The following
+table gives some examples:
+
+{table}
+*Without GrailsSeleniumTestCase* | *With GrailsSeleniumTestCase*
+assertTrue selenium.isTextPresent("Welcome to Grails") | assertTextPresent("Welcome to Grails")
+verifyTrue selenium.isVisible("myElement") | verifyVisible("myElement")
+waitFor { selenium.isAlertPresent() } | waitForAlertPresent()
+assertEquals("Expected text", selenium.getText("myElement")) | assertText("Expected text", "myElement")
+waitFor { selenium.getXpathCount("//ul/li") == 3 } | waitForXpathCount 3, "//ul/li"
+{table}
+
+You can also use _assertNot\*, verifyNot\*_ and _waitForNot\*_ to test negated conditions.
+
+Currently there is no way to pass message arguments to these convenience methods, although this will hopefully be added
+in a future version of the plugin.

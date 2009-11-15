@@ -1,13 +1,15 @@
-0.1 Initial Release
+Current Snapshot
+New Features...
+ * Added base classes for using the page object pattern with standard Grails pages
+ * The config selenium.slowResources is now simply selenium.slow
 
 0.1.1
 Fixes...
- - Fixed default Selenium URL to respect server.port setting, etc.
- - Fixed contextPath handling when app.context is set in Config
- - Removed ArrayCategory class causing VerifyError in some odd circumstances
+ * Fixed default Selenium URL to respect server.port setting, etc.
+ * Fixed contextPath handling when app.context is set in Config
+ * Removed ArrayCategory class causing VerifyError in some odd circumstances
 New Features...
- - Can now negate dynamic assert/verify/waitFor calls in GrailsSeleniumTestCase
+ * Can now negate dynamic assert/verify/waitFor calls in GrailsSeleniumTestCase
 
-0.1.2
-New Features...
- - Added base classes for using the page object pattern with standard Grails pages
+0.1
+ * Initial Release

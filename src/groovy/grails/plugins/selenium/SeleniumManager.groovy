@@ -65,7 +65,7 @@ import org.slf4j.LoggerFactory
 				conf.singleWindow = config.selenium.singleWindow
 		}
 
-		seleniumServer = serverClassLoader.loadClass("org.openqa.selenium.server.SeleniumServer").newInstance(config.selenium.slowResources, conf)
+		seleniumServer = serverClassLoader.loadClass("org.openqa.selenium.server.SeleniumServer").newInstance(config.selenium.slow, conf)
 		seleniumServer.start()
 
 		// Jetty is now listening on separate threads, so it appears
@@ -105,7 +105,7 @@ selenium {
 	port = 4444
 	browser = "${getDefaultBrowser()}"
 	defaultTimeout = 60000
-	slowResources = false
+	slow = false
 	singleWindow = true
 	windowMaximize = false
 	alwaysCaptureScreenshots = false

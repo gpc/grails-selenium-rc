@@ -1,19 +1,27 @@
+h2. Configuration
 Installing the plugin should create an empty configuration file in @grails-app/conf/SeleniumConfig.groovy@ that can be
 customised according to your requirements. Configuration values are:
+
 {table}
 *Config Key* | *Description* | *Default*
-@selenium.slowResources@ | If set to @true@ the Selenium tests will run slowly. | @false@
-@selenium.singleWindow@ | If @false@ Selenium will run in multiple windows which can be useful if your app has frame escape code. Note: this config value is ignored when @selenium.browser@ is @*iexplore@ or @*safari@ as certain modes do not work with those browsers. | @true@ unless browser is Internet Explorer. 
-@selenium.host@ | The host the Selenium Server will run on. | @localhost@
-@selenium.port@ | The port the Selenium Server will run on. | @4444@
-@selenium.browser@ | The browser Selenium will use. | @*firefox@ on Linux, @*safari@ on OSX, @*iexplore@ on Windows
-@selenium.url@ | The base URL where the tests will be run. | The Grails server URL (@grails.serverURL@ in the application config)
-@selenium.defaultTimeout@ | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the @waitFor@ method in @SeleniumTest@ | @60000@
-@selenium.windowMaximize@ | If set to @true@ the browser window will be maximized when opened. This has no effect in single window mode. | @false@
+selenium.slowResources | If set to true the Selenium tests will run slowly. | false
+selenium.singleWindow | If false Selenium will run in multiple windows which can be useful if your app has frame escape code. Note: this config value is ignored when selenium.browser is \*iexplore or \*safari as certain modes do not work with those browsers. | true unless browser is Internet Explorer. 
+selenium.host | The host the Selenium Server will run on. | localhost
+selenium.port | The port the Selenium Server will run on. | 4444
+selenium.browser | The browser Selenium will use. | \*firefox on Linux, \*safari on OSX, \*iexplore on Windows
+selenium.url | The base URL where the tests will be run. | The Grails server URL (grails.serverURL in the application config)
+selenium.defaultTimeout | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the waitFor method | 60000
+selenium.windowMaximize | If set to true the browser window will be maximized when opened. This has no effect in single window mode. | false
 {table}
+
 Environment specific configuration can be included in @SeleniumConfig.groovy@ just as it can in Grails' regular
 @Config.groovy@ file. For example:
+
 {code}
+selenium {
+    host = "localhost"
+    port = 1234
+}
 environments {
     test {
         selenium.host = "my.host.bv"
@@ -26,7 +34,7 @@ h3. Using System Properties
 All configuration values can be overridden using system properties. This is probably most useful for overriding the
 browser used on individual developers' machines or on continuous integration environments without affecting the
 project-wide settings. For example to run Selenium tests using Firefox instead of your platform's default browser you
-can use @grails -Dselenium.browser=*firefox test-app@. To make such settings permanent on an individual machine add the
+can use @grails -Dselenium.browser=*firefox test-app@ directly on the command line. To make such settings permanent on an individual machine add the
 required settings to the @JAVA_OPTS@ environment variable. For example, add
 @export JAVA_OPTS="$JAVA_OPTS -Dselenium.browser=*firefox"@ to your @~/.profile@ file (on Windows environment variables
-are set in the _Advanced_ tab of the _System Properties_ window.
+are set in the _Advanced_ tab of the _System Properties_ window).

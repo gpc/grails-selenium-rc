@@ -5,7 +5,6 @@ Bugs...
 - Can't use SeleniumTest.waitFor inside selenium.with block
 
 Enhancements...
-- Anything we can do about file uploads?
 - Base classes for page object pattern & standard Grails scaffolding pages
 - Using selenium.with all the time is a bit annoying, can we delegate to 2 things at once?
 - option to capture screenshots when assert/verify/waitFor fails

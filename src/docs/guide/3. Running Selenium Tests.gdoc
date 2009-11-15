@@ -1,3 +1,4 @@
+h2. Running Selenium Tests
 Selenium tests are placed in @test/selenium@ and are executed as part of the functional test phase with the standard 
 @grails test-app@ or @grails test-app -functional@ commands. As with unit and integration tests you can run individual tests or
 groups of tests by specifying the test names without the _"Tests"_ suffix. Again, like unit and integration tests
@@ -10,18 +11,20 @@ h3. Browser Peculiarities
 The table below summarises browser/OS combinations that the plugin has been tested with and any issues known to exist
 with particular combinations. Please note these are likely issues of the Selenium library (or even the underlying
 browser) rather than anything the plugin can do anything about.
+
 {table}
-*Browser* | *@selenium.browser@* | *Operating System* | *Comments*
-Firefox 3 | @*firefox@ | Linux | Works perfectly.
-Firefox 3.5 | @*firefox@ | Linux | Works perfectly.
-Firefox 3.5 | @*firefox@ | OSX 10.6 | Selenium is unable to launch the browser ([Selenium bug|http://jira.openqa.org/browse/SRC-743]).
-Safari 4 | @*safari@ | OSX 10.6 | Multi-window mode doesn't work (@selenium.singleWindow = false@).
-Firefox 3.5 | @*firefox@ | Windows XP | Works perfectly.
-Google Chrome | @*googlechrome@ | Windows XP | Works perfectly.
-Internet Explorer 6 | @*iexplore@ | Windows XP | Javascript errors in single window mode (@selenium.singleWindow = false@). Multi-window mode works however dragAndDropToObject can fail if the target is outside the viewport - suggested workaround is to have your test call @selenium.windowMaximize()@.
-Internet Explorer 7 | @*iexplore@ | Windows XP | See Internet Explorer 6.
-Opera 9 | @*opera@ | Windows XP | Works perfectly.
-Safari 4 | @*safari@ | Windows XP | Multi-window mode doesn't work (@selenium.singleWindow = false@).
+*Browser* | *selenium.browser* | *Operating System* | *Comments*
+Firefox 3 | \*firefox | Linux | Works perfectly.
+Firefox 3.5 | \*firefox | Linux | Works perfectly.
+Firefox 3.5 | \*firefox | OSX 10.6 | Selenium is unable to launch the browser  due to a Selenium bug: http://jira.openqa.org/browse/SRC-743.
+Safari 4 | \*safari | OSX 10.6 | Multi-window mode doesn't work.
+Firefox 3.5 | \*firefox | Windows XP | Works perfectly.
+Google Chrome | \*googlechrome | Windows XP | Works perfectly.
+Internet Explorer 6 | \*iexplore | Windows XP | Javascript errors in single window mode every time a page opens. The dragAndDropToObject command can fail if the target is outside the viewport - suggested workaround is to have your test call selenium.windowMaximize().
+Internet Explorer 7 | \*iexplore | Windows XP | See Internet Explorer 6.
+Opera 9 | \*opera | Windows XP | Works perfectly.
+Safari 4 | \*safari | Windows XP | Multi-window mode doesn't work.
 {table}
+
 If you are able to add to this list, whether to report issues or confirm success with particular browser/OS combinations
 please contact the plugin author.
