@@ -1,10 +1,12 @@
 Bugs...
 - GMock jar is bundled with the plugin and should not be
-- not able can have spock and junit tests side by side
+- not able to have spock and junit tests side by side
 - Using Assert.fail in mixin is not appropriate for non junit tests
 - Can't use SeleniumTest.waitFor inside selenium.with block
 
 Enhancements...
+- Anything we can do about file uploads?
+- Base classes for page object pattern & standard Grails scaffolding pages
 - Using selenium.with all the time is a bit annoying, can we delegate to 2 things at once?
 - option to capture screenshots when assert/verify/waitFor fails
 - can waitFor's message be defaulted based on the code in the closure?
@@ -14,5 +16,6 @@ Enhancements...
 - support for comparing text with message key to make i18n based testing less brittle
 
 Long term...
+- Upgrade to Selenium 2.0 / Webdriver
 - Selenium Grid
-- Support non-JUnit frameworks e.g. EasyB, JBehave, Spock
+- Support additional test frameworks e.g. JUnit 4, TestNG, EasyB, JBehave

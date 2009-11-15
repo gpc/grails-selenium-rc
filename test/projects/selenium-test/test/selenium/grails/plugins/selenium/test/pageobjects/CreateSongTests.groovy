@@ -1,11 +1,19 @@
 package grails.plugins.selenium.test.pageobjects
 
 import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.pageobjects.GrailsFormPage
+import grails.plugins.selenium.pageobjects.GrailsPage
 import grails.plugins.selenium.test.Song
-import grails.plugins.selenium.test.pageobjects.Page
 
 @Mixin (SeleniumTest)
-class PageObjectTests extends GroovyTestCase {
+class CreateSongTests extends GroovyTestCase {
+
+	void tearDown() {
+		super.tearDown()
+		Song.withTransaction {
+			Song.list()*.delete()
+		}
+	}
 
 	void testUserMustEnterTitleAndArtist() {
 		def page = CreateSongPage.open()
@@ -52,32 +60,18 @@ class PageObjectTests extends GroovyTestCase {
 		assertNull song.album
 	}
 
-}
+	void testSongAppearsInListOnceCreated() {
+		def createPage = CreateSongPage.open()
 
-class CreateSongPage extends Page {
+		createPage.title = "Myriad Harbor"
+		createPage.artist = "The New Pornographers"
+		createPage.album = "Challengers"
 
-	static CreateSongPage open() {
-		def page = new CreateSongPage()
-		page.selenium.open "/song/create"
-		return page
-	}
+		def showPage = createPage.submit()
 
-	ListSongPage submit() {
-		selenium.clickAndWait "create"
-	}
-
-	CreateSongPage submitExpectingFailure() {
-		selenium.clickAndWait "create"
-	}
-
-}
-
-class ListSongPage extends Page {
-
-	static ListSongPage open() {
-		def page = new ListSongPage()
-		page.selenium.open "/song/list"
-		return page
+		assertEquals "Myriad Harbor", showPage.Title
+		assertEquals "The New Pornographers", showPage.Artist
+		assertEquals "Challengers", showPage.Album
 	}
 
 }
