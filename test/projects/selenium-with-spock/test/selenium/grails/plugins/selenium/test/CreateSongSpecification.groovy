@@ -1,43 +1,45 @@
 package grails.plugins.selenium.test
 
 import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.test.pageobjects.*
 import spock.lang.Specification
 
-@Mixin(SeleniumTest)
 class CreateSongSpecification extends Specification {
 
 	def cleanupSpeck() {
-		Song.list()*.delete()
+		Song.withTransaction {
+			Song.list()*.delete()
+		}
 	}
 
 	def "title and artist are required"() {
 		given: "a user is on the create song page"
-		selenium.open "/song/create"
+		def page = CreateSongPage.open()
 
 		when: "the user clicks create without filling in mandatory data"
-		selenium.clickAndWait "create"
+		page.submitExpectingFailure()
 
 		then: "error messages are displayed"
-		selenium.isTextPresent "Property [title] of class [class grails.plugins.selenium.test.Song] cannot be blank"
-		selenium.isTextPresent "Property [artist] of class [class grails.plugins.selenium.test.Song] cannot be blank"
+		page.errorMessages.contains("Title cannot be blank")
+		page.errorMessages.contains("Artist cannot be blank")
 
 		and: "fields in error are highlighted"
-		selenium.isElementPresent "css=.errors input[name=title]"
-		selenium.isElementPresent "css=.errors input[name=artist]"
+		page.hasFieldErrors("title")
+		page.hasFieldErrors("artist")
 	}
 
 	def "album is optional"() {
 		given: "a user is on the create song page"
-		selenium.open "/song/create"
+		def createPage = CreateSongPage.open()
 
 		when: "the user submits the form with valid data"
-		selenium.type "title", title
-		selenium.type "artist", artist
-		selenium.type "album", album
-		selenium.clickAndWait "create"
+		createPage.title = title
+		createPage.artist = artist
+		createPage.album = album
+		def showPage = createPage.submit()
 
 		then: "a song is saved"
-		def id = selenium.getText("css=.message").find(/Song (\d+) created/) { match, id -> id }
+		def id = showPage.flashMessage.find(/Song (\d+) created/) { match, id -> id }
 		id != null
 		def song = Song.read(id)
 		song.title == title
@@ -49,5 +51,4 @@ class CreateSongSpecification extends Specification {
 		artist << ["Edward Sharpe and the Magnetic Zeros", "Yeah Yeah Yeahs"]
 		album << ["Up From Below", ""]
 	}
-	
 }

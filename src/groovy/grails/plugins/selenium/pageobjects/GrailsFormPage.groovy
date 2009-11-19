@@ -8,7 +8,7 @@ abstract class GrailsFormPage extends GrailsPage {
 	/**
 	 * Returns standard Grails form error messages if present, otherwise empty list.
 	 */
-	List getErrorMessages() {
+	@Lazy List errorMessages = {
 		def messages = []
 		def i = 1
 		while (selenium.isElementPresent("css=.errors ul li:nth-child($i)")) {
@@ -16,8 +16,8 @@ abstract class GrailsFormPage extends GrailsPage {
 			i++
 		}
 		return messages
-	}
-
+	}()
+	
 	/**
 	 * Returns true if the named form input is highlighted for errors.
 	 */

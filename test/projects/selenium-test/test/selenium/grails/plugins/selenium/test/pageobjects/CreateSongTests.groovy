@@ -60,7 +60,7 @@ class CreateSongTests extends GroovyTestCase {
 		assertNull song.album
 	}
 
-	void testSongAppearsInListOnceCreated() {
+	void testSongDetailsShownOnSuccessfulCreate() {
 		def createPage = CreateSongPage.open()
 
 		createPage.title = "Myriad Harbor"

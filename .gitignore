@@ -8,3 +8,4 @@ target
 test/reports
 test/projects/selenium-test/target
 test/projects/selenium-test/test/reports
+classes/
