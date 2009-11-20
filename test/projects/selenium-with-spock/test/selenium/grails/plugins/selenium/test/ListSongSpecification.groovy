@@ -1,15 +1,18 @@
 package grails.plugins.selenium.test
 
 import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.test.pageobjects.*
 import spock.lang.Specification
 
 @Mixin(SeleniumTest)
 class ListSongSpecification extends Specification {
 
 	void setupSpeck() {
-		Song.build(title: "Myriad Harbor", artist: "The New Pornographers", album: "Challengers")
-		Song.build(title: "Patty Lee", artist: "Les Savy Fav", album: "Let's Stay Friends")
-		Song.build(title: "Hospital Beds", artist: "Cold War Kids", album: "Robbers and Cowards")
+		Song.withTransaction {
+			Song.build(title: "Myriad Harbor", artist: "The New Pornographers", album: "Challengers")
+			Song.build(title: "Patty Lee", artist: "Les Savy Fav", album: "Let's Stay Friends")
+			Song.build(title: "Hospital Beds", artist: "Cold War Kids", album: "Robbers and Cowards")
+		}
 	}
 
 	void cleanupSpeck() {
@@ -24,6 +27,8 @@ class ListSongSpecification extends Specification {
 		
 		then: "the songs are displayed in the list"
 		page.rowCount == 3
-		page.rows[0] == [Title: "Myriad Harbor", Artist: "The New Pornographers", Album: "Challengers"]
+		page.rows.Title == ["Myriad Harbor", "Patty Lee", "Hospital Beds"]
+		page.rows.Artist == ["The New Pornographers", "Les Savy Fav", "Cold War Kids"]
+		page.rows.Album == ["Challengers", "Let's Stay Friends", "Robbers and Cowards"]
 	}
 }
