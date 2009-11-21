@@ -32,19 +32,6 @@ class GrailsFormPageTests extends GroovyTestCase {
 			assertEquals "bar", page.foo
 		}
 	}
-
-	void testErrorMessagesAreOnlyRetrievedOnce() {
-		(1..3).each { i->
-			mockSelenium.isElementPresent("css=.errors ul li:nth-child($i)").returns(true)
-			mockSelenium.getText("css=.errors ul li:nth-child($i)").returns("error $i")
-		}
-		mockSelenium.isElementPresent("css=.errors ul li:nth-child(4)").returns(false)
-		play {
-			2.times {
-				assertEquals(["error 1", "error 2", "error 3"], page.errorMessages)
-			}
-		}
-	}
 }
 
 class TestFormPage extends GrailsFormPage {}
