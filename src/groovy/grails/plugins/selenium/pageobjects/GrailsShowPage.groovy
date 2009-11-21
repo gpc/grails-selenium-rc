@@ -6,7 +6,7 @@ package grails.plugins.selenium.pageobjects
 class GrailsShowPage extends GrailsPage {
 
 	@Lazy List fieldNames = (0..<fieldCount).collect {i ->
-		selenium.getTable "//table.$i.0"
+		selenium.getTable("//table.$i.0").replaceAll(/[^\w\s]+/, "")
 	}
 
 	int getFieldCount() {

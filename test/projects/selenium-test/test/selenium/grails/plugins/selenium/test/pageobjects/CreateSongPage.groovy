@@ -11,12 +11,12 @@ class CreateSongPage extends GrailsFormPage {
 	}
 
 	ShowSongPage submit() {
-		selenium.clickAndWait "create"
+		selenium.clickAndWait "css=.buttons input.save"
 		return new ShowSongPage()
 	}
 
 	CreateSongPage submitExpectingFailure() {
-		selenium.clickAndWait "create"
+		selenium.clickAndWait "css=.buttons input.save"
 		return this
 	}
 
