@@ -1,9 +1,15 @@
 package grails.plugins.selenium.pageobjects
 
 /**
- * A base page object for typical Grails list pages (e.g. scaffolded list pages).
+ * A page object for Grails scaffolded list pages.
  */
-abstract class GrailsListPage extends GrailsPage {
+class GrailsListPage extends GrailsPage {
+
+	static GrailsListPage open(String url) {
+		def page = new GrailsListPage()
+		page.selenium.open url
+		return page
+	}
 
 	@Lazy List columnNames = (1..columnCount).collect {i ->
 		selenium.getText("//table/thead/tr/th[$i]")
@@ -40,8 +46,19 @@ abstract class GrailsListPage extends GrailsPage {
 	/**
 	 * Clicks the column heading to sort the table.
 	 */
-	void sortByColumn(String column) {
+	GrailsListPage sortByColumn(String column) {
 		selenium.clickAndWait "link=$column"
+		return this
+	}
+
+	GrailsListPage nextPage() {
+		selenium.clickAndWait "css=a.nextLink"
+		return this
+	}
+
+	GrailsListPage previousPage() {
+		selenium.clickAndWait "css=a.prevLink"
+		return this
 	}
 
 }

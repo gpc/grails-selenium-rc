@@ -4,7 +4,7 @@ import grails.plugins.selenium.GrailsSelenium
 import grails.plugins.selenium.SeleniumManager
 
 /**
- * A base page object for typical Grails pages.
+ * A base page object for scaffolded Grails pages.
  */
 abstract class GrailsPage {
 
@@ -26,6 +26,16 @@ abstract class GrailsPage {
 	 */
 	boolean hasFlashMessage() {
 		return selenium.isElementPresent("css=.message")
+	}
+
+	GrailsCreatePage goToCreate() {
+		selenium.clickAndWait ".nav a.create"
+		return new GrailsCreatePage()
+	}
+
+	GrailsListPage goToList() {
+		selenium.clickAndWait ".nav a.list"
+		return new GrailsListPage()
 	}
 
 }

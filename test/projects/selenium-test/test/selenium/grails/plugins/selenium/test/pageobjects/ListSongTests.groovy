@@ -1,10 +1,9 @@
 package grails.plugins.selenium.test.pageobjects
 
 import grails.plugins.selenium.test.Song
+import grails.plugins.selenium.pageobjects.GrailsListPage
 
 class ListSongTests extends GroovyTestCase {
-
-	ListSongPage page
 
 	void setUp() {
 		super.setUp()
@@ -14,8 +13,6 @@ class ListSongTests extends GroovyTestCase {
 			Song.build(title: "Twilight Galaxy", artist: "Metric", album: "Fantasies", durationSeconds: 293)
 			Song.build(title: "I'm Confused", artist: "Handsome Furs", album: "Face Control", durationSeconds: 215)
 		}
-
-		page = ListSongPage.open()
 	}
 
 	void tearDown() {
@@ -26,23 +23,47 @@ class ListSongTests extends GroovyTestCase {
 	}
 
 	void testCorrectColumnsAndRowsAppear() {
-		assertEquals(["Id", "Title", "Artist", "Album", "Duration Seconds"], page.columnNames)
-		assertEquals 3, page.rowCount
+		def listPage = GrailsListPage.open("/song/list")
+
+		assertEquals(["Id", "Title", "Artist", "Album", "Duration Seconds"], listPage.columnNames)
+		assertEquals 3, listPage.rowCount
 	}
 
 	void testSongsCanBeSortedByTitle() {
-		page.sortByColumn "Title"
-		assertEquals(["Heads Will Roll", "I'm Confused", "Twilight Galaxy"], page.rows.Title)
+		def listPage = GrailsListPage.open("/song/list")
+
+		listPage.sortByColumn "Title"
+
+		assertEquals(["Heads Will Roll", "I'm Confused", "Twilight Galaxy"], listPage.rows.Title)
 	}
 
 	void testSongsCanBeSortedByTitleInReverse() {
-		page.sortByColumn "Title"
-		page.sortByColumn "Title"
-		assertEquals(["Twilight Galaxy", "I'm Confused", "Heads Will Roll"], page.rows.Title)
+		def listPage = GrailsListPage.open("/song/list")
+
+		listPage.sortByColumn "Title"
+		listPage.sortByColumn "Title"
+
+		assertEquals(["Twilight Galaxy", "I'm Confused", "Heads Will Roll"], listPage.rows.Title)
 	}
 
 	void testSongsCanBeSortedByArtits() {
-		page.sortByColumn "Artist"
-		assertEquals(["Handsome Furs", "Metric", "Yeah Yeah Yeahs"], page.rows.Artist)
+		def listPage = GrailsListPage.open("/song/list")
+
+		listPage.sortByColumn "Artist"
+
+		assertEquals(["Handsome Furs", "Metric", "Yeah Yeah Yeahs"], listPage.rows.Artist)
+	}
+
+	void testListIsPaginatedIfManySongsExist() {
+		Song.withTransaction {
+			["Zero", "Softshock", "Skeletons", "Dull Life", "Shame and Fortune", "Runaway", "Dragon Queen", "Hysteric", "Little Shadow"].each {
+				Song.build(title: it, artist: "Yeah Yeah Yeahs", album: "It's Blitz!")
+			}
+		}
+
+		def listPage = GrailsListPage.open("/song/list")
+		assertEquals 10, listPage.rowCount
+		assertEquals 2, listPage.nextPage().rowCount
+		assertEquals 10, listPage.previousPage().rowCount
 	}
 }

@@ -1,7 +1,7 @@
 package grails.plugins.selenium.pageobjects
 
 /**
- * A base page object for typical Grails form pages (e.g. scaffolded create and edit pages).
+ * A base page object for scaffolded Grails form pages (i.e. create & edit).
  */
 abstract class GrailsFormPage extends GrailsPage {
 

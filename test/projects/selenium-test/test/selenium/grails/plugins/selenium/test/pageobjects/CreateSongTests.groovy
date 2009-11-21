@@ -4,6 +4,7 @@ import grails.plugins.selenium.SeleniumTest
 import grails.plugins.selenium.pageobjects.GrailsFormPage
 import grails.plugins.selenium.pageobjects.GrailsPage
 import grails.plugins.selenium.test.Song
+import grails.plugins.selenium.pageobjects.GrailsCreatePage
 
 @Mixin (SeleniumTest)
 class CreateSongTests extends GroovyTestCase {
@@ -16,27 +17,27 @@ class CreateSongTests extends GroovyTestCase {
 	}
 
 	void testUserMustEnterTitleAndArtist() {
-		def page = CreateSongPage.open()
+		def page = GrailsCreatePage.open("/song/create")
 
-		page.submitExpectingFailure()
+		page.saveExpectingFailure()
 
-		assertTrue page.errorMessages.contains("Property [title] of class [class grails.plugins.selenium.test.Song] cannot be blank")
-		assertTrue page.errorMessages.contains("Property [artist] of class [class grails.plugins.selenium.test.Song] cannot be blank")
+		assertTrue page.errorMessages.contains("Title cannot be blank")
+		assertTrue page.errorMessages.contains("Artist cannot be blank")
 
 		assertTrue "title field should be highlighted", page.hasFieldErrors("title")
 		assertTrue "artist field should be highlighted", page.hasFieldErrors("artist")
 	}
 
 	void testUserCanCreateSongWithAlbum() {
-		def page = CreateSongPage.open()
+		def createPage = GrailsCreatePage.open("/song/create")
 
-		page.title = "Queen Bitch"
-		page.artist = "David Bowie"
-		page.album = "Hunky Dory"
+		createPage.title = "Queen Bitch"
+		createPage.artist = "David Bowie"
+		createPage.album = "Hunky Dory"
 
-		page.submit()
+		def showPage = createPage.save()
 
-		def id = page.flashMessage.find(/Song (\d+) created/) {match, id -> id }
+		def id = showPage.flashMessage.find(/Song (\d+) created/) {match, id -> id }
 		def song = Song.get(id)
 		assertNotNull "Song $id not found", song
 		assertEquals "Queen Bitch", song.title
@@ -45,14 +46,14 @@ class CreateSongTests extends GroovyTestCase {
 	}
 
 	void testUserCanCreateSongWithoutAlbum() {
-		def page = CreateSongPage.open()
+		def createPage = GrailsCreatePage.open("/song/create")
 
-		page.title = "A Song From Under The Floorboards"
-		page.artist = "Magazine"
+		createPage.title = "A Song From Under The Floorboards"
+		createPage.artist = "Magazine"
 
-		page.submit()
+		def showPage = createPage.save()
 
-		def id = page.flashMessage.find(/Song (\d+) created/) {match, id -> id }
+		def id = showPage.flashMessage.find(/Song (\d+) created/) {match, id -> id }
 		def song = Song.get(id)
 		assertNotNull "Song $id not found", song
 		assertEquals "A Song From Under The Floorboards", song.title
@@ -61,13 +62,13 @@ class CreateSongTests extends GroovyTestCase {
 	}
 
 	void testSongDetailsShownOnSuccessfulCreate() {
-		def createPage = CreateSongPage.open()
+		def createPage = GrailsCreatePage.open("/song/create")
 
 		createPage.title = "Myriad Harbor"
 		createPage.artist = "The New Pornographers"
 		createPage.album = "Challengers"
 
-		def showPage = createPage.submit()
+		def showPage = createPage.save()
 
 		assertEquals "Myriad Harbor", showPage.Title
 		assertEquals "The New Pornographers", showPage.Artist

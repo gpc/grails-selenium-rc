@@ -1,7 +1,7 @@
 package grails.plugins.selenium.pageobjects
 
 /**
- * A base page object for typical Grails show pages (e.g. scaffolded show pages).
+ * A page object for typical Grails scaffolded show pages.
  */
 class GrailsShowPage extends GrailsPage {
 
@@ -24,4 +24,17 @@ class GrailsShowPage extends GrailsPage {
 			throw new MissingPropertyException(name)
 		}
 	}
+
+	GrailsEditPage edit() {
+		selenium.clickAndWait "css=.buttons input.edit"
+	}
+
+	GrailsListPage delete() {
+		selenium.chooseOkOnNextConfirmation()
+		selenium.click "css=.buttons input.delete"
+		selenium.getConfirmation()
+		selenium.waitForPageToLoad "$selenium.defaultTimeout"
+		return new GrailsListPage()
+	}
+
 }

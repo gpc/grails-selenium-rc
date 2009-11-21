@@ -1,12 +1,12 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.SeleniumTest
-import grails.plugins.selenium.test.pageobjects.*
+import grails.plugins.selenium.pageobjects.GrailsCreatePage
+import grails.plugins.selenium.test.Song
 import spock.lang.Specification
 
 class CreateSongSpecification extends Specification {
 
-	def cleanupSpeck() {
+	def cleanupSpec() {
 		Song.withTransaction {
 			Song.list()*.delete()
 		}
@@ -14,10 +14,10 @@ class CreateSongSpecification extends Specification {
 
 	def "title and artist are required"() {
 		given: "a user is on the create song page"
-		def page = CreateSongPage.open()
+		def page = GrailsCreatePage.open("/song/create")
 
 		when: "the user clicks create without filling in mandatory data"
-		page.submitExpectingFailure()
+		page.saveExpectingFailure()
 
 		then: "error messages are displayed"
 		page.errorMessages.contains("Title cannot be blank")
@@ -30,13 +30,13 @@ class CreateSongSpecification extends Specification {
 
 	def "album is optional"() {
 		given: "a user is on the create song page"
-		def createPage = CreateSongPage.open()
+		def createPage = GrailsCreatePage.open("/song/create")
 
 		when: "the user submits the form with valid data"
 		createPage.title = title
 		createPage.artist = artist
 		createPage.album = album
-		def showPage = createPage.submit()
+		def showPage = createPage.save()
 
 		then: "a song is saved"
 		def id = showPage.flashMessage.find(/Song (\d+) created/) { match, id -> id }

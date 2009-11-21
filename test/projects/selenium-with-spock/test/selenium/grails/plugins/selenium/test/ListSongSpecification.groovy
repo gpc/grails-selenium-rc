@@ -1,14 +1,15 @@
 package grails.plugins.selenium.test
 
 import grails.plugins.selenium.SeleniumTest
-import grails.plugins.selenium.test.pageobjects.*
+import grails.plugins.selenium.pageobjects.GrailsListPage
+import grails.plugins.selenium.test.Song
 import spock.lang.Specification
 
 @Mixin(SeleniumTest)
 class ListSongSpecification extends Specification {
 
 
-	void cleanupSpeck() {
+	void cleanupSpec() {
 		Song.list()*.delete()
 	}
 
@@ -21,7 +22,7 @@ class ListSongSpecification extends Specification {
 		}
 		
 		when: "a user visits the song list page"
-		def page = ListSongPage.open()
+		def page = GrailsListPage.open("/song/list")
 		
 		then: "the songs are displayed in the list"
 		page.rowCount == 3
