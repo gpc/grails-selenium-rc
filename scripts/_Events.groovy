@@ -18,7 +18,7 @@ eventTestSuiteStart = {String type ->
 	}
 }
 
-eventTestSuiteEnd = {String type, suite ->
+eventTestSuiteEnd = {String type ->
 	if (type == "selenium") {
 		stopSelenium()
 	}

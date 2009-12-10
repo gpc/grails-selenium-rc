@@ -12,9 +12,10 @@ Runs Selenium RC tests written in Groovy in the Grails functional test phase.
   <dependencies>
     <resolvers>
       <resolver type='grailsPlugins' name='grailsPlugins' />
-      <resolver type='mavenLocal' />
       <resolver type='mavenCentral' />
     </resolvers>
+    <dependency group='org.gmock' name='gmock' version='0.8.0' conf='test' transitive='true' />
+    <dependency group='org.seleniumhq.selenium.client-drivers' name='selenium-java-client-driver' version='1.0.1' conf='build' transitive='true' />
   </dependencies>
   <behavior />
 </plugin>
