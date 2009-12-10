@@ -1,5 +1,7 @@
 def seleniumManager
 
+includeTargets << new File("${seleniumRcPluginDir}/scripts/_Selenium.groovy")
+
 eventAllTestsStart = {
 	if (binding.variables.containsKey("functionalTests")) {
 		functionalTests << "selenium"
@@ -12,24 +14,12 @@ eventAllTestsStart = {
 
 eventTestSuiteStart = {String type ->
 	if (type == "selenium") {
-		def managerClass = Thread.currentThread().contextClassLoader.loadClass("grails.plugins.selenium.SeleniumManager")
-		seleniumManager = managerClass.instance
-		seleniumManager.loadConfig()
-
-		event("StatusUpdate", ["starting selenium server"])
-		seleniumManager.startServer("${seleniumRcPluginDir}/lib/server/selenium-server.jar")
-
-		event("StatusUpdate", ["starting selenium instance"])
-		def url = "http://${serverHost ?: 'localhost'}:${serverPort}$serverContextPath/"
-		seleniumManager.startSelenium(url)
+		startSelenium()
 	}
 }
 
-eventTestSuiteEnd = {String type, testSuite ->
+eventTestSuiteEnd = {String type, suite ->
 	if (type == "selenium") {
-		event("StatusUpdate", ["stopping selenium instance"])
-		seleniumManager.stopSelenium()
-		event("StatusUpdate", ["stopping selenium server"])
-		seleniumManager.stopServer()
+		stopSelenium()
 	}
 }

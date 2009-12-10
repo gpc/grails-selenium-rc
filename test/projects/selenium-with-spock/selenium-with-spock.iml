@@ -2707,16 +2707,6 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins">
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/build-test-data-0.2.3/grails-app/services" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/build-test-data-0.2.3/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/build-test-data-0.2.3/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/joda-time-0.5/grails-app/taglib" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/joda-time-0.5/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/spock-0.3-SNAPSHOT/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/spock-0.3-SNAPSHOT/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/tomcat-1.2-SNAPSHOT/src/groovy" isTestSource="false" />
-    </content>
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/grails-app/conf/hibernate" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/grails-app/controllers" isTestSource="false" />
@@ -2738,13 +2728,9 @@
       <library name="Grails User Library">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
-          <root url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/joda-time-0.5/lib" />
-          <root url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/tomcat-1.2-SNAPSHOT/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/joda-time-0.5/lib" recursive="false" />
-        <jarDirectory url="file://$USER_HOME$/.grails/1.2-M4/projects/selenium-with-spock/plugins/tomcat-1.2-SNAPSHOT/lib" recursive="false" />
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
