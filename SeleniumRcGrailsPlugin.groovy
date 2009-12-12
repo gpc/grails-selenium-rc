@@ -4,7 +4,8 @@ class SeleniumRcGrailsPlugin {
 	def grailsVersion = "1.1 > *"
 	def dependsOn = [:]
 	def pluginExcludes = [
-			"grails-app/views/error.gsp"
+			"grails-app/views/**",
+			"web-app/**"
 	]
 
 	// plugin should not be bundled in application war

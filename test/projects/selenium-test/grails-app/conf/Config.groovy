@@ -39,6 +39,8 @@ grails.json.legacy.builder=false
 grails.enable.native2ascii = true
 // whether to install the java.util.logging bridge for sl4j. Disable fo AppEngine!
 grails.logging.jul.usebridge = true
+// packages to include in Spring bean scanning
+grails.spring.bean.packages = []
 
 grails.app.context = "/"
 
@@ -74,7 +76,8 @@ log4j = {
 	       'org.codehaus.groovy.grails.plugins', // plugins
 	       'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
 	       'org.springframework',
-	       'org.hibernate'
+	       'org.hibernate',
+           'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
 }

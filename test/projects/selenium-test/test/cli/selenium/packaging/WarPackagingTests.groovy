@@ -6,11 +6,7 @@ import java.util.zip.ZipFile
 class WarPackagingTests extends AbstractCliTestCase {
 
 	void testSeleniumPluginIsNotBundledInApplicationWar() {
-		execute(["war"])
-		assertEquals 0, waitForProcess()
-		verifyHeader()
-
-		def warFile = new File("target/selenium-test-0.1.war") // TODO: work this out rather than hardcoding
+		File warFile = buildWarFile()
 		assertTrue warFile.isFile()
 
 		def zipFile = new ZipFile(warFile)
@@ -19,17 +15,21 @@ class WarPackagingTests extends AbstractCliTestCase {
 			assertEquals("War file should not contain web folders from Selenium plugin", [], entryNames.findAll {
 				it =~ /^plugins\/selenium-rc-[\d\.]+\/(css|images|js)/
 			})
-			assertFalse "War file should not contain Selenium libraries", entryNames.any {
-				it == "WEB-INF/lib/selenium-java-client-driver.jar"
+			assertEquals "War file should not contain Selenium libraries", [], entryNames.findAll {
+				it =~ /^WEB-INF\/lib\/(\w+\/)*selenium.*\.jar$/
 			}
-
-			// TODO: can't get this to work
-//			assertFalse "War file should not contain Selenium plugin classes", entryNames.any {
-//				it == "WEB-INF/classes/grails/plugins/selenium/Selenese.class"
-//			}
 		} finally {
 			zipFile.close()
 		}
+	}
+
+	private File buildWarFile() {
+		execute(["war"])
+		enterInput "y" // Grails now nags about inline plugins and --non-interactive defaults to "n"!
+		assertEquals 0, waitForProcess()
+		verifyHeader()
+
+		return new File("target/selenium-test-0.1.war") // TODO: work this out rather than hardcoding
 	}
 
 }
