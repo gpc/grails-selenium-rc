@@ -5,7 +5,7 @@ import java.util.zip.ZipFile
 
 class PluginPackagingTests extends AbstractCliTestCase {
 
-	void testSeleniumPluginIsNotBundledInApplicationWar() {
+	void testGmockIsNotBundledWithPlugin() {
 		execute(["package-plugin"])
 		assertEquals 0, waitForProcess()
 		verifyHeader()
@@ -16,9 +16,13 @@ class PluginPackagingTests extends AbstractCliTestCase {
 		def zipFile = new ZipFile(packagedPlugin)
 		try {
 			def entryNames = zipFile.entries()*.name
-			assertFalse("Packaged plugin should not contain GMock library", entryNames.any {
+			assertFalse "Packaged plugin should not contain GMock library", entryNames.any {
 				it =~ /^lib\/gmock.*?\.jar/
-			})
+			}
+
+			assertFalse "Packaged plugin should not contain web-app resources", entryNames.any {
+				it =~ /^web-app\//
+			}
 		} finally {
 			zipFile.close()
 		}
