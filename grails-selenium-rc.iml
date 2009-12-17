@@ -2695,11 +2695,9 @@
       <library name="Grails User Library">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
-          <root url="file://$USER_HOME$/.grails/1.2-M4/projects/grails-selenium-rc/plugins/tomcat-1.2-M4/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$USER_HOME$/.grails/1.2-M4/projects/grails-selenium-rc/plugins/tomcat-1.2-M4/lib" recursive="false" />
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
