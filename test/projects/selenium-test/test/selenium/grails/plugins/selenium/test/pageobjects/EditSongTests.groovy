@@ -10,8 +10,11 @@ class EditSongTests extends GroovyTestCase {
 	void setUp() {
 		super.setUp()
 		Song.withTransaction {
-			def song = Song.build(title: "Rockers To Swallow", artist: "Yeah Yeah Yeahs")
-			id = song.id
+			Song.withSession {session ->
+				def song = Song.build(title: "Rockers To Swallow", artist: "Yeah Yeah Yeahs")
+				id = song.id
+				session.clear()
+			}
 		}
 	}
 
