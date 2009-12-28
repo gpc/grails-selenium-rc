@@ -2688,8 +2688,7 @@
       <excludeFolder url="file://$MODULE_DIR$/test/reports" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="grails-1.2.0.RC1" level="application" />
-    <orderEntry type="library" name="grails-1.2-SNAPSHOT" level="application" />
+    <orderEntry type="library" name="grails-1.2.0" level="application" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
       <library name="Grails User Library">
