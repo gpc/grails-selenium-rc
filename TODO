@@ -1,10 +1,11 @@
 Bugs...
-- GMock jar is bundled with the plugin and should not be
+- Spock integration is broken
 - not able to have spock and junit tests side by side
 - Using Assert.fail in mixin is not appropriate for non junit tests
 - Can't use SeleniumTest.waitFor inside selenium.with block
 
 Enhancements...
+- Support fixtures plugin via a controller and custom commands?
 - Base classes for page object pattern & standard Grails scaffolding pages
 - Using selenium.with all the time is a bit annoying, can we delegate to 2 things at once?
 - option to capture screenshots when assert/verify/waitFor fails

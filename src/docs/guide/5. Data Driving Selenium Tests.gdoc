@@ -2,7 +2,8 @@ h2. Data Driving Selenium Tests
 One of the most important considerations when writing Selenium tests is how to set up the data that the tests require.
 If you are purely running your Selenium tests against localhost this is actually reasonably straightforward. Since the
 Selenium tests are running in the same JVM as the Grails application under test, the tests have direct access to the
-application's domain objects and can set up data very easily. For example:
+application's domain objects and can set up data very easily. Note: this is *not* the case when running Selenium tests
+against a remote application, i.e. when {selenium.remote = true} is set. For example:
 
 {code}
 void testSongsAppearInList() {
@@ -38,7 +39,8 @@ void testSongsAppearInList() {
 }
 {code}
 
-An alternative to the build test data is the [Fixtures plugin|http://grails.org/plugin/fixtures] which can also be used directly from Selenium tests.
+An alternative to the build test data is the [Fixtures plugin|http://grails.org/plugin/fixtures] which can also be used
+directly from Selenium tests.
 
 h3. Tearing data down
 The difficulty with data-driving Selenium tests like this is that unlike integration tests they are not run in a
