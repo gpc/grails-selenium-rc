@@ -2,6 +2,7 @@ Current Snapshot
 New Features...
  * Added base classes for using the page object pattern with standard Grails pages
  * The config selenium.slowResources is now simply selenium.slow
+ * Added selenium.remote config option to allow tests to be run against a remote host
 
 0.1.1
 Fixes...
