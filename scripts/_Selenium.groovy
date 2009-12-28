@@ -18,8 +18,8 @@ target(startSeleniumServer: "Starts Selenium server") {
 
 target(startSelenium: "Starts Selenium instance, launching a browser window") {
 	depends(configureServerContextPath, startSeleniumServer)
-	event("StatusUpdate", ["starting selenium instance"])
-	def url = "http://${serverHost ?: 'localhost'}:${serverPort}$serverContextPath/"
+	def url = seleniumManager.config.selenium.url ?: "http://${serverHost ?: 'localhost'}:${serverPort}$serverContextPath/"
+	event("StatusUpdate", ["starting selenium instance for $url"])
 	seleniumManager.startSelenium(url)
 }
 

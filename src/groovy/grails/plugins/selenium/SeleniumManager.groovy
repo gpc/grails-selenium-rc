@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory
 
 		// Create a configuration and start the server.
 		def conf = serverClassLoader.loadClass("org.openqa.selenium.server.RemoteControlConfiguration").newInstance()
-		conf.port = config.selenium.port
+		conf.port = config.selenium.server.port
 		// some nasty browser specific forced config
 		switch (config.selenium.browser) {
 			case ~/^\*safari/:
@@ -79,8 +79,8 @@ import org.slf4j.LoggerFactory
 	}
 
 	void startSelenium(serverURL) {
-		def host = config.selenium.host
-		def port = config.selenium.port
+		def host = config.selenium.server.host
+		def port = config.selenium.server.port
 		def browser = config.selenium.browser
 		def url = config.selenium.url ?: serverURL
 		selenium = new GrailsSelenium(host, port, browser, url)
@@ -101,8 +101,10 @@ import org.slf4j.LoggerFactory
 	private static ConfigObject loadDefaultConfiguration() {
 		def defaultConfig = """
 selenium {
-	host = "localhost"
-	port = 4444
+	server {
+		host = "localhost"
+		port = 4444
+	}
 	browser = "${getDefaultBrowser()}"
 	defaultTimeout = 60000
 	slow = false
