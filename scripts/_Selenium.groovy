@@ -1,3 +1,5 @@
+seleniumManager = null
+
 target(seleniumInit: "Initialises Selenium manaager") {
 	def managerClass = Thread.currentThread().contextClassLoader.loadClass("grails.plugins.selenium.SeleniumManager")
 	seleniumManager = managerClass.instance
@@ -10,7 +12,6 @@ target(loadSeleniumConfig: "Loads Selenium configuration") {
 }
 
 target(startSeleniumServer: "Starts Selenium server") {
-	depends(loadSeleniumConfig)
 	event("StatusUpdate", ["starting selenium server"])
 	seleniumManager.startServer("${seleniumRcPluginDir}/lib/server/selenium-server.jar")
 }

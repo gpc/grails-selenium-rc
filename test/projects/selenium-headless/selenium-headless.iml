@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module relativePaths="false" type="GRAILS_MODULE" version="4">
+<module relativePaths="true" type="GRAILS_MODULE" version="4">
   <component name="FacetManager">
+    <facet type="Grails" name="Grails">
+      <configuration />
+    </facet>
     <facet type="web" name="GrailsWeb">
       <configuration>
         <webroots>
-          <root url="file://$MODULE_DIR$/web-app" relative="/" />
           <root url="file://$MODULE_DIR$/web-app" relative="/" />
         </webroots>
         <sourceRoots />
@@ -21,21 +23,14 @@
       <configuration>
         <fileset id="Grails" name="Grails" removed="false">
           <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
-          <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
         </fileset>
       </configuration>
-    </facet>
-    <facet type="Grails" name="Grails">
-      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins">
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins/build-test-data-0.2.3/grails-app/services" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins/build-test-data-0.2.3/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins/build-test-data-0.2.3/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins/tomcat-1.2.0/src/groovy" isTestSource="false" />
+    <content url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-headless/plugins">
+      <sourceFolder url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-headless/plugins/tomcat-1.2.0/src/groovy" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/grails-app/conf/hibernate" isTestSource="false" />
@@ -45,12 +40,9 @@
       <sourceFolder url="file://$MODULE_DIR$/grails-app/taglib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/cli" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/selenium" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
-      <excludeFolder url="file://$MODULE_DIR$/test/reports" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -59,11 +51,11 @@
       <library name="Grails User Library">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
-          <root url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins/tomcat-1.2.0/lib" />
+          <root url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-headless/plugins/tomcat-1.2.0/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-test/plugins/tomcat-1.2.0/lib" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/.grails/1.2.0/projects/selenium-headless/plugins/tomcat-1.2.0/lib" recursive="false" />
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>

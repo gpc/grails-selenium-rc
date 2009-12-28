@@ -1,14 +1,17 @@
-def seleniumManager
-
-includeTargets << new File("${seleniumRcPluginDir}/scripts/_Selenium.groovy")
+includeTargets << new File("$seleniumRcPluginDir/scripts/_Selenium.groovy")
 
 eventAllTestsStart = {
-	if (binding.variables.containsKey("functionalTests")) {
+	loadSeleniumConfig()
+	if (seleniumManager.config.selenium.remote) {
+		event("StatusUpdate", ["Running Selenium in remote mode"])
+		otherTests << "selenium"
+	} else {
 		functionalTests << "selenium"
-	}
-	// support the custom phase in the spock plugin
-	if (binding.variables.containsKey("functional-specTests")) {
-		binding.'functional-specTests' << "selenium"
+		// TODO: spock support is broken as of Grails 1.2 and Spock 0.4-SNAPSHOT
+//		if (binding.variables.containsKey("spockPluginDir")) {
+//			def specTestTypeClass = loadSpecTestTypeClass()
+//  			functionalTests << specTestTypeClass.newInstance("spock", "selenium")
+//		}
 	}
 }
 
