@@ -21,3 +21,5 @@ class HomepageSpecification extends Specification {
     }
 }
 {code}
+
+You can isolate Spock Selenium tests with @grails test-app :spock-selenium@ or @grails test-app functional:spock-selenium@ just as you can for other test types. 
