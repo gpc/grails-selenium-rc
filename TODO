@@ -1,7 +1,6 @@
 Bugs...
 - Using Assert.fail in mixin is not appropriate for non junit tests
 - Can't use SeleniumTest.waitFor inside selenium.with block
-- selenium.server.port & selenium.server.host do not work as sys property overrides
 
 Enhancements...
 - Support fixtures plugin via a controller and custom commands?

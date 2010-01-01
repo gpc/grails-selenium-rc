@@ -16,8 +16,9 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 	void testDefaultConfigGetsLoaded() {
 		seleniumManager.loadConfig()
 
-		assertEquals "localhost", seleniumManager.config.selenium.host
-		assertEquals 4444, seleniumManager.config.selenium.port
+		assertEquals "localhost", seleniumManager.config.selenium.server.host
+		assertEquals 60000, seleniumManager.config.selenium.defaultTimeout
+		assertFalse seleniumManager.config.selenium.slow
 	}
 
 	void testDefaultConfigOverriddenWhenSeleniumConfigFileFound() {
@@ -25,19 +26,34 @@ class SeleniumManagerTests extends GrailsUnitTestCase {
 
 	void testDefaultConfigOverriddenBySystemProperties() {
 		def props = [
-				"selenium.host": "my.host.bv",
-				"selenium.port": "1234",
+				"selenium.browser": "*googlechrome",
+				"selenium.defaultTimeout": "5000",
 				"selenium.slow": "true"
-		]
+		] as Properties
 		mock(System).static.properties.returns(props).atLeastOnce()
 
 		play {
 			seleniumManager.loadConfig()
 		}
 
-		assertEquals "my.host.bv", seleniumManager.config.selenium.host
-		assertEquals 1234, seleniumManager.config.selenium.port
+		assertEquals "*googlechrome", seleniumManager.config.selenium.browser
+		assertEquals 5000, seleniumManager.config.selenium.defaultTimeout
 		assertTrue seleniumManager.config.selenium.slow
+	}
+	
+	void testNestedConfigOverriddenBySystemProperties() {
+		def props = [
+			"selenium.server.host": "my.host.bv",
+			"selenium.server.port": "1234"
+		] as Properties
+		mock(System).static.properties.returns(props).atLeastOnce()
+		
+		play {
+			seleniumManager.loadConfig()
+		}
+		
+		assertEquals "my.host.bv", seleniumManager.config.selenium.server.host
+		assertEquals 1234, seleniumManager.config.selenium.server.port
 	}
 
 }

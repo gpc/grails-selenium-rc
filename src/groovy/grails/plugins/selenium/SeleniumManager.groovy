@@ -1,6 +1,5 @@
 package grails.plugins.selenium
 
-import grails.util.GrailsUtil
 import org.slf4j.LoggerFactory
 
 @Singleton class SeleniumManager {
@@ -14,23 +13,9 @@ import org.slf4j.LoggerFactory
 	// TODO: sucks that these lifecycle methods have to be called in order
 
 	void loadConfig() {
-		config = loadDefaultConfiguration()
-		def configClass = getSeleniumConfigClass()
-		if (configClass) {
-			def slurper = new ConfigSlurper(GrailsUtil.environment)
-			config.merge(slurper.parse(configClass))
-		}
-		config.selenium.each {key, value ->
-			def override = System.properties."selenium.$key"
-			if (override) {
-				if (override in ["true", "false"]) {
-					override = override.toBoolean()
-				} else if (override.isInteger()) {
-					override = override.toInteger()
-				}
-				config.selenium."$key" = override
-			}
-		}
+		def builder = new SeleniumConfigBuilder()
+		builder.loadDefaultConfiguration().mergeApplicationConfig().mergeSystemProperties()
+		config = builder.config
 		log.debug "Selenium config: ${config.flatten()}"
 	}
 
@@ -96,47 +81,6 @@ import org.slf4j.LoggerFactory
 	void stopSelenium() {
 		selenium?.stop()
 		selenium = null
-	}
-
-	private static ConfigObject loadDefaultConfiguration() {
-		def defaultConfig = """
-selenium {
-	server {
-		host = "localhost"
-		port = 4444
-	}
-	browser = "${getDefaultBrowser()}"
-	defaultTimeout = 60000
-	slow = false
-	singleWindow = true
-	windowMaximize = false
-	alwaysCaptureScreenshots = false
-	captureScreenshotOnFailure = false
-	screenshotDir = "./test/reports/screenshots"
-}
-		"""
-		return new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)
-	}
-
-	private static Class getSeleniumConfigClass() {
-		GroovyClassLoader classLoader = new GroovyClassLoader(SeleniumManager.classLoader)
-		try {
-			return classLoader.loadClass('SeleniumConfig')
-		} catch (ClassNotFoundException ex) {
-			log.warn "SeleniumConfig.groovy not found, proceeding without config file"
-			return null
-		}
-	}
-
-	private static getDefaultBrowser() {
-		switch (System.properties."os.name") {
-			case ~/^Mac OS.*/:
-				return "*safari"
-			case ~/^Windows.*/:
-				return "*iexplore"
-			default:
-				return "*firefox"
-		}
 	}
 
 }
