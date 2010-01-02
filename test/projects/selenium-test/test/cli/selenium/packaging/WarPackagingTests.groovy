@@ -18,6 +18,9 @@ class WarPackagingTests extends AbstractCliTestCase {
 			assertEquals "War file should not contain Selenium libraries", [], entryNames.findAll {
 				it =~ /^WEB-INF\/lib\/(\w+\/)*selenium.*\.jar$/
 			}
+			assertEquals "War file should not contain classes from Selenium plugin", [], entryNames.findAll {
+				it =~ /^WEB-INF\/classes\/grails\/plugins\/selenium\//
+			}
 		} finally {
 			zipFile.close()
 		}
