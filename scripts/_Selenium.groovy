@@ -5,7 +5,6 @@ loadSeleniumManagerClass = { ->
 	try {
 		doLoad()
 	} catch (ClassNotFoundException e) {
-		event("StatusUpdate", ["Fucksocks SeleniumManager isn't compiled yet"])
 		includeTargets << grailsScript("_GrailsCompile") 
 		compile()
 		doLoad()
