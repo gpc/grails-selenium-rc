@@ -1,0 +1,40 @@
+task clean << {
+	grails "clean"
+	project("test:projects:selenium-test") {
+		grails "clean", projectDir
+	}
+	project("test:projects:selenium-fixtures") {
+		grails "clean", projectDir
+	}
+	project("test:projects:selenium-headless") {
+		grails "clean", projectDir
+	}
+	project("test:projects:selenium-with-spock") {
+		grails "clean", projectDir
+	}
+}
+
+task test << {
+	grails "test-app unit: other:"
+	project("test:projects:selenium-test") {
+		grails "test-app functional: other:", projectDir
+	}
+	project("test:projects:selenium-fixtures") {
+		grails "test-app functional:", projectDir
+	}
+	project("test:projects:selenium-headless") {
+		grails "test-app other:", projectDir
+	}
+	project("test:projects:selenium-with-spock") {
+		grails "functional:", projectDir
+	}
+}
+
+private grails(String command, File workingDir = projectDir) {
+	println "running grails $command in $workingDir"
+	def grailsProcess = "grails $command".execute([], workingDir)
+	def ins = grailsProcess.inputStream.eachLine {
+		println it
+	}
+	assert grailsProcess.waitFor() == 0, "grails $command failed"
+}

@@ -1,0 +1,1 @@
+include "test:projects:selenium-test", "test:projects:selenium-fixtures", "test:projects:selenium-headless", "test:projects:selenium-with-spock"
