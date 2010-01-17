@@ -1,1 +1,6 @@
-include "test:projects:selenium-test", "test:projects:selenium-fixtures", "test:projects:selenium-headless", "test:projects:selenium-with-spock"
+include "selenium-test", "selenium-fixtures", "selenium-headless", "selenium-with-spock"
+
+project(":selenium-test").projectDir = new File(settingsDir, "test/projects/selenium-test")
+project(":selenium-fixtures").projectDir = new File(settingsDir, "test/projects/selenium-fixtures")
+project(":selenium-headless").projectDir = new File(settingsDir, "test/projects/selenium-headless")
+project(":selenium-with-spock").projectDir = new File(settingsDir, "test/projects/selenium-with-spock")
