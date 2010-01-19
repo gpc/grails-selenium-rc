@@ -1,4 +1,4 @@
-<plugin name='selenium-rc' version='0.2-SNAPSHOT' grailsVersion='1.1 &gt; *'>
+<plugin name='selenium-rc' version='0.2' grailsVersion='1.1 &gt; *'>
   <author>Rob Fletcher</author>
   <authorEmail>rob@energizedwork.com</authorEmail>
   <title>Selenium RC Plugin</title>
