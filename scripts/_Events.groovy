@@ -1,4 +1,5 @@
 includeTargets << new File("$seleniumRcPluginDir/scripts/_Selenium.groovy")
+includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 
 eventCreateWarStart = { warName, stagingDir ->
 	ant.delete dir: "${stagingDir}/WEB-INF/classes/grails/plugins/selenium"
@@ -9,7 +10,7 @@ eventAllTestsStart = {
 	loadSeleniumConfig()
 	
 	def phase = "functional"
-	if (seleniumManager.config.selenium.remote) {
+	if (seleniumConfig.selenium.remote) {
 		event("StatusUpdate", ["Running Selenium in remote mode"])
 		phase = "other"
 	}

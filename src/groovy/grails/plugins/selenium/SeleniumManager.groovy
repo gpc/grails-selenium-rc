@@ -9,16 +9,7 @@ import org.slf4j.LoggerFactory
 	private def seleniumServer
 	ConfigObject config
 	GrailsSelenium selenium
-
-	// TODO: sucks that these lifecycle methods have to be called in order
-
-	void loadConfig() {
-		def builder = new SeleniumConfigBuilder()
-		builder.loadDefaultConfiguration().mergeApplicationConfig().mergeSystemProperties()
-		config = builder.config
-		log.debug "Selenium config: ${config.flatten()}"
-	}
-
+	
 	void startServer(serverJar) {
 		// The Selenium server needs to be loaded into a clean class
 		// loader because the "selenium-server.jar" includes its own
