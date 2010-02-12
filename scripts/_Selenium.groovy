@@ -1,5 +1,3 @@
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-
 seleniumManager = null
 
 target(seleniumInit: "Initialises Selenium manaager") {
@@ -15,7 +13,7 @@ target(startSeleniumServer: "Starts Selenium server") {
 }
 
 target(startSelenium: "Starts Selenium instance, launching a browser window") {
-	depends(configureServerContextPath)
+	depends(configureServerContextPath, createConfig)
 	def url
     if (seleniumManager.config.selenium.url){
         url = seleniumManager.config.selenium.url

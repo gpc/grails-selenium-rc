@@ -1,5 +1,5 @@
 task test << {
 	ant.exec(executable: "grails", dir: "$projectDir", failonerror: true) {
-	    arg line: "test-app other:"
+	    arg line: "-Dgrails.env=myenv test-app other:"
 	}
 }

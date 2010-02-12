@@ -50,7 +50,7 @@ environments {
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
     }
-    test {
+    myenv {
         grails.serverURL = "http://google.com/"
     }
 
