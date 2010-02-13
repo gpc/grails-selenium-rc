@@ -1,6 +1,5 @@
 selenium {
 	remote = true
-	url = "http://www.google.com/"
 /*
 	slow = false								// true to run tests in slow resources mode
 	singleWindow = true							// true for single window mode, false for multi-window mode
@@ -14,4 +13,10 @@ selenium {
 		port = 4444								// the port the selenium server will run on
 	}
 */
+}
+
+environments {
+	test {
+		selenium.url = "http://www.google.com/"
+	}
 }
