@@ -10,7 +10,7 @@ class PluginPackagingTests extends AbstractCliTestCase {
 		assertEquals 0, waitForProcess()
 		verifyHeader()
 
-		def packagedPlugin = new File("grails-selenium-rc-0.2-SNAPSHOT.zip") // TODO: work this out rather than hardcoding
+		def packagedPlugin = new File("grails-selenium-rc-1.0-SNAPSHOT.zip") // TODO: work this out rather than hardcoding
 		assertTrue packagedPlugin.isFile()
 
 		def zipFile = new ZipFile(packagedPlugin)
