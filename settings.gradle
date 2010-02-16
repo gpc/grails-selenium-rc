@@ -1,4 +1,4 @@
-include "selenium-test", "selenium-fixtures", "selenium-headless", "selenium-headless-serverURL", "selenium-with-spock"
+include "selenium-test", "selenium-fixtures", "selenium-headless", "selenium-with-spock"
 
 project(":selenium-test").projectDir = new File(settingsDir, "test/projects/selenium-test")
 project(":selenium-fixtures").projectDir = new File(settingsDir, "test/projects/selenium-fixtures")
