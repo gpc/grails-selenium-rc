@@ -1,27 +1,9 @@
 package grails.plugins.selenium.pageobjects
 
-import grails.plugins.selenium.GrailsSelenium
-import grails.plugins.selenium.SeleniumManager
-
 /**
  * A base page object for scaffolded Grails pages.
  */
-abstract class GrailsPage {
-
-	protected final GrailsSelenium selenium
-
-	GrailsPage() {
-		this.selenium = SeleniumManager.instance.selenium
-		validate()
-	}
-
-	static void open(String uri) {
-		SeleniumManager.instance.selenium.open(uri)
-	}
-
-	void open() {
-		selenium.open(uri)
-	}
+abstract class GrailsPage extends Page {
 
 	/**
 	 * Returns standard Grails flash message text if present, otherwise null.
@@ -46,6 +28,4 @@ abstract class GrailsPage {
 		selenium.clickAndWait ".nav a.list"
 		return new GrailsListPage()
 	}
-
-	protected abstract void validate();
 }
