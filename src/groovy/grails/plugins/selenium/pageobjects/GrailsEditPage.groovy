@@ -6,7 +6,7 @@ package grails.plugins.selenium.pageobjects
 class GrailsEditPage extends GrailsFormPage {
 
 	static GrailsEditPage open(String uri) {
-		GrailsPage.open(uri)
+		Page.open(uri)
 		return new GrailsEditPage()
 	}
 

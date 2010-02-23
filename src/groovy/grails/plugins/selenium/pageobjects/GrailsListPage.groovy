@@ -6,7 +6,7 @@ package grails.plugins.selenium.pageobjects
 class GrailsListPage extends GrailsPage {
 
 	static GrailsListPage open(String uri) {
-		GrailsPage.open(uri)
+		Page.open(uri)
 		return new GrailsListPage()
 	}
 
