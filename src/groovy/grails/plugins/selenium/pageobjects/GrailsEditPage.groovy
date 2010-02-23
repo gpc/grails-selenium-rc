@@ -5,10 +5,9 @@ package grails.plugins.selenium.pageobjects
  */
 class GrailsEditPage extends GrailsFormPage {
 
-	static GrailsEditPage open(String url) {
-		def page = new GrailsEditPage()
-		page.selenium.open url
-		return page
+	static GrailsEditPage open(String uri) {
+		GrailsPage.open(uri)
+		return new GrailsEditPage()
 	}
 
 	GrailsShowPage save() {
@@ -27,6 +26,13 @@ class GrailsEditPage extends GrailsFormPage {
 		selenium.getConfirmation()
 		selenium.waitForPageToLoad "$selenium.defaultTimeout" 
 		return new GrailsListPage()
+	}
+
+	protected void validate() {
+		def title = selenium.title
+		if (!(title ==~ /Create .+/)) {
+			throw new InvalidPageStateException("Incorrect page with title '$title' found")
+		}
 	}
 
 }

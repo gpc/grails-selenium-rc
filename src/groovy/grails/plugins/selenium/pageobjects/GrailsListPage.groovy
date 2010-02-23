@@ -5,10 +5,9 @@ package grails.plugins.selenium.pageobjects
  */
 class GrailsListPage extends GrailsPage {
 
-	static GrailsListPage open(String url) {
-		def page = new GrailsListPage()
-		page.selenium.open url
-		return page
+	static GrailsListPage open(String uri) {
+		GrailsPage.open(uri)
+		return new GrailsListPage()
 	}
 
 	@Lazy List columnNames = (1..columnCount).collect {i ->
@@ -59,6 +58,13 @@ class GrailsListPage extends GrailsPage {
 	GrailsListPage previousPage() {
 		selenium.clickAndWait "css=a.prevLink"
 		return this
+	}
+
+	protected void validate() {
+		def title = selenium.title
+		if (!(title ==~ /.+ List/)) {
+			throw new InvalidPageStateException("Incorrect page with title '$title' found")
+		}
 	}
 
 }

@@ -5,10 +5,9 @@ package grails.plugins.selenium.pageobjects
  */
 class GrailsCreatePage extends GrailsFormPage {
 
-	static GrailsCreatePage open(String url) {
-		def page = new GrailsCreatePage()
-		page.selenium.open url
-		return page
+	static GrailsCreatePage open(String uri) {
+		GrailsPage.open(uri)
+		return new GrailsCreatePage()
 	}
 
 	GrailsShowPage save() {
@@ -19,6 +18,13 @@ class GrailsCreatePage extends GrailsFormPage {
 	GrailsCreatePage saveExpectingFailure() {
 		selenium.clickAndWait "css=.buttons input.save"
 		return this
+	}
+
+	protected void validate() {
+		def title = selenium.title
+		if (!(title ==~ /Create .+/)) {
+			throw new InvalidPageStateException("Incorrect page with title '$title' found")
+		}
 	}
 
 }

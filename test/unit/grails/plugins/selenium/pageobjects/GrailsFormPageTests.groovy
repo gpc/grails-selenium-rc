@@ -34,4 +34,6 @@ class GrailsFormPageTests extends GroovyTestCase {
 	}
 }
 
-class TestFormPage extends GrailsFormPage {}
+class TestFormPage extends GrailsFormPage {
+	protected void validate() { }
+}

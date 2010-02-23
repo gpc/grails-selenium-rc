@@ -12,6 +12,15 @@ abstract class GrailsPage {
 
 	GrailsPage() {
 		this.selenium = SeleniumManager.instance.selenium
+		validate()
+	}
+
+	static void open(String uri) {
+		SeleniumManager.instance.selenium.open(uri)
+	}
+
+	void open() {
+		selenium.open(uri)
 	}
 
 	/**
@@ -38,4 +47,5 @@ abstract class GrailsPage {
 		return new GrailsListPage()
 	}
 
+	protected abstract void validate();
 }

@@ -8,38 +8,37 @@ import org.gmock.WithGMock
 class GrailsShowPageTests extends GroovyTestCase {
 
 	def selenium
-	GrailsShowPage page
 
 	void setUp() {
 		super.setUp()
 
 		selenium = mock(GrailsSelenium)
 		SeleniumManager.instance.selenium = selenium
-
-		page = new TestShowPage()
 	}
 
 	void testPropertyGetDelegatedToTable() {
+		selenium.getTitle().returns("Show Thing")
 		selenium.getXpathCount("//table/tbody/tr").returns(2)
 		selenium.getTable("//table.0.0").returns("name")
 		selenium.getTable("//table.0.1").returns("Rob")
 		selenium.getTable("//table.1.0").returns("email")
 		selenium.getTable("//table.1.1").returns("rob@energizedwork.com")
 		play {
+			def page = new GrailsShowPage()
 			assertEquals "Rob", page.name
 			assertEquals "rob@energizedwork.com", page.email
 		}
 	}
 
 	void testUnknownPropertiesHandledCorrectly() {
+		selenium.getTitle().returns("Show Thing")
 		selenium.getXpathCount("//table/tbody/tr").returns(1)
 		selenium.getTable("//table.0.0").returns("name")
 		play {
+			def page = new GrailsShowPage()
 			shouldFail(MissingPropertyException) {
 				page.foo
 			}
 		}
 	}
 }
-
-class TestShowPage extends GrailsShowPage {}
