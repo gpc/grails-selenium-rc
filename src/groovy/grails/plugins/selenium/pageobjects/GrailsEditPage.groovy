@@ -30,7 +30,7 @@ class GrailsEditPage extends GrailsFormPage {
 
 	protected void validate() {
 		def title = selenium.title
-		if (!(title ==~ /Create .+/)) {
+		if (!(title ==~ /Edit .+/)) {
 			throw new InvalidPageStateException("Incorrect page with title '$title' found")
 		}
 	}
