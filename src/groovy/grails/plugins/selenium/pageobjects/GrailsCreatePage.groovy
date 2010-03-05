@@ -10,6 +10,14 @@ class GrailsCreatePage extends GrailsFormPage {
 		return new GrailsCreatePage()
 	}
 
+	GrailsCreatePage() {
+		super(/Create \w+/)
+	}
+
+	GrailsCreatePage(String expectedTitle) {
+		super(expectedTitle)
+	}
+
 	GrailsShowPage save() {
 		selenium.clickAndWait "css=.buttons input.save"
 		return new GrailsShowPage()
@@ -18,13 +26,6 @@ class GrailsCreatePage extends GrailsFormPage {
 	GrailsCreatePage saveExpectingFailure() {
 		selenium.clickAndWait "css=.buttons input.save"
 		return this
-	}
-
-	protected void validate() {
-		def title = selenium.title
-		if (!(title ==~ /Create .+/)) {
-			throw new InvalidPageStateException("Incorrect page with title '$title' found")
-		}
 	}
 
 }

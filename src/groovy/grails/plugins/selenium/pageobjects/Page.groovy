@@ -5,11 +5,17 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import grails.plugins.selenium.GrailsSelenium
 
 abstract class Page {
-	
+
 	protected final GrailsSelenium selenium
+	private final String expectedTitle
 
 	Page() {
+		this(null)
+	}
+
+	Page(String expectedTitle) {
 		this.selenium = SeleniumManager.instance.selenium
+		this.expectedTitle = expectedTitle
 		validate()
 	}
 
@@ -19,10 +25,17 @@ abstract class Page {
 		}
 		SeleniumManager.instance.selenium.open(uri)
 	}
-	
+
 	static String getContext() {
 		ConfigurationHolder.config.grails.app.context
 	}
 
-	protected abstract void validate() throws InvalidPageStateException;
+	protected void validate() throws InvalidPageStateException {
+		if (expectedTitle) {
+			def title = selenium.title
+			if (!(title ==~ expectedTitle)) {
+				throw new InvalidPageStateException("Expected page title '$expectedTitle' but found '$title'")
+			}
+		}
+	}
 }

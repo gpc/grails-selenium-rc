@@ -10,6 +10,14 @@ class GrailsShowPage extends GrailsPage {
 		return new GrailsShowPage()
 	}
 
+	GrailsShowPage() {
+		super(/Show \w+/)
+	}
+
+	GrailsShowPage(String expectedTitle) {
+		super(expectedTitle)
+	}
+
 	@Lazy List fieldNames = (0..<fieldCount).collect {i ->
 		selenium.getTable("//table.$i.0").replaceAll(/[^\w\s]+/, "")
 	}
@@ -40,13 +48,6 @@ class GrailsShowPage extends GrailsPage {
 		selenium.getConfirmation()
 		selenium.waitForPageToLoad "$selenium.defaultTimeout"
 		return new GrailsListPage()
-	}
-
-	protected void validate() {
-		def title = selenium.title
-		if (!(title ==~ /Show .+/)) {
-			throw new InvalidPageStateException("Incorrect page with title '$title' found")
-		}
 	}
 
 }

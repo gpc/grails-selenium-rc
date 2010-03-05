@@ -10,6 +10,14 @@ class GrailsListPage extends GrailsPage {
 		return new GrailsListPage()
 	}
 
+	GrailsListPage() {
+		super(/\w+ List/)
+	}
+
+	GrailsListPage(String expectedTitle) {
+		super(expectedTitle)
+	}
+
 	@Lazy List columnNames = (1..columnCount).collect {i ->
 		selenium.getText("//table/thead/tr/th[$i]")
 	}
@@ -58,13 +66,6 @@ class GrailsListPage extends GrailsPage {
 	GrailsListPage previousPage() {
 		selenium.clickAndWait "css=a.prevLink"
 		return this
-	}
-
-	protected void validate() {
-		def title = selenium.title
-		if (!(title ==~ /.+ List/)) {
-			throw new InvalidPageStateException("Incorrect page with title '$title' found")
-		}
 	}
 
 }

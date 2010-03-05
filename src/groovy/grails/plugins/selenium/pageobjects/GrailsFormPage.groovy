@@ -5,6 +5,14 @@ package grails.plugins.selenium.pageobjects
  */
 abstract class GrailsFormPage extends GrailsPage {
 
+	GrailsFormPage() {
+		super(null)
+	}
+
+	GrailsFormPage(String expectedTitle) {
+		super(expectedTitle)
+	}
+
 	/**
 	 * Returns standard Grails form error messages if present, otherwise empty list.
 	 */

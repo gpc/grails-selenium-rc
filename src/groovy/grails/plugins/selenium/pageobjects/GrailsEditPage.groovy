@@ -10,6 +10,14 @@ class GrailsEditPage extends GrailsFormPage {
 		return new GrailsEditPage()
 	}
 
+	GrailsEditPage() {
+		super(/Edit \w+/)
+	}
+
+	GrailsEditPage(String expectedTitle) {
+		super(expectedTitle)
+	}
+
 	GrailsShowPage save() {
 		selenium.clickAndWait "css=.buttons input.save"
 		return new GrailsShowPage()
@@ -26,13 +34,6 @@ class GrailsEditPage extends GrailsFormPage {
 		selenium.getConfirmation()
 		selenium.waitForPageToLoad "$selenium.defaultTimeout" 
 		return new GrailsListPage()
-	}
-
-	protected void validate() {
-		def title = selenium.title
-		if (!(title ==~ /Edit .+/)) {
-			throw new InvalidPageStateException("Incorrect page with title '$title' found")
-		}
 	}
 
 }

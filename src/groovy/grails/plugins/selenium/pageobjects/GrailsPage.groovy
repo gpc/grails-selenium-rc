@@ -5,6 +5,14 @@ package grails.plugins.selenium.pageobjects
  */
 abstract class GrailsPage extends Page {
 
+	GrailsPage() {
+		super(null)
+	}
+
+	GrailsPage(String expectedTitle) {
+		super(expectedTitle)
+	}
+
 	/**
 	 * Returns standard Grails flash message text if present, otherwise null.
 	 */
