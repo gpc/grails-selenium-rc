@@ -1,0 +1,48 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>5. Data Driving Selenium Tests</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		<h1><a name="5. Data Driving Selenium Tests">5. Data Driving Selenium Tests</a></h1><h2>Data Driving Selenium Tests</h2>
+One of the most important considerations when writing Selenium tests is how to set up the data that the tests require.
+If you are purely running your Selenium tests against localhost this is actually reasonably straightforward. Since the
+Selenium tests are running in the same JVM as the Grails application under test, the tests have direct access to the
+application's domain objects and can set up data very easily. Note: this is <strong class="bold">not</strong> the case when running Selenium tests
+against a remote application, i.e. when {selenium.remote = true} is set. For example:<p class="paragraph"/><div class="code"><pre>void testSongsAppearInList() &#123;
+    Song.withTransaction &#123;
+        <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"Heads Will Roll"</span>, artist: <span class="java&#45;quote">"Yeah Yeah Yeahs"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
+        <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"Twilight Galaxy"</span>, artist: <span class="java&#45;quote">"Metric"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
+        <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"I'm Confused"</span>, artist: <span class="java&#45;quote">"Handsome Furs"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
+    &#125;
+    selenium.open <span class="java&#45;quote">"$contextPath/song/list"</span>
+    assertEquals 3, selenium.getXpathCount(<span class="java&#45;quote">"//table/tbody/tr"</span>)
+&#125;</pre></div><p class="paragraph"/>Using a <code>withTransaction</code> block ensures you won't have problems with lazy-loading, failed data setup will get rolled
+back immediately and the data will be committed to the database before the browser hits the page. I also find that
+errors are reported better when data setup does fail.<p class="paragraph"/>Data can also be set up in the <code>setUp</code> method of the test case in exactly the same way.<p class="paragraph"/><h3>Using the Build Test Data plugin</h3>
+The <a href="http://grails.org/plugin/build-test-data" target="blank">Build Test Data plugin</a> is very useful once your domain model goes beyond
+a trivial level of complexity and it can also be used directly in Selenium tests:<p class="paragraph"/><div class="code"><pre>void testSongsAppearInList() &#123;
+    Song.withTransaction &#123;
+        3.times &#123;
+            Song.build() // assume we have some nice defaults in TestDataConfig.groovy
+        &#125;
+    &#125;
+    selenium.open <span class="java&#45;quote">"$contextPath/song/list"</span>
+    assertEquals 3, selenium.getXpathCount(<span class="java&#45;quote">"//table/tbody/tr"</span>)
+&#125;</pre></div><p class="paragraph"/>An alternative to the build test data is the <a href="http://grails.org/plugin/fixtures" target="blank">Fixtures plugin</a> which can also be used
+directly from Selenium tests.<p class="paragraph"/><h3>Tearing data down</h3>
+The difficulty with data-driving Selenium tests like this is that unlike integration tests they are not run in a
+transactional context. Even if they were the problem would still arise as data modifications made using the browser
+(e.g. submitting an update form) would not be part of the same transaction. To keep your tests isolated from one
+another it is <em class="italic">critical</em> to use <code>tearDown</code> effectively in your tests to prevent data from one test 'bleeding over' into
+the next. With the examples above I could implement <code>tearDown</code> like this:<p class="paragraph"/><div class="code"><pre>void tearDown() &#123;
+    <span class="java&#45;keyword">super</span>.tearDown()
+    Song.withTransaction &#123;
+        Song.list()&#42;.delete()
+    &#125;
+&#125;</pre></div><p class="paragraph"/>The <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems
+deleting will get reported right away causing the test to fail.
+
+	</body>
+</html>

@@ -1,0 +1,209 @@
+<html>
+	<head>
+		  <title>selenium-rc 1.0-SNAPSHOT - Reference Documentation</title>
+		  <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Style" charset="utf-8">	
+	</head>
+    <body class="body">
+		<div id="header">
+				<div class="images"><br><br>
+				   <a href="http://grails.org"  target="_blank"><img alt="The Grails Framework" src="../img/grails.png" border="0"></a>
+				   <span style="right:30px; top:20px; position:absolute;">
+					<a href="../index.html" target="_top">Frames</a> | <a href="index.html" target="_top">No Frames</a><br><br>
+                     <a alt="SpringSource - A Division of VMware" href="http://springsource.com" target="_blank"><img src="../img/springsource-logo.png" border="0"></a>					
+					</span>					
+				</div>
+				<div class="message">selenium-rc</div>
+				<h1>selenium-rc - Reference Documentation</h1>
+				<p><strong>Authors:</strong> </p>
+				<p><strong>Version:</strong> 1.0-SNAPSHOT</p>				
+				<em></em>
+		</div>                       
+		
+		<div id="toc">  
+			<h2>Table of Contents</h2>
+			<div class="tocItem" style="margin-left:0px"><a href="#1. Index">1. Index</a></div><div class="tocItem" style="margin-left:0px"><a href="#2. Writing Selenium Tests">2. Writing Selenium Tests</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.1. Using The SeleniumTest Mixin">2.1. Using The SeleniumTest Mixin</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.2. Extending GrailsSeleniumTestCase">2.2. Extending GrailsSeleniumTestCase</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.3. Using The Page Object Pattern">2.3. Using The Page Object Pattern</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.4. Using Other Testing Frameworks">2.4. Using Other Testing Frameworks</a></div><div class="tocItem" style="margin-left:0px"><a href="#3. Running Selenium Tests">3. Running Selenium Tests</a></div><div class="tocItem" style="margin-left:0px"><a href="#4. Configuration">4. Configuration</a></div><div class="tocItem" style="margin-left:0px"><a href="#5. Data Driving Selenium Tests">5. Data Driving Selenium Tests</a></div><div class="tocItem" style="margin-left:0px"><a href="#6. Continuous Integration">6. Continuous Integration</a></div>
+		</div>     
+		<div id="content">
+			<h1><a name="1. Index">1. Index</a></h1>The Selenium RC plugin aims to make <a href="http://seleniumhq.org/projects/remote-control/" target="blank">Selenium RC</a> a first class functional
+testing option for Grails.<p class="paragraph"/><h2>Contents</h2>
+<ol>
+<li>Selenium RC Writing Selenium Tests</li>
+<li>Selenium RC Running Selenium Tests</li>
+<li>Selenium RC Configuration</li>
+<li>Selenium RC Data Driving Tests</li>
+<li>Selenium RC Continuous Integration</li>
+</ol><p class="paragraph"/><h2>Source Code</h2>
+Source code for the plugin is hosted on <a href="http://github.com/robfletcher/grails-selenium-rc" target="blank">GitHub</a>. Please feel free to
+fork the project and submit pull requests back to the trunk.<p class="paragraph"/><h2>Bugs and Feature Requests</h2>
+Please raise bugs and feature requests against <a href="http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229" target="blank">Grails-Selenium-RC on JIRA</a>.<p class="paragraph"/><h2>Roadmap</h2>
+<ul class="minus">
+<li>Allow Selenium Server and browser to be started and tests to be run interactively against them.</li>
+<li>Support automatic generation of screenshots when assertions fail.</li>
+<li><a href="http://selenium-grid.seleniumhq.org/" target="blank">Selenium Grid</a> support.</li>
+<li>Support for other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a>, <a href="http://testng.org/" target="blank">TestNG</a>, etc.</li>
+</ul><p class="paragraph"/><h2>Changelog</h2>
+<h4>Version 0.1.1</h4>
+Fixes&#8230;
+<ul class="star">
+<li>Fixed default Selenium URL to respect <code>server.port</code> setting, etc.</li>
+<li>Fixed contextPath handling when <code>app.context</code> is set in Config</li>
+<li>Removed <code>ArrayCategory</code> class causing <code>VerifyError</code> in some odd circumstances</li>
+</ul><p class="paragraph"/>New Features&#8230;
+<ul class="star">
+<li>Can now negate dynamic <em class="italic">assert/verify/waitFor</em> calls in <code>GrailsSeleniumTestCase</code></li>
+</ul><p class="paragraph"/><h4>Version 0.1</h4>
+<ul class="minus">
+<li>Initial release</li>
+</ul><p class="paragraph"/><h1><a name="2. Writing Selenium Tests">2. Writing Selenium Tests</a></h1><h2>Writing Selenium Tests</h2>
+Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if
+you wish.<p class="paragraph"/><blockquote class="note">
+You should <em class="italic">not</em> extend any of the base test classes in the Selenium API such as
+<code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestCase.html" target="blank">SeleneseTestCase</a></code>
+or <code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html" target="blank">GroovySeleneseTestCase</a></code>
+as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single
+test! The plugin starts a Selenium instance for you when <code>grails test-app</code> runs the functional test phase. Your tests
+simply need to connect to that running Selenium instance.
+</blockquote><p class="paragraph"/>There are several options available for writing Selenium tests:
+<ol>
+<li>Selenium RC Using The SeleniumTest Mixin</li>
+<li>Selenium RC Extending GrailsSeleniumTestCase</li>
+<li>Selenium RC Using The Page Object Pattern</li>
+</ol><p class="paragraph"/>You are not limited to writing Selenium tests as JUnit test cases.
+<ol>
+<li>Selenium RC Using Other Testing Frameworks</li>
+</ol><p class="paragraph"/><h2><a name="2.1. Using The SeleniumTest Mixin">2.1. Using The SeleniumTest Mixin</a></h2><h2>Using The SeleniumTest Mixin</h2>
+The simplest way to write Selenium tests is to create a class that extends <code>GroovyTestCase</code> and add the <code>SeleniumTest</code>
+mixin that the plugin provides. The mixin class makes several properties and methods available, the most crucial of
+which is the running <code>Selenium</code> instance. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.plugins.selenium.SeleniumTest<p class="paragraph"/>@Mixin(SeleniumTest)
+class HomepageTests <span class="java&#45;keyword">extends</span> GroovyTestCase &#123;
+    void testHomepageLoads() &#123;
+        selenium.open <span class="java&#45;quote">"$contextPath/"</span>
+        assertTrue selenium.isTextPresent(<span class="java&#45;quote">"Welcome to Grails"</span>)
+    &#125;
+&#125;</pre></div><p class="paragraph"/>References to the <code>selenium</code> property in the test will get the running <code>Selenium</code> instance from the mixin class. You
+might also notice the <code>contextPath</code> property used in the <code>open</code> call. This is also provided by the mixin class and is a
+reference to the context that your application is running under.<p class="paragraph"/><h3>Properties and methods of the SeleniumTest mixin</h3>
+<table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Name</strong></th><th><strong class="bold">Description</strong></th></tr><tr class="table-odd"><td>selenium</td><td>The running Selenium instance that is used to interact with the browser.</td></tr><tr class="table-even"><td>contextPath</td><td>The URL context path of the application under test. This needs to be prepended to all URLs you open with selenium.</td></tr><tr class="table-odd"><td>config</td><td>The Selenium configuration object.</td></tr><tr class="table-even"><td>waitFor(String, Closure)</td><td>A method that allows your test to wait for some condition to become true.</td></tr></table><p class="paragraph"/><h3>Using the waitFor method</h3>
+The <code>waitFor</code> method is particularly useful when testing rich UIs where clicks do not cause the entire page to refresh
+but instead trigger AJAX actions that update portions of the page asynchronously. For example to click a button then
+wait for some text to appear before proceeding:<p class="paragraph"/><div class="code"><pre>selenium.click(<span class="java&#45;quote">"myButton"</span>)
+waitFor(<span class="java&#45;quote">"Clicking myButtonId should have updated myDiv via AJAX"</span>) &#123;
+    selenium.getText(<span class="java&#45;quote">"myDiv"</span>) == <span class="java&#45;quote">"Some value"</span>
+&#125;</pre></div><p class="paragraph"/>The <code>waitFor</code> method will fail if the expected condition does not hold true after the default timeout specified with
+<code>selenium.defaultTimeout</code> in your <code>SeleniumConfig.groovy</code> file or 60 seconds if you have not specified a value.<p class="paragraph"/>The message argument is optional but greatly assists in analysing test failures so it is recommended that you always
+provide it.
+<h2><a name="2.2. Extending GrailsSeleniumTestCase">2.2. Extending GrailsSeleniumTestCase</a></h2><h2>Extending GrailsSeleniumTestCase</h2>
+Instead of using the <code>SeleniumTest</code> mixin you can extend <code>grails.plugins.selenium.GrailsSeleniumTestCase</code> which provides
+everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions
+provided by the <code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestBase.html" target="blank">SeleneseTestBase</a></code>
+class as well as the various <code>verify</code> methods, the <code>seleniumEquals</code> method, etc. See the documentation for <code>SeleneseTestBase</code> for
+details.<p class="paragraph"/><h3>Using assert, verify and waitFor convenience methods</h3>
+Extending <code>GrailsSeleniumTestCase</code> enables you to directly <em class="italic">assert, verify</em> or <em class="italic">waitFor</em> certain Selenium conditions. Any
+<code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a></code>
+method starting with <em class="italic">is</em> can be used as a boolean assertion by replacing the <em class="italic">is</em> with <em class="italic">assert, verify</em> or <em class="italic">waitFor</em> in
+the method call. Likewise any <code>Selenium</code> method starting with <em class="italic">get</em> can be used as an equality assertion. The following
+table gives some examples:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Without GrailsSeleniumTestCase</strong></th><th><strong class="bold">With GrailsSeleniumTestCase</strong></th></tr><tr class="table-odd"><td>assertTrue selenium.isTextPresent("Welcome to Grails")</td><td>assertTextPresent("Welcome to Grails")</td></tr><tr class="table-even"><td>verifyTrue selenium.isVisible("myElement")</td><td>verifyVisible("myElement")</td></tr><tr class="table-odd"><td>waitFor { selenium.isAlertPresent() }</td><td>waitForAlertPresent()</td></tr><tr class="table-even"><td>assertEquals("Expected text", selenium.getText("myElement"))</td><td>assertText("Expected text", "myElement")</td></tr><tr class="table-odd"><td>waitFor { selenium.getXpathCount("//ul/li") == 3 }</td><td>waitForXpathCount 3, "//ul/li"</td></tr></table><p class="paragraph"/>You can also use <em class="italic">assertNot&#42;, verifyNot&#42;</em> and <em class="italic">waitForNot&#42;</em> to test negated conditions.<p class="paragraph"/>Currently there is no way to pass message arguments to these convenience methods, although this will hopefully be added
+in a future version of the plugin.
+<h2><a name="2.3. Using The Page Object Pattern">2.3. Using The Page Object Pattern</a></h2><h2>Using The 'Page Object' Pattern</h2>
+Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSeleniumTestCase</code> your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
+<ul class="star">
+<li>Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and therefore require you to hunt out instances if you change the page structure.</li>
+<li>Multiple Selenium commands representing a single <em class="italic">logical</em> action may be repeated in several tests or grouped together into utility classes that can easily get out of control and turn into 'God Objects'.</li>
+</ul><p class="paragraph"/>To truly decouple the functional intent of your tests from the raw Selenium interactions you can write 'page objects'. A page object represents a particular page within your application and defines methods and properties that allow your tests to interact with the page. The tests interact with the page objects, not directly with Selenium so they operate at a layer of abstraction from the fine details of the page. The advantages of this pattern include:
+<ul class="star">
+<li>Details of page can be refactored more easily as changes only need to be reflected in the page object, not the tests themselves.</li>
+<li>Complex interactions can be modelled in methods on the page object, meaning they can be reused in multiple tests.</li>
+<li>Navigation actions can be modelled as page object methods that return instances of other page objects representing the user's journey through the application.</li>
+<li>Page objects are very easy to write, can be expanded as necessary and greatly enhance the simplicity and readability of your tests.</li>
+</ul><p class="paragraph"/>When using the page object pattern your test classes can simply extend GroovyTestCase as they will not interact directly with Selenium.
+<h2><a name="2.4. Using Other Testing Frameworks">2.4. Using Other Testing Frameworks</a></h2><h2>Using Other Testing Frameworks</h2>
+Selenium tests do not have to be written as JUnit test cases. Theoretically the <code>SeleniumTest</code> mixin could be applied to
+almost any test case written in another framework. Page objects are also agnostic of the test framework.<p class="paragraph"/>Currently the plugin has tested support for the
+<a href="http://grails.org/plugin/spock" target="blank">Spock Plugin</a>. Other testing frameworks such as EasyB, TestNG, JUnit 4, etc. may well work already and support
+is planned in future versions of the Selenium plugin.<p class="paragraph"/>To write Selenium tests using Spock, simply create your specification under <code>test/selenium</code> and (if you are not using page objects) use the <code>SeleniumTest</code> mixin then run tests as normal. For example:
+<div class="code"><pre><span class="java&#45;keyword">import</span> spock.lang.&#42;
+<span class="java&#45;keyword">import</span> grails.plugins.selenium.&#42;<p class="paragraph"/>@Mixin(SeleniumTest)
+class HomepageSpecification <span class="java&#45;keyword">extends</span> Specification &#123;
+    def <span class="java&#45;quote">"user can load application homepage"</span>() &#123;
+        when:
+            selenium.open(contextPath)
+        then:
+            selenium.isTextPresent(<span class="java&#45;quote">"Welcome to Grails"</span>)
+    &#125;
+&#125;</pre></div><p class="paragraph"/>You can isolate Spock Selenium tests with <code>grails test-app :spock-selenium</code> or <code>grails test-app functional:spock-selenium</code> just as you can for other test types. 
+<h1><a name="3. Running Selenium Tests">3. Running Selenium Tests</a></h1><h2>Running Selenium Tests</h2>
+Selenium tests are placed in <code>test/selenium</code> and are executed as part of the functional test phase with the standard 
+<code>grails test-app</code> or <code>grails test-app -functional</code> commands. As with unit and integration tests you can run individual tests or
+groups of tests by specifying the test names without the <em class="italic">"Tests"</em> suffix. Again, like unit and integration tests
+you can use <code>grails test-app -rerun</code> to rerun failing tests.<p class="paragraph"/>In Grails 1.2 you can use the new syntax to isolate Selenium tests, for example <code>grails test-app :selenium</code><p class="paragraph"/>The plugin will automatically start Selenium Server and Selenium instances at the start of the suite and close them
+down cleanly at the end so your tests do not need to (and indeed should not) do so.<p class="paragraph"/><h3>Browser Peculiarities</h3>
+The table below summarises browser/OS combinations that the plugin has been tested with and any issues known to exist
+with particular combinations. Please note these are likely issues of the Selenium library (or even the underlying
+browser) rather than anything the plugin can do anything about.<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Browser</strong></th><th><strong class="bold">selenium.browser</strong></th><th><strong class="bold">Operating System</strong></th><th><strong class="bold">Comments</strong></th></tr><tr class="table-odd"><td>Firefox 3</td><td>&#42;firefox</td><td>Linux</td><td>Works perfectly.</td></tr><tr class="table-even"><td>Firefox 3.5</td><td>&#42;firefox</td><td>Linux</td><td>Works perfectly.</td></tr><tr class="table-odd"><td>Firefox 3.5</td><td>&#42;firefox</td><td>OSX 10.6</td><td>Selenium is unable to launch the browser  due to a Selenium bug: http://jira.openqa.org/browse/SRC-743.</td></tr><tr class="table-even"><td>Safari 4</td><td>&#42;safari</td><td>OSX 10.6</td><td>Multi-window mode doesn't work.</td></tr><tr class="table-odd"><td>Firefox 3.5</td><td>&#42;firefox</td><td>Windows XP</td><td>Works perfectly.</td></tr><tr class="table-even"><td>Google Chrome</td><td>&#42;googlechrome</td><td>Windows XP</td><td>Works perfectly.</td></tr><tr class="table-odd"><td>Internet Explorer 6</td><td>&#42;iexplore</td><td>Windows XP</td><td>Javascript errors in single window mode every time a page opens. The dragAndDropToObject command can fail if the target is outside the viewport - suggested workaround is to have your test call selenium.windowMaximize().</td></tr><tr class="table-even"><td>Internet Explorer 7</td><td>&#42;iexplore</td><td>Windows XP</td><td>See Internet Explorer 6.</td></tr><tr class="table-odd"><td>Opera 9</td><td>&#42;opera</td><td>Windows XP</td><td>Works perfectly.</td></tr><tr class="table-even"><td>Safari 4</td><td>&#42;safari</td><td>Windows XP</td><td>Multi-window mode doesn't work.</td></tr></table><p class="paragraph"/>If you are able to add to this list, whether to report issues or confirm success with particular browser/OS combinations
+please contact the plugin author.
+<h1><a name="4. Configuration">4. Configuration</a></h1><h2>Configuration</h2>
+Installing the plugin should create an empty configuration file in <code>grails-app/conf/SeleniumConfig.groovy</code> that can be
+customised according to your requirements. Configuration values are:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Config Key</strong></th><th><strong class="bold">Description</strong></th><th><strong class="bold">Default</strong></th></tr><tr class="table-odd"><td>selenium.browser</td><td>The browser Selenium will use.</td><td>&#42;firefox on Linux, &#42;safari on OSX, &#42;iexplore on Windows</td></tr><tr class="table-even"><td>selenium.defaultTimeout</td><td>The timeout in milliseconds that Selenium will use when waiting for a page to load or using the waitFor method</td><td>60000</td></tr><tr class="table-odd"><td>selenium.remote</td><td>If set to true the test will run in the "other" phase rather than "functional" and therefore the app will not be started. This is useful for running tests against a running application instance.</td><td>false</td></tr><tr class="table-even"><td>selenium.server.host</td><td>The host the Selenium Server will run on.</td><td>localhost</td></tr><tr class="table-odd"><td>selenium.server.port</td><td>The port the Selenium Server will run on.</td><td>4444</td></tr><tr class="table-even"><td>selenium.singleWindow</td><td>If false Selenium will run in multiple windows which can be useful if your app has frame escape code. Note: this config value is ignored when selenium.browser is &#42;iexplore or &#42;safari as certain modes do not work with those browsers.</td><td>true unless browser is Internet Explorer.</td></tr><tr class="table-odd"><td>selenium.slowResources</td><td>If set to true the Selenium tests will run slowly.</td><td>false</td></tr><tr class="table-even"><td>selenium.url</td><td>The base URL where the tests will be run.</td><td>The Grails server URL (grails.serverURL in the application config)</td></tr><tr class="table-odd"><td>selenium.windowMaximize</td><td>If set to true the browser window will be maximized when opened. This has no effect in single window mode.</td><td>false</td></tr></table><p class="paragraph"/>Environment specific configuration can be included in <code>SeleniumConfig.groovy</code> just as it can in Grails' regular
+<code>Config.groovy</code> file. For example:<p class="paragraph"/><div class="code"><pre>selenium &#123;
+    host = <span class="java&#45;quote">"localhost"</span>
+    port = 1234
+&#125;
+environments &#123;
+    test &#123;
+        selenium.host = <span class="java&#45;quote">"my.host.bv"</span>
+        selenium.port = 5678
+    &#125;
+&#125;</pre></div><p class="paragraph"/><h3>Using System Properties</h3>
+All configuration values can be overridden using system properties. This is probably most useful for overriding the
+browser used on individual developers' machines or on continuous integration environments without affecting the
+project-wide settings. For example to run Selenium tests using Firefox instead of your platform's default browser you
+can use <code>grails -Dselenium.browser=*firefox test-app</code> directly on the command line. To make such settings permanent on an individual machine add the
+required settings to the <code>JAVA_OPTS</code> environment variable. For example, add
+<code>export JAVA_OPTS="$JAVA_OPTS -Dselenium.browser=*firefox"</code> to your <code>~/.profile</code> file (on Windows environment variables
+are set in the <em class="italic">Advanced</em> tab of the <em class="italic">System Properties</em> window).
+<h1><a name="5. Data Driving Selenium Tests">5. Data Driving Selenium Tests</a></h1><h2>Data Driving Selenium Tests</h2>
+One of the most important considerations when writing Selenium tests is how to set up the data that the tests require.
+If you are purely running your Selenium tests against localhost this is actually reasonably straightforward. Since the
+Selenium tests are running in the same JVM as the Grails application under test, the tests have direct access to the
+application's domain objects and can set up data very easily. Note: this is <strong class="bold">not</strong> the case when running Selenium tests
+against a remote application, i.e. when {selenium.remote = true} is set. For example:<p class="paragraph"/><div class="code"><pre>void testSongsAppearInList() &#123;
+    Song.withTransaction &#123;
+        <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"Heads Will Roll"</span>, artist: <span class="java&#45;quote">"Yeah Yeah Yeahs"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
+        <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"Twilight Galaxy"</span>, artist: <span class="java&#45;quote">"Metric"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
+        <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"I'm Confused"</span>, artist: <span class="java&#45;quote">"Handsome Furs"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
+    &#125;
+    selenium.open <span class="java&#45;quote">"$contextPath/song/list"</span>
+    assertEquals 3, selenium.getXpathCount(<span class="java&#45;quote">"//table/tbody/tr"</span>)
+&#125;</pre></div><p class="paragraph"/>Using a <code>withTransaction</code> block ensures you won't have problems with lazy-loading, failed data setup will get rolled
+back immediately and the data will be committed to the database before the browser hits the page. I also find that
+errors are reported better when data setup does fail.<p class="paragraph"/>Data can also be set up in the <code>setUp</code> method of the test case in exactly the same way.<p class="paragraph"/><h3>Using the Build Test Data plugin</h3>
+The <a href="http://grails.org/plugin/build-test-data" target="blank">Build Test Data plugin</a> is very useful once your domain model goes beyond
+a trivial level of complexity and it can also be used directly in Selenium tests:<p class="paragraph"/><div class="code"><pre>void testSongsAppearInList() &#123;
+    Song.withTransaction &#123;
+        3.times &#123;
+            Song.build() // assume we have some nice defaults in TestDataConfig.groovy
+        &#125;
+    &#125;
+    selenium.open <span class="java&#45;quote">"$contextPath/song/list"</span>
+    assertEquals 3, selenium.getXpathCount(<span class="java&#45;quote">"//table/tbody/tr"</span>)
+&#125;</pre></div><p class="paragraph"/>An alternative to the build test data is the <a href="http://grails.org/plugin/fixtures" target="blank">Fixtures plugin</a> which can also be used
+directly from Selenium tests.<p class="paragraph"/><h3>Tearing data down</h3>
+The difficulty with data-driving Selenium tests like this is that unlike integration tests they are not run in a
+transactional context. Even if they were the problem would still arise as data modifications made using the browser
+(e.g. submitting an update form) would not be part of the same transaction. To keep your tests isolated from one
+another it is <em class="italic">critical</em> to use <code>tearDown</code> effectively in your tests to prevent data from one test 'bleeding over' into
+the next. With the examples above I could implement <code>tearDown</code> like this:<p class="paragraph"/><div class="code"><pre>void tearDown() &#123;
+    <span class="java&#45;keyword">super</span>.tearDown()
+    Song.withTransaction &#123;
+        Song.list()&#42;.delete()
+    &#125;
+&#125;</pre></div><p class="paragraph"/>The <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems
+deleting will get reported right away causing the test to fail.
+<h1><a name="6. Continuous Integration">6. Continuous Integration</a></h1><h2>Continuous Integration</h2><p class="paragraph"/>_Documentation coming soon._
+         			
+		</div>
+		<div id="footer">
+			  
+		</div>	
+	</body>
+</html>
