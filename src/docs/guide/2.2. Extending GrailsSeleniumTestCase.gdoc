@@ -1,4 +1,3 @@
-h2. Extending GrailsSeleniumTestCase
 Instead of using the @SeleniumTest@ mixin you can extend @grails.plugins.selenium.GrailsSeleniumTestCase@ which provides
 everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions
 provided by the @[SeleneseTestBase|http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestBase.html]@

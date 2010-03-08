@@ -1,4 +1,3 @@
-h2. Configuration
 Installing the plugin should create an empty configuration file in @grails-app/conf/SeleniumConfig.groovy@ that can be
 customised according to your requirements. Configuration values are:
 
@@ -10,7 +9,7 @@ selenium.remote | If set to true the test will run in the "other" phase rather t
 selenium.server.host | The host the Selenium Server will run on. | localhost
 selenium.server.port | The port the Selenium Server will run on. | 4444
 selenium.singleWindow | If false Selenium will run in multiple windows which can be useful if your app has frame escape code. Note: this config value is ignored when selenium.browser is \*iexplore or \*safari as certain modes do not work with those browsers. | true unless browser is Internet Explorer.
-selenium.slowResources | If set to true the Selenium tests will run slowly. | false
+selenium.slow | If set to true the Selenium tests will run slowly. | false
 selenium.url | The base URL where the tests will be run. | The Grails server URL (grails.serverURL in the application config)
 selenium.windowMaximize | If set to true the browser window will be maximized when opened. This has no effect in single window mode. | false
 {table}

@@ -1,4 +1,3 @@
-h2. Using Other Testing Frameworks
 Selenium tests do not have to be written as JUnit test cases. Theoretically the @SeleniumTest@ mixin could be applied to
 almost any test case written in another framework. Page objects are also agnostic of the test framework.
 

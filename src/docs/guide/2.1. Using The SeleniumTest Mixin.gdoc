@@ -1,4 +1,3 @@
-h2. Using The SeleniumTest Mixin
 The simplest way to write Selenium tests is to create a class that extends @GroovyTestCase@ and add the @SeleniumTest@
 mixin that the plugin provides. The mixin class makes several properties and methods available, the most crucial of
 which is the running @Selenium@ instance. For example:

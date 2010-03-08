@@ -1,13 +1,6 @@
 The Selenium RC plugin aims to make [Selenium RC|http://seleniumhq.org/projects/remote-control/] a first class functional
 testing option for Grails.
 
-h2. Contents
- # [Writing Selenium Tests|Selenium RC Writing Selenium Tests]
- # [Running Selenium Tests|Selenium RC Running Selenium Tests]
- # [Configuration|Selenium RC Configuration]
- # [Data Driving Tests|Selenium RC Data Driving Tests]
- # [Continuous Integration|Selenium RC Continuous Integration]
-
 h2. Source Code
 Source code for the plugin is hosted on [GitHub|http://github.com/robfletcher/grails-selenium-rc]. Please feel free to
 fork the project and submit pull requests back to the trunk.
@@ -16,12 +9,19 @@ h2. Bugs and Feature Requests
 Please raise bugs and feature requests against [Grails-Selenium-RC on JIRA|http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229].
 
 h2. Roadmap
- - Allow Selenium Server and browser to be started and tests to be run interactively against them.
- - Support automatic generation of screenshots when assertions fail.
- - [Selenium Grid|http://selenium-grid.seleniumhq.org/] support.
- - Support for other testing frameworks such as [EasyB|http://www.easyb.org/], [TestNG|http://testng.org/], etc.
+ * Upgrade to Selenium 2.0 / WebDriver.
+ * Support automatic generation of screenshots when assertions fail.
+ * [Selenium Grid|http://selenium-grid.seleniumhq.org/] support.
+ * Support for other testing frameworks such as [EasyB|http://www.easyb.org/], [TestNG|http://testng.org/], etc.
 
 h2. Changelog
+h4. Version 0.2
+New Features...
+ * Added base classes for using the page object pattern with standard Grails pages
+ * Added @selenium.remote@ config option to allow tests to be run against a remote host
+Changes...
+* The config @selenium.slowResources@ is now simply @selenium.slow@ instead
+
 h4. Version 0.1.1
 Fixes...
  * Fixed default Selenium URL to respect @server.port@ setting, etc.
@@ -31,4 +31,4 @@ New Features...
  * Can now negate dynamic _assert/verify/waitFor_ calls in @GrailsSeleniumTestCase@
 
 h4. Version 0.1
- - Initial release
+ * Initial release

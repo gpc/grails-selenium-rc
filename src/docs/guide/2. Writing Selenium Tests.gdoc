@@ -1,6 +1,4 @@
-h2. Writing Selenium Tests
-Selenium tests should be placed under the @test/selenium@ directory. As with other test types you can use packages to group your tests if
-you wish.
+Selenium tests should be placed under the @test/selenium@ directory. As with other test types you can use packages to group your tests if you wish.
 
 {note}
 You should _not_ extend any of the base test classes in the Selenium API such as
@@ -12,9 +10,9 @@ simply need to connect to that running Selenium instance.
 {note}
 
 There are several options available for writing Selenium tests:
- # [Using The SeleniumTest Mixin|Selenium RC Using The SeleniumTest Mixin]
- # [Extending GrailsSeleniumTestCase|Selenium RC Extending GrailsSeleniumTestCase]
- # [Using The Page Object Pattern|Selenium RC Using The Page Object Pattern]
+ # [Using The SeleniumTest Mixin|guide:2.1 Using the SeleniumTest Mixin]
+ # [Extending GrailsSeleniumTestCase|guide:2.2 Extending GrailsSeleniumTestCase]
+ # [Using The Page Object Pattern|guide:2.3 The Page Object Pattern]
 
 You are not limited to writing Selenium tests as JUnit test cases.
- # [Using Other Testing Frameworks|Selenium RC Using Other Testing Frameworks]
+ # [Using Other Testing Frameworks|guide:2.4 Using Other Testing Frameworks]

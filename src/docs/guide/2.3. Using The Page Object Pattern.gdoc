@@ -1,4 +1,3 @@
-h2. Using The 'Page Object' Pattern
 Whether using the @SeleniumTest@ mixin or extending @GrailsSeleniumTestCase@ your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
  * Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and therefore require you to hunt out instances if you change the page structure.
  * Multiple Selenium commands representing a single _logical_ action may be repeated in several tests or grouped together into utility classes that can easily get out of control and turn into 'God Objects'.
