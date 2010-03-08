@@ -5,9 +5,7 @@
      	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
      </head>
 	<body class="body">
-		<h1><a name="2. Writing Selenium Tests">2. Writing Selenium Tests</a></h1><h2>Writing Selenium Tests</h2>
-Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if
-you wish.<p class="paragraph"/><blockquote class="note">
+		<h1><a name="2. Writing Selenium Tests">2. Writing Selenium Tests</a></h1>Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if you wish.<p class="paragraph"/><blockquote class="note">
 You should <em class="italic">not</em> extend any of the base test classes in the Selenium API such as
 <code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestCase.html" target="blank">SeleneseTestCase</a></code>
 or <code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html" target="blank">GroovySeleneseTestCase</a></code>
@@ -16,14 +14,13 @@ test! The plugin starts a Selenium instance for you when <code>grails test-app</
 simply need to connect to that running Selenium instance.
 </blockquote><p class="paragraph"/>There are several options available for writing Selenium tests:
 <ol>
-<li>Selenium RC Using The SeleniumTest Mixin</li>
-<li>Selenium RC Extending GrailsSeleniumTestCase</li>
-<li>Selenium RC Using The Page Object Pattern</li>
+<li>guide:2.1 Using the SeleniumTest Mixin</li>
+<li>guide:2.2 Extending GrailsSeleniumTestCase</li>
+<li>guide:2.3 The Page Object Pattern</li>
 </ol><p class="paragraph"/>You are not limited to writing Selenium tests as JUnit test cases.
 <ol>
-<li>Selenium RC Using Other Testing Frameworks</li>
-</ol><p class="paragraph"/><h2><a name="2.1. Using The SeleniumTest Mixin">2.1. Using The SeleniumTest Mixin</a></h2><h2>Using The SeleniumTest Mixin</h2>
-The simplest way to write Selenium tests is to create a class that extends <code>GroovyTestCase</code> and add the <code>SeleniumTest</code>
+<li>guide:2.4 Using Other Testing Frameworks</li>
+</ol><p class="paragraph"/><h2><a name="2.1. Using The SeleniumTest Mixin">2.1. Using The SeleniumTest Mixin</a></h2>The simplest way to write Selenium tests is to create a class that extends <code>GroovyTestCase</code> and add the <code>SeleniumTest</code>
 mixin that the plugin provides. The mixin class makes several properties and methods available, the most crucial of
 which is the running <code>Selenium</code> instance. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.plugins.selenium.SeleniumTest<p class="paragraph"/>@Mixin(SeleniumTest)
 class HomepageTests <span class="java&#45;keyword">extends</span> GroovyTestCase &#123;
@@ -43,8 +40,7 @@ waitFor(<span class="java&#45;quote">"Clicking myButtonId should have updated my
 &#125;</pre></div><p class="paragraph"/>The <code>waitFor</code> method will fail if the expected condition does not hold true after the default timeout specified with
 <code>selenium.defaultTimeout</code> in your <code>SeleniumConfig.groovy</code> file or 60 seconds if you have not specified a value.<p class="paragraph"/>The message argument is optional but greatly assists in analysing test failures so it is recommended that you always
 provide it.
-<h2><a name="2.2. Extending GrailsSeleniumTestCase">2.2. Extending GrailsSeleniumTestCase</a></h2><h2>Extending GrailsSeleniumTestCase</h2>
-Instead of using the <code>SeleniumTest</code> mixin you can extend <code>grails.plugins.selenium.GrailsSeleniumTestCase</code> which provides
+<h2><a name="2.2. Extending GrailsSeleniumTestCase">2.2. Extending GrailsSeleniumTestCase</a></h2>Instead of using the <code>SeleniumTest</code> mixin you can extend <code>grails.plugins.selenium.GrailsSeleniumTestCase</code> which provides
 everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions
 provided by the <code><a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestBase.html" target="blank">SeleneseTestBase</a></code>
 class as well as the various <code>verify</code> methods, the <code>seleniumEquals</code> method, etc. See the documentation for <code>SeleneseTestBase</code> for
@@ -55,8 +51,7 @@ method starting with <em class="italic">is</em> can be used as a boolean asserti
 the method call. Likewise any <code>Selenium</code> method starting with <em class="italic">get</em> can be used as an equality assertion. The following
 table gives some examples:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Without GrailsSeleniumTestCase</strong></th><th><strong class="bold">With GrailsSeleniumTestCase</strong></th></tr><tr class="table-odd"><td>assertTrue selenium.isTextPresent("Welcome to Grails")</td><td>assertTextPresent("Welcome to Grails")</td></tr><tr class="table-even"><td>verifyTrue selenium.isVisible("myElement")</td><td>verifyVisible("myElement")</td></tr><tr class="table-odd"><td>waitFor { selenium.isAlertPresent() }</td><td>waitForAlertPresent()</td></tr><tr class="table-even"><td>assertEquals("Expected text", selenium.getText("myElement"))</td><td>assertText("Expected text", "myElement")</td></tr><tr class="table-odd"><td>waitFor { selenium.getXpathCount("//ul/li") == 3 }</td><td>waitForXpathCount 3, "//ul/li"</td></tr></table><p class="paragraph"/>You can also use <em class="italic">assertNot&#42;, verifyNot&#42;</em> and <em class="italic">waitForNot&#42;</em> to test negated conditions.<p class="paragraph"/>Currently there is no way to pass message arguments to these convenience methods, although this will hopefully be added
 in a future version of the plugin.
-<h2><a name="2.3. Using The Page Object Pattern">2.3. Using The Page Object Pattern</a></h2><h2>Using The 'Page Object' Pattern</h2>
-Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSeleniumTestCase</code> your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
+<h2><a name="2.3. Using The Page Object Pattern">2.3. Using The Page Object Pattern</a></h2>Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSeleniumTestCase</code> your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
 <ul class="star">
 <li>Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and therefore require you to hunt out instances if you change the page structure.</li>
 <li>Multiple Selenium commands representing a single <em class="italic">logical</em> action may be repeated in several tests or grouped together into utility classes that can easily get out of control and turn into 'God Objects'.</li>
@@ -67,8 +62,7 @@ Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSelen
 <li>Navigation actions can be modelled as page object methods that return instances of other page objects representing the user's journey through the application.</li>
 <li>Page objects are very easy to write, can be expanded as necessary and greatly enhance the simplicity and readability of your tests.</li>
 </ul><p class="paragraph"/>When using the page object pattern your test classes can simply extend GroovyTestCase as they will not interact directly with Selenium.
-<h2><a name="2.4. Using Other Testing Frameworks">2.4. Using Other Testing Frameworks</a></h2><h2>Using Other Testing Frameworks</h2>
-Selenium tests do not have to be written as JUnit test cases. Theoretically the <code>SeleniumTest</code> mixin could be applied to
+<h2><a name="2.4. Using Other Testing Frameworks">2.4. Using Other Testing Frameworks</a></h2>Selenium tests do not have to be written as JUnit test cases. Theoretically the <code>SeleniumTest</code> mixin could be applied to
 almost any test case written in another framework. Page objects are also agnostic of the test framework.<p class="paragraph"/>Currently the plugin has tested support for the
 <a href="http://grails.org/plugin/spock" target="blank">Spock Plugin</a>. Other testing frameworks such as EasyB, TestNG, JUnit 4, etc. may well work already and support
 is planned in future versions of the Selenium plugin.<p class="paragraph"/>To write Selenium tests using Spock, simply create your specification under <code>test/selenium</code> and (if you are not using page objects) use the <code>SeleniumTest</code> mixin then run tests as normal. For example:

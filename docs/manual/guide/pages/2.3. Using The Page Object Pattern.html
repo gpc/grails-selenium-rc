@@ -5,8 +5,7 @@
      	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
      </head>
 	<body class="body">
-		<h2>Using The 'Page Object' Pattern</h2>
-Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSeleniumTestCase</code> your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
+		Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSeleniumTestCase</code> your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
 <ul class="star">
 <li>Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and therefore require you to hunt out instances if you change the page structure.</li>
 <li>Multiple Selenium commands representing a single <em class="italic">logical</em> action may be repeated in several tests or grouped together into utility classes that can easily get out of control and turn into 'God Objects'.</li>

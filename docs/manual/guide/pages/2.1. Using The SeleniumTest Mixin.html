@@ -5,8 +5,7 @@
      	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
      </head>
 	<body class="body">
-		<h2>Using The SeleniumTest Mixin</h2>
-The simplest way to write Selenium tests is to create a class that extends <code>GroovyTestCase</code> and add the <code>SeleniumTest</code>
+		The simplest way to write Selenium tests is to create a class that extends <code>GroovyTestCase</code> and add the <code>SeleniumTest</code>
 mixin that the plugin provides. The mixin class makes several properties and methods available, the most crucial of
 which is the running <code>Selenium</code> instance. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.plugins.selenium.SeleniumTest<p class="paragraph"/>@Mixin(SeleniumTest)
 class HomepageTests <span class="java&#45;keyword">extends</span> GroovyTestCase &#123;

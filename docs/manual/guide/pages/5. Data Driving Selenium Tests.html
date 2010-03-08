@@ -5,12 +5,12 @@
      	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
      </head>
 	<body class="body">
-		<h2>Data Driving Selenium Tests</h2>
-One of the most important considerations when writing Selenium tests is how to set up the data that the tests require.
+		One of the most important considerations when writing Selenium tests is how to set up the data that the tests require.
 If you are purely running your Selenium tests against localhost this is actually reasonably straightforward. Since the
 Selenium tests are running in the same JVM as the Grails application under test, the tests have direct access to the
-application's domain objects and can set up data very easily. Note: this is <strong class="bold">not</strong> the case when running Selenium tests
-against a remote application, i.e. when {selenium.remote = true} is set. For example:<p class="paragraph"/><div class="code"><pre>void testSongsAppearInList() &#123;
+application's domain objects and can set up data very easily.<p class="paragraph"/><blockquote class="note">
+Data-driving using direct access to application domain classes is <strong class="bold">not</strong> appropriate when running Selenium tests against a remote application, i.e. when <code>selenium.remote = true</code> is set. In that case the Selenium tests and the application are running in separate JVMs.
+</blockquote><p class="paragraph"/>For example:<p class="paragraph"/><div class="code"><pre>void testSongsAppearInList() &#123;
     Song.withTransaction &#123;
         <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"Heads Will Roll"</span>, artist: <span class="java&#45;quote">"Yeah Yeah Yeahs"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
         <span class="java&#45;keyword">new</span> Song(title: <span class="java&#45;quote">"Twilight Galaxy"</span>, artist: <span class="java&#45;quote">"Metric"</span>).save(failOnError: <span class="java&#45;keyword">true</span>)
@@ -34,14 +34,14 @@ a trivial level of complexity and it can also be used directly in Selenium tests
 directly from Selenium tests.<p class="paragraph"/><h3>Tearing data down</h3>
 The difficulty with data-driving Selenium tests like this is that unlike integration tests they are not run in a
 transactional context. Even if they were the problem would still arise as data modifications made using the browser
-(e.g. submitting an update form) would not be part of the same transaction. To keep your tests isolated from one
+(e.g. submitting an update form) would not be part of the same transaction that the test runs in. To keep your tests isolated from one
 another it is <em class="italic">critical</em> to use <code>tearDown</code> effectively in your tests to prevent data from one test 'bleeding over' into
 the next. With the examples above I could implement <code>tearDown</code> like this:<p class="paragraph"/><div class="code"><pre>void tearDown() &#123;
     <span class="java&#45;keyword">super</span>.tearDown()
     Song.withTransaction &#123;
         Song.list()&#42;.delete()
     &#125;
-&#125;</pre></div><p class="paragraph"/>The <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems
+&#125;</pre></div><p class="paragraph"/>Again, the <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems
 deleting will get reported right away causing the test to fail.
 
 	</body>
