@@ -17,7 +17,7 @@ class SeleniumRcGrailsPlugin {
 	def description = '''\\
 Runs Selenium RC tests written in Groovy in the Grails functional test phase.
 '''
-	def documentation = "http://grails.org/SeleniumRc+Plugin"
+	def documentation = "http://robfletcher.github.com/grails-selenium-rc"
 
 	def doWithWebDescriptor = {xml ->
 	}
