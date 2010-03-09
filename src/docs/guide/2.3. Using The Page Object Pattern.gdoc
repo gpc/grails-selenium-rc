@@ -9,3 +9,14 @@ To truly decouple the functional intent of your tests from the raw Selenium inte
  * Page objects are very easy to write, can be expanded as necessary and greatly enhance the simplicity and readability of your tests.
 
 When using the page object pattern your test classes can simply extend GroovyTestCase as they will not interact directly with Selenium.
+
+h2. Page object support in the plugin
+The plugin provides some base classes for page objects. These can be used as-is for simple scenarios or extended (or ignored completely of course). All the classes are in the @grails.plugins.selenium.pageobjects@ package. Refer to the API documentation for more details.
+ * @Page@ is the root of the page object heirarchy.
+ * @GrailsPage@ and @GrailsFormPage@ are extended by classes representing the various typical scaffolding pages.
+ * @GrailsListPage@ represents a scaffolded _list_ page and provides easy access to data in a list table, access to the pagination controls, etc.
+ * @GrailsShowPage@ represents a scaffolded _show_ page and provides property access to data in a typical _show_ page.
+ * @GrailsCreatePage@ and @GrailsEditPage@ represent scaffolded _create_ and _edit_ pages and translate @page.field = "value"@ type calls to Selenium commands that type in form fields.
+
+h3. Extending the plugin's base page object classes
+TODO
