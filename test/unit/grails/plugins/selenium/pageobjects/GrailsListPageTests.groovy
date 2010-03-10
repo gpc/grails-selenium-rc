@@ -3,14 +3,17 @@ package grails.plugins.selenium.pageobjects
 import org.gmock.WithGMock
 import grails.plugins.selenium.GrailsSelenium
 import grails.plugins.selenium.SeleniumManager
+import grails.test.GrailsUnitTestCase
 
 @WithGMock
-class GrailsListPageTests extends GroovyTestCase {
+class GrailsListPageTests extends GrailsUnitTestCase {
 
 	def selenium
 
 	void setUp() {
 		super.setUp()
+
+		mockConfig "grails.app.context='/'"
 
 		selenium = mock(GrailsSelenium)
 		SeleniumManager.instance.selenium = selenium
