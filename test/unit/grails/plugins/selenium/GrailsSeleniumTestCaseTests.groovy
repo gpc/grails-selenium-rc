@@ -7,6 +7,7 @@ import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
 import junit.framework.ComparisonFailure
 import org.gmock.WithGMock
+import org.junit.Before
 
 @WithGMock
 class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
@@ -31,7 +32,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	void testDoesNotDelegateToSeleneseTestBaseWhenGroovyTestCaseHasSameMethod() {
 		testCase.@base = mock(SeleneseTestBase)
-		mock(selenium).setContext("SeleniumTest.testSomething")
+		mock(selenium).setContext("GrailsSeleniumTestCase.testSomething")
 		play {
 			// non-static method that exists on both GroovyTestCase and SeleneseTestBase
 			testCase.setUp()

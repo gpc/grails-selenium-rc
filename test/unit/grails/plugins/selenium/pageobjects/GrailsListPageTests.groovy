@@ -3,46 +3,48 @@ package grails.plugins.selenium.pageobjects
 import org.gmock.WithGMock
 import grails.plugins.selenium.GrailsSelenium
 import grails.plugins.selenium.SeleniumManager
-import grails.test.GrailsUnitTestCase
+import org.junit.Test
+import org.junit.Before
+import org.junit.BeforeClass
+import static org.junit.Assert.*
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.matchers.JUnitMatchers.*
 
 @WithGMock
-class GrailsListPageTests extends GrailsUnitTestCase {
+class GrailsListPageTests {
 
 	def selenium
 
+	@Before
 	void setUp() {
-		super.setUp()
-
-		mockConfig "grails.app.context='/'"
-
 		selenium = mock(GrailsSelenium)
 		SeleniumManager.instance.selenium = selenium
 	}
 
-	void testOpenFailsIfWrongPageLoads() {
-		selenium.open("/thing/list")
+	@Test(expected = InvalidPageStateException)
+	void openFailsIfWrongPageLoads() {
 		selenium.getTitle().returns("WTF Page is this?")
 		play {
-			shouldFail(InvalidPageStateException) {
-				GrailsListPage.open("/thing/list")
-			}
+			new GrailsListPage()
 		}
 	}
 
-	void testColumnNamesAreLazyLoaded() {
-		selenium.getTitle().returns("Thing List")
+	@Test
+	void columnNamesAreLazyLoaded() {
+		selenium.getTitle().returns("Thing List").stub()
 		selenium.getXpathCount("//table/thead/tr[1]/th").returns(3)
 		(1..3).each {i ->
-			selenium.getText("//table/thead/tr/th[$i]").returns("Column $i")
+			selenium.getText("//table/thead/tr/th[$i]").returns("Column $i" as String)
 		}
 		play {
 			def page = new GrailsListPage()
-			assertEquals(["Column 1", "Column 2", "Column 3"], page.columnNames)
+			assertThat page.columnNames, equalTo(["Column 1", "Column 2", "Column 3"])
 		}
 	}
 
-	void testGetRowsScrapesTable() {
-		selenium.getTitle().returns("Thing List")
+	@Test
+	void getRowsScrapesTable() {
+		selenium.getTitle().returns("Thing List").stub()
 		selenium.getXpathCount("//table/thead/tr[1]/th").returns(3)
 		selenium.getXpathCount("//table/tbody/tr").returns(3)
 		(1..3).each {i ->
@@ -57,9 +59,9 @@ class GrailsListPageTests extends GrailsUnitTestCase {
 		play {
 			def page = new GrailsListPage()
 			def rows = page.rows
-			assertEquals(["Column 1": "1.1", "Column 2": "2.1", "Column 3": "3.1"], rows[0])
-			assertEquals(["Column 1": "1.2", "Column 2": "2.2", "Column 3": "3.2"], rows[1])
-			assertEquals(["Column 1": "1.3", "Column 2": "2.3", "Column 3": "3.3"], rows[2])
+			assertThat rows[0], equalTo(["Column 1": "1.1", "Column 2": "2.1", "Column 3": "3.1"])
+			assertThat rows[1], equalTo(["Column 1": "1.2", "Column 2": "2.2", "Column 3": "3.2"])
+			assertThat rows[2], equalTo(["Column 1": "1.3", "Column 2": "2.3", "Column 3": "3.3"])
 		}
 	}
 
