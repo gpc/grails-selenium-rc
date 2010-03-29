@@ -12,4 +12,8 @@ class Song {
 		artist blank: false
 		album nullable: true
 	}
+
+	String toString() {
+		"$title by $artist"
+	}
 }

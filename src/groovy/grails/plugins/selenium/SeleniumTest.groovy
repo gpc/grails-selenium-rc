@@ -1,11 +1,12 @@
 package grails.plugins.selenium
 
+import com.thoughtworks.selenium.Selenium
+import com.thoughtworks.selenium.Wait
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import junit.framework.Assert
 
 /**
- * Mixin for Selenese tests that provides access to the running Selenium instance, config, etc. 
+ * Mixin for Selenium tests that provides access to the running Selenium instance, config, etc. 
  */
 class SeleniumTest {
 
@@ -19,7 +20,7 @@ class SeleniumTest {
 	/**
 	 * Returns the running Selenium instance.
 	 */
-	GrailsSelenium getSelenium() {
+	Selenium getSelenium() {
 		SeleniumManager.instance.selenium
 	}
 
@@ -38,18 +39,13 @@ class SeleniumTest {
 	 * set on the <tt>selenium</tt>.
 	 */
 	void waitFor(String message = null, Closure condition) {
-		def timeoutTime = System.currentTimeMillis() + selenium.defaultTimeout
-		while (System.currentTimeMillis() < timeoutTime) {
-			try {
-				if (condition.call()) {
-					return
-				}
-			}
-			catch (e) {}
-			sleep(500)
-		}
+		def waitCondition = new ClosureEvaluatingWait()
+		waitCondition.condition = condition
+
+		def msg = message ? "Timed out waiting for: $message." : "Timed out."
+		def timeout = config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
 		
-		Assert.fail message ? "Timed out waiting for: $message." : "Timed out."
+		waitCondition.wait(msg, timeout)
 	}
 
 }

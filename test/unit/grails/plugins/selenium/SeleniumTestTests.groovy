@@ -1,95 +1,97 @@
 package grails.plugins.selenium
 
-import org.gmock.WithGMock
+import com.thoughtworks.selenium.Selenium
+import com.thoughtworks.selenium.Wait.WaitTimedOutException
 import grails.test.GrailsUnitTestCase
-import junit.framework.AssertionFailedError
+import org.gmock.WithGMock
+import org.junit.After
+import org.junit.Test
+import static org.hamcrest.CoreMatchers.equalTo
+import static org.junit.Assert.*
+import org.junit.Before
+import java.util.concurrent.TimeUnit
 
 @WithGMock
 class SeleniumTestTests extends GrailsUnitTestCase {
 
-	def testCase
+	def testCase = new TestCaseImpl()
 
-	void setUp() {
-		super.setUp()
-		testCase = new TestCaseImpl()
+	@Before
+	void configureSelenium() {
+		SeleniumManager.instance.config = new ConfigSlurper().parse("""
+selenium {
+	browser = "*firefox"
+	defaultTimeout = 250
+}
+		""")
 	}
 
+	@After
 	void tearDown() {
-		super.tearDown()
 		SeleniumManager.instance.selenium = null
 		SeleniumManager.instance.config = null
 	}
 
-	void testSeleniumInstanceIsAvailable() {
-		def seleniumMock = mock(GrailsSelenium)
-		SeleniumManager.instance.selenium = seleniumMock
-		seleniumMock.open("/")
+	@Test
+	void seleniumInstanceIsAvailable() {
+		SeleniumManager.instance.selenium = mock(Selenium) {
+			open "/"
+		}
 		play {
 			testCase.testOpenPage()
 		}
 	}
 
-	void testConfigIsAvailable() {
-		SeleniumManager.instance.config = new ConfigSlurper().parse("selenium.browser = '*firefox'")
-		assertEquals "*firefox", testCase.config.selenium.browser
+	@Test
+	void configIsAvailable() {
+		assertThat testCase.config.selenium.browser, equalTo("*firefox")
 	}
 
-	void testContextPathIsAvailable() {
+	@Test
+	void contextPathIsAvailable() {
 		mockConfig "app.context = 'foo'"
-		assertEquals "/foo", testCase.contextPath
+		assertThat testCase.contextPath, equalTo("/foo")
 	}
 
-	void testRootContextPathWorks() {
+	@Test
+	void rootContextPathWorks() {
 		mockConfig "app.context = '/'"
-		assertEquals "/", testCase.contextPath
+		assertThat testCase.contextPath, equalTo("/")
 	}
 
-	void testWaitForSuccess() {
-		def seleniumMock = mock(GrailsSelenium)
-		SeleniumManager.instance.selenium = seleniumMock
-		seleniumMock.getDefaultTimeout().returns(1000)
-		play {
-			testCase.waitFor {
-				true
-			}
+	@Test
+	void waitForSuccess() {
+		testCase.waitFor {
+			true
 		}
 	}
 
-	void testWaitForFailure() {
-		def seleniumMock = mock(GrailsSelenium)
-		SeleniumManager.instance.selenium = seleniumMock
-		seleniumMock.getDefaultTimeout().returns(1000)
-		play {
-			def message = shouldFail(AssertionFailedError) {
-				testCase.waitFor {
-					false
-				}
-			}
-			assertEquals "Timed out.", message
+
+	@Test(expected = WaitTimedOutException)
+	void waitForThrowsTimeoutException() {
+		testCase.waitFor {
+			false
 		}
 	}
 
-	void testWaitForFailureWithMessage() {
-		def seleniumMock = mock(GrailsSelenium)
-		SeleniumManager.instance.selenium = seleniumMock
-		seleniumMock.getDefaultTimeout().returns(1000)
-		play {
-			def message = shouldFail(AssertionFailedError) {
-				testCase.waitFor("something to happen") {
-					false
-				}
+	@Test
+	void waitForFailsWithMessage() {
+		try {
+			testCase.waitFor("something to happen") {
+				false
 			}
-			assertEquals "Timed out waiting for: something to happen.", message
+			fail "waitFor should have timed out"
+		} catch (WaitTimedOutException e) {
+			assertThat e.message, equalTo("Timed out waiting for: something to happen.")
 		}
 	}
-	
 }
 
 @Mixin(SeleniumTest)
 class TestCaseImpl {
 
 	void testOpenPage() {
-		selenium.open("/")
+		selenium.open "/"
 	}
 
 }

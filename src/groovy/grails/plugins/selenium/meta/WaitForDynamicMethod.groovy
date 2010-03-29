@@ -4,6 +4,8 @@ import grails.plugins.selenium.ClosureEvaluatingWait
 import grails.plugins.selenium.SeleniumManager
 import java.util.regex.Pattern
 import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
+import com.thoughtworks.selenium.Wait
+import org.hamcrest.Matcher
 
 class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 
@@ -23,20 +25,27 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 			}
 		} else if (target.respondsTo("get$seleniumCommand")) {
 			waitCondition.condition = {
-				target."get$seleniumCommand"(* arguments[0..-2]) == arguments[-1]
+				def expected = arguments[-1]
+				def actual = target."get$seleniumCommand"(* arguments[0..-2])
+				if (expected instanceof Matcher) {
+					expected.matches(actual)
+				} else {
+					actual == expected
+				}
 			}
 		} else {
 			throw new MissingMethodException(methodName, target.getClass(), arguments)
 		}
+		println "waiting for $timeout milliseconds"
 		waitCondition.wait("$methodName(${arguments.join(', ')}) timed out", timeout, interval)
 	}
 
 	private static int getTimeout() {
-		return SeleniumManager.instance.config.selenium.defaultTimeout
+		return SeleniumManager.instance.config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
 	}
 
 	private static int getInterval() {
-		100
+		return SeleniumManager.instance.config?.selenium?.defaultInterval ?: Wait.DEFAULT_INTERVAL
 	}
 
 }

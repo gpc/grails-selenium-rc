@@ -50,10 +50,10 @@ abstract class GrailsFormPage extends GrailsPage {
 			case FieldType.CHECKBOX:
 				return selenium.isChecked(name)
 			case FieldType.SELECT:
-				if (selenium.getAttribute("css=select[name=$name]@multiple") == "multiple") {
-					return selenium.getSelectedValues(name)
+				if (selenium.getAttribute("$name@multiple")) {
+					return selenium.isSomethingSelected(name) ? selenium.getSelectedValues(name) : []
 				} else {
-					return selenium.getSelectedValue(name)
+					return selenium.isSomethingSelected(name) ? selenium.getSelectedValue(name) : null
 				}
 			case FieldType.RADIO:
 				// TODO: support radio buttons

@@ -1,6 +1,6 @@
 package grails.plugins.selenium.pageobjects
 
-import grails.plugins.selenium.GrailsSelenium
+import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import grails.test.GrailsUnitTestCase
 import org.gmock.WithGMock
@@ -14,7 +14,7 @@ class PageTests extends GrailsUnitTestCase {
 			grails.app.context = "/foo"
 		"""
 		
-		SeleniumManager.instance.selenium = mock(GrailsSelenium) {
+		SeleniumManager.instance.selenium = mock(Selenium) {
 			open "/foo/pirate/list"
 		}
 		

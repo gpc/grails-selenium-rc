@@ -1,12 +1,12 @@
 package grails.plugins.selenium.pageobjects
 
+import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import grails.plugins.selenium.GrailsSelenium
 
 abstract class Page {
 
-	protected final GrailsSelenium selenium
+	protected final Selenium selenium
 	private final String expectedTitle
 
 	Page() {

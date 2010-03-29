@@ -6,8 +6,6 @@ import org.codehaus.groovy.grails.commons.metaclass.DynamicMethodInvocation
 
 class SeleniumDynamicMethods {
 
-	private static final AND_WAIT_PATTERN = /^(\w+)AndWait$/
-
 	static void enhanceSelenium() {
 		def mc = Selenium.metaClass
 		def dynamicMethods = [new AndWaitDynamicMethod(), new WaitForDynamicMethod()]
@@ -17,7 +15,7 @@ class SeleniumDynamicMethods {
 			if (method) {
 				// register the method invocation for next time
 				synchronized (SeleniumDynamicMethods) {
-					mc.static."$methodName" = {List varArgs ->
+					mc."$methodName" = {List varArgs ->
 						method.invoke(delegate, methodName, varArgs)
 					}
 				}

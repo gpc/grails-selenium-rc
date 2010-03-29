@@ -1,12 +1,12 @@
 package grails.plugins.selenium.pageobjects
 
-import grails.plugins.selenium.GrailsSelenium
+import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.*
-import static org.hamcrest.CoreMatchers.*
+import static org.hamcrest.CoreMatchers.equalTo
+import static org.junit.Assert.assertThat
 
 @WithGMock
 class GrailsShowPageTests {
@@ -15,7 +15,7 @@ class GrailsShowPageTests {
 
 	@Before
 	void setUp() {
-		selenium = mock(GrailsSelenium)
+		selenium = mock(Selenium)
 		SeleniumManager.instance.selenium = selenium
 		selenium.getTitle().returns("Show Thing").stub()
 	}

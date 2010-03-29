@@ -1,22 +1,22 @@
 package grails.plugins.selenium.pageobjects
 
-import org.gmock.WithGMock
+import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
-import grails.plugins.selenium.GrailsSelenium
+import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.*
 import static org.hamcrest.CoreMatchers.*
+import static org.junit.Assert.assertThat
 
 @WithGMock
 class GrailsFormPageTests {
 
-	GrailsSelenium mockSelenium
+	Selenium mockSelenium
 	GrailsFormPage page
 
 	@Before
 	void setUp() {
-		mockSelenium = mock(GrailsSelenium) {
+		mockSelenium = mock(Selenium) {
 			isElementPresent("css=input[name=aTextField]").returns(true).stub()
 			isElementPresent("css=input[name=aHiddenField]").returns(true).stub()
 			isElementPresent("css=input[name=aCheckbox]").returns(true).stub()
@@ -29,8 +29,8 @@ class GrailsFormPageTests {
 			getAttribute("css=input[name=aHiddenField]@type").returns("hidden").stub()
 			getAttribute("css=input[name=aCheckbox]@type").returns("checkbox").stub()
 			getAttribute("css=input[name=anUnspecifiedField]@type").returns(null).stub()
-			getAttribute("css=select[name=aSelect]@multiple").returns(null).stub()
-			getAttribute("css=select[name=aMultipleSelect]@multiple").returns("multiple").stub()
+			getAttribute("aSelect@multiple").returns(null).stub()
+			getAttribute("aMultipleSelect@multiple").returns("multiple").stub()
 		}
 
 		SeleniumManager.instance.selenium = mockSelenium
@@ -75,6 +75,7 @@ class GrailsFormPageTests {
 
 	@Test
 	void propertyGetRetrievesValueFromSelectBox() {
+		mockSelenium.isSomethingSelected("aSelect").returns(true)
 		mockSelenium.getSelectedValue("aSelect").returns("foo")
 		play {
 			assertThat page.aSelect, equalTo("foo")
@@ -83,9 +84,26 @@ class GrailsFormPageTests {
 
 	@Test
 	void propertyGetRetrievesMultipleValuesFromSelectBox() {
+		mockSelenium.isSomethingSelected("aMultipleSelect").returns(true)
 		mockSelenium.getSelectedValues("aMultipleSelect").returns(["foo", "bar", "baz"] as String[])
 		play {
 			assertThat page.aMultipleSelect, equalTo(["foo", "bar", "baz"] as String[])
+		}
+	}
+
+	@Test
+	void propertyGetRetrievesNullFromSelectBoxWithNoSelection() {
+		mockSelenium.isSomethingSelected("aSelect").returns(false)
+		play {
+			assertThat page.aSelect, nullValue()
+		}
+	}
+
+	@Test
+	void propertyGetRetrievesEmptyListFromMultipleSelectBoxWithNoSelection() {
+		mockSelenium.isSomethingSelected("aMultipleSelect").returns(false)
+		play {
+			assertThat page.aMultipleSelect, equalTo([])
 		}
 	}
 

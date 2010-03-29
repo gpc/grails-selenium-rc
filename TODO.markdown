@@ -5,6 +5,7 @@
 * Tidy up loading to use more classes & less scripts
 * Need to access waitFor in page objects
 * Use doWithDynamicMethods to decorate extra stuff on to Selenium instead of using GrailsSelenium
+* Get rid of evil singleton SeleniumManager
 * Support fixtures plugin via a controller and custom commands?
 * option to capture screenshots when assert/verify/waitFor fails
 * Run against running Selenium Server

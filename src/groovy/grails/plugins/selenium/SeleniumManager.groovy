@@ -1,5 +1,7 @@
 package grails.plugins.selenium
 
+import com.thoughtworks.selenium.DefaultSelenium
+import com.thoughtworks.selenium.Selenium
 import org.slf4j.LoggerFactory
 
 @Singleton class SeleniumManager {
@@ -8,7 +10,7 @@ import org.slf4j.LoggerFactory
 
 	private def seleniumServer
 	ConfigObject config
-	GrailsSelenium selenium
+	Selenium selenium
 	
 	void startServer(serverJar) {
 		// The Selenium server needs to be loaded into a clean class
@@ -59,7 +61,7 @@ import org.slf4j.LoggerFactory
 		def port = config.selenium.server.port
 		def browser = config.selenium.browser
 		def url = config.selenium.url ?: serverURL
-		selenium = new GrailsSelenium(host, port, browser, url)
+		selenium = new DefaultSelenium(host, port, browser, url)
 		selenium.defaultTimeout = config.selenium.defaultTimeout
 //		selenium.screenshotDir = new File(config.selenium.screenshotDir)
 

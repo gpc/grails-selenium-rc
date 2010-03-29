@@ -33,7 +33,6 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 	 * etc.
 	 */
 	def methodMissing(String name, args) {
-//		args = args as List
 		boolean handled = false
 
 		def match = name =~ /^(assert|verify|waitFor)(Not)?(.+)$/

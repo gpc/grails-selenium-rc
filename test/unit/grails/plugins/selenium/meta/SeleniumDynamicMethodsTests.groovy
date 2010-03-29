@@ -1,24 +1,27 @@
 package grails.plugins.selenium.meta
 
-import org.junit.*
-import static org.junit.Assert.*
-import static org.hamcrest.CoreMatchers.*
-import org.gmock.WithGMock
-import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.DefaultSelenium
-import grails.plugins.selenium.SeleniumManager
-import com.thoughtworks.selenium.SeleniumCommandTimedOutException
+import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait.WaitTimedOutException
+import grails.plugins.selenium.SeleniumManager
+import org.gmock.WithGMock
+import org.junit.BeforeClass
+import org.junit.Test
 
 @WithGMock
 class SeleniumDynamicMethodsTests {
 
-	Selenium selenium = new DefaultSelenium("host", 0, "startCommand", "url")
+	Selenium selenium = new DefaultSelenium(null)
 
 	@BeforeClass
 	static void enhanceSelenium() {
 		SeleniumDynamicMethods.enhanceSelenium()
-		SeleniumManager.instance.config = new ConfigSlurper().parse("selenium.defaultTimeout = 500")
+		SeleniumManager.instance.config = new ConfigSlurper().parse("""
+			selenium {
+				defaultTimeout = 500
+				defaultInterval = 50
+			}
+		""")
 	}
 
 	@Test
