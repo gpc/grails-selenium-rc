@@ -11,6 +11,7 @@ class SeleniumDynamicMethods {
 		def dynamicMethods = [new AndWaitDynamicMethod(), new WaitForDynamicMethod()]
 
 		mc.methodMissing = {String methodName, args ->
+			println "hit method missing"
 			DynamicMethodInvocation method = dynamicMethods.find {it.isMethodMatch(methodName)}
 			if (method) {
 				// register the method invocation for next time

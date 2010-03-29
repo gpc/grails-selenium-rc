@@ -26,26 +26,22 @@ class SeleniumTest {
 
 	/**
 	 * Returns the URL context path for the application. This is required to prefix URLs, e.g. to have
-	 * <tt>selenium</tt> open the project root you would use:<pre>selenium.open("$contextPath/")</pre>
+	 * Selenium open the project root you would use: selenium.open("$contextPath/")
 	 */
 	String getContextPath() {
 		def appContext = ConfigurationHolder.config.app.context ?: ApplicationHolder.application.metadata."app.name"
 		if (!appContext.startsWith("/")) appContext = "/$appContext"
 		return appContext
 	}
-	
+
 	/**
 	 * Waits for a condition to become true, failing if the condition does not hold within the default timeout
-	 * set on the <tt>selenium</tt>.
+	 * set in Selenium config.
 	 */
 	void waitFor(String message = null, Closure condition) {
-		def waitCondition = new ClosureEvaluatingWait()
-		waitCondition.condition = condition
-
 		def msg = message ? "Timed out waiting for: $message." : "Timed out."
 		def timeout = config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
-		
-		waitCondition.wait(msg, timeout)
+		new ClosureEvaluatingWait(condition: condition).wait(msg, timeout)
 	}
 
 }

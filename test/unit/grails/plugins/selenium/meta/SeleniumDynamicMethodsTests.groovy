@@ -7,6 +7,7 @@ import grails.plugins.selenium.SeleniumManager
 import org.gmock.WithGMock
 import org.junit.BeforeClass
 import org.junit.Test
+import org.junit.AfterClass
 
 @WithGMock
 class SeleniumDynamicMethodsTests {
@@ -22,6 +23,11 @@ class SeleniumDynamicMethodsTests {
 				defaultInterval = 50
 			}
 		""")
+	}
+
+	@AfterClass
+	static void resetConfig() {
+		SeleniumManager.instance.config = null
 	}
 
 	@Test
