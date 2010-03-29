@@ -1,5 +1,3 @@
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-
 seleniumManager = null
 
 target(seleniumInit: "Initialises Selenium manaager") {
