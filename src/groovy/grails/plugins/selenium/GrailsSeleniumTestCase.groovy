@@ -16,7 +16,7 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 	@Override
 	void setUp() {
 		super.setUp()
-		selenium.setContext("${getClass().simpleName}.$name")
+		selenium.context = "${getClass().simpleName}.$name"
 	}
 
 	@Override

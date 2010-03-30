@@ -57,16 +57,19 @@ import org.slf4j.LoggerFactory
 	}
 
 	void startSelenium(serverURL) {
+		println "starting selenium..."
 		def host = config.selenium.server.host
 		def port = config.selenium.server.port
 		def browser = config.selenium.browser
 		def url = config.selenium.url ?: serverURL
 		selenium = new DefaultSelenium(host, port, browser, url)
-		selenium.defaultTimeout = config.selenium.defaultTimeout
+//		selenium.defaultTimeout = config.selenium.defaultTimeout
 //		selenium.screenshotDir = new File(config.selenium.screenshotDir)
 
 		selenium.start()
+		println "selenium should be open..."
 		if (config.selenium.windowMaximize) {
+			println "maximising window..."			
 			selenium.windowMaximize()
 		}
 	}

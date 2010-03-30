@@ -5,17 +5,15 @@ import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait.WaitTimedOutException
 import grails.plugins.selenium.SeleniumManager
 import org.gmock.WithGMock
-import org.junit.BeforeClass
-import org.junit.Test
-import org.junit.AfterClass
+import org.junit.*
 
 @WithGMock
 class SeleniumDynamicMethodsTests {
 
 	Selenium selenium = new DefaultSelenium(null)
 
-	@BeforeClass
-	static void enhanceSelenium() {
+	@Before
+	void setUp() {
 		SeleniumDynamicMethods.enhanceSelenium()
 		SeleniumManager.instance.config = new ConfigSlurper().parse("""
 			selenium {
@@ -25,8 +23,8 @@ class SeleniumDynamicMethodsTests {
 		""")
 	}
 
-	@AfterClass
-	static void resetConfig() {
+	@After
+	void tearDown() {
 		SeleniumManager.instance.config = null
 	}
 

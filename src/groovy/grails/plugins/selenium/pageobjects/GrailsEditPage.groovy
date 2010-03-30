@@ -32,7 +32,7 @@ class GrailsEditPage extends GrailsFormPage {
 		selenium.chooseOkOnNextConfirmation()
 		selenium.click "css=.buttons input.delete"
 		selenium.getConfirmation()
-		selenium.waitForPageToLoad "$selenium.defaultTimeout" 
+		selenium.waitForPageToLoad "$config.selenium.defaultTimeout" 
 		return new GrailsListPage()
 	}
 

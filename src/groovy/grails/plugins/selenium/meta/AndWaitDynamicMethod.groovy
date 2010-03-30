@@ -15,7 +15,7 @@ class AndWaitDynamicMethod extends AbstractDynamicMethodInvocation {
 	Object invoke(Object target, String methodName, Object[] arguments) {
 		String decoratedSeleniumMethod = methodName.find(AND_WAIT_PATTERN) { match, name -> name }
 		target."$decoratedSeleniumMethod"(* arguments)
-		target.waitForPageToLoad(timeout)
+		target.waitForPageToLoad("$timeout")
 	}
 
 	private static int getTimeout() {
