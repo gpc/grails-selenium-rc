@@ -1,9 +1,10 @@
 ## Bugs
 
 ## Enhancements
+* Get rid of evil singleton SeleniumManager
 * Set context text in Selenium runner
 * Tidy up loading to use more classes & less scripts
-* Get rid of evil singleton SeleniumManager
+* Expose selenium config (or at least timeout value) to page objects
 * Support fixtures plugin via a controller and custom commands?
 * option to capture screenshots when assert/verify/waitFor fails
 * Run against running Selenium Server

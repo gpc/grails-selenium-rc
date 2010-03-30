@@ -5,12 +5,17 @@ import grails.plugins.selenium.test.Song
 import grails.plugins.selenium.test.Playlist
 import grails.plugins.selenium.test.Genre
 import grails.plugins.selenium.pageobjects.GrailsEditPage
+import org.junit.Before
+import org.junit.Test
+import static org.junit.Assert.*
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.matchers.JUnitMatchers.*
+import org.junit.After
+import org.junit.AfterClass
 
-class FormPageTests extends GroovyTestCase {
+class FormPageTests {
 
-	void setUp() {
-		super.setUp()
-
+	@Before void setUp() {
 		Song.withTransaction {
 			Song.build(title: "Heads Will Roll", artist: "Yeah Yeah Yeahs", album: "It's Blitz!", durationSeconds: 221)
 			Song.build(title: "Twilight Galaxy", artist: "Metric", album: "Fantasies", durationSeconds: 293)
@@ -18,8 +23,7 @@ class FormPageTests extends GroovyTestCase {
 		}
 	}
 
-	void tearDown() {
-		super.tearDown()
+	@After void tearDown() {
 		Song.withTransaction {
 			Playlist.list()*.delete()
 			Song.list()*.delete()
@@ -35,19 +39,19 @@ class FormPageTests extends GroovyTestCase {
 		page.save()
 
 		def playlist = Playlist.findByName("My Playlist")
-		assertTrue playlist.active
-		assertEquals Genre.ROCK, playlist.genre
-		assertEquals(["Heads Will Roll", "I'm Confused"], playlist.songs.title)
+		assertThat playlist.active, equalTo(true)
+		assertThat playlist.genre, equalTo(Genre.ROCK)
+		assertThat playlist.songs.title, equalTo(["Heads Will Roll", "I'm Confused"])
 	}
 
 	void testPropertyGetOnVariousInputTypes() {
 		def playlist = Playlist.build(name: "My Playlist", active: true, genre: Genre.ROCK, songs: Song.findAllByAlbumLike("F%"))
 
 		def page = GrailsEditPage.open("/playlist/edit/$playlist.id")
-		assertEquals playlist.name, page.name
-		assertTrue page.active
-		assertEquals playlist.songs*.toString(), page.songs
-		assertEquals playlist.genre.name(), page.genre
+		assertThat page.name, equalTo(playlist.name)
+		assertThat page.active, equalTo(true)
+		assertThat page.songs, equalTo(playlist.songs*.toString())
+		assertThat page.genre, equalTo(playlist.genre.name())
 		page.save()
 	}
 

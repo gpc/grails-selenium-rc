@@ -2,12 +2,17 @@ package grails.plugins.selenium.test.pageobjects
 
 import grails.plugins.selenium.test.Song
 import grails.plugins.selenium.pageobjects.GrailsListPage
+import org.junit.Before
+import org.junit.Test
+import static org.junit.Assert.*
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.matchers.JUnitMatchers.*
+import org.junit.After
+import org.junit.AfterClass
 
-class ListSongTests extends GroovyTestCase {
+class ListSongTests {
 
-	void setUp() {
-		super.setUp()
-
+	@Before void setUp() {
 		Song.withTransaction {
 			Song.build(title: "Heads Will Roll", artist: "Yeah Yeah Yeahs", album: "It's Blitz!", durationSeconds: 221)
 			Song.build(title: "Twilight Galaxy", artist: "Metric", album: "Fantasies", durationSeconds: 293)
@@ -15,46 +20,45 @@ class ListSongTests extends GroovyTestCase {
 		}
 	}
 
-	void tearDown() {
-		super.tearDown()
+	@After void tearDown() {
 		Song.withTransaction {
 			Song.list()*.delete()
 		}
 	}
 
-	void testCorrectColumnsAndRowsAppear() {
+	@Test void correctColumnsAndRowsAppear() {
 		def listPage = GrailsListPage.open("/song/list")
 
-		assertEquals(["Id", "Title", "Artist", "Album", "Duration Seconds"], listPage.columnNames)
-		assertEquals 3, listPage.rowCount
+		assertThat listPage.columnNames, equalTo(["Id", "Title", "Artist", "Album", "Duration Seconds"])
+		assertThat listPage.rowCount, equalTo(3)
 	}
 
-	void testSongsCanBeSortedByTitle() {
-		def listPage = GrailsListPage.open("/song/list")
-
-		listPage.sortByColumn "Title"
-
-		assertEquals(["Heads Will Roll", "I'm Confused", "Twilight Galaxy"], listPage.rows.Title)
-	}
-
-	void testSongsCanBeSortedByTitleInReverse() {
+	@Test void songsCanBeSortedByTitle() {
 		def listPage = GrailsListPage.open("/song/list")
 
 		listPage.sortByColumn "Title"
-		listPage.sortByColumn "Title"
 
-		assertEquals(["Twilight Galaxy", "I'm Confused", "Heads Will Roll"], listPage.rows.Title)
+		assertThat listPage.rows.Title, equalTo(["Heads Will Roll", "I'm Confused", "Twilight Galaxy"])
 	}
 
-	void testSongsCanBeSortedByArtits() {
+	@Test void songsCanBeSortedByTitleInReverse() {
+		def listPage = GrailsListPage.open("/song/list")
+
+		listPage.sortByColumn "Title"
+		listPage.sortByColumn "Title"
+
+		assertThat listPage.rows.Title, equalTo(["Twilight Galaxy", "I'm Confused", "Heads Will Roll"])
+	}
+
+	@Test void songsCanBeSortedByArtits() {
 		def listPage = GrailsListPage.open("/song/list")
 
 		listPage.sortByColumn "Artist"
 
-		assertEquals(["Handsome Furs", "Metric", "Yeah Yeah Yeahs"], listPage.rows.Artist)
+		assertThat listPage.rows.Artist, equalTo(["Handsome Furs", "Metric", "Yeah Yeah Yeahs"])
 	}
 
-	void testListIsPaginatedIfManySongsExist() {
+	@Test void listIsPaginatedIfManySongsExist() {
 		Song.withTransaction {
 			["Zero", "Softshock", "Skeletons", "Dull Life", "Shame and Fortune", "Runaway", "Dragon Queen", "Hysteric", "Little Shadow"].each {
 				Song.build(title: it, artist: "Yeah Yeah Yeahs", album: "It's Blitz!")
@@ -62,8 +66,8 @@ class ListSongTests extends GroovyTestCase {
 		}
 
 		def listPage = GrailsListPage.open("/song/list")
-		assertEquals 10, listPage.rowCount
-		assertEquals 2, listPage.nextPage().rowCount
-		assertEquals 10, listPage.previousPage().rowCount
+		assertThat listPage.rowCount, equalTo(10)
+		assertThat listPage.nextPage().rowCount, equalTo(2)
+		assertThat listPage.previousPage().rowCount, equalTo(10)
 	}
 }
