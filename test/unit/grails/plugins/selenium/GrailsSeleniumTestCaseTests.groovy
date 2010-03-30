@@ -41,7 +41,6 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 	@Test
 	void doesNotDelegateToSeleneseTestBaseWhenGroovyTestCaseHasSameMethod() {
 		testCase.@base = mock(SeleneseTestBase)
-		mock(selenium).setContext("GrailsSeleniumTestCase.testSomething")
 		play {
 			// non-static method that exists on both GroovyTestCase and SeleneseTestBase
 			testCase.setUp()

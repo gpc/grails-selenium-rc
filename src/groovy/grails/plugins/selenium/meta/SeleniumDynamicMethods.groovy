@@ -8,8 +8,12 @@ class SeleniumDynamicMethods {
 
 	static void enhanceSelenium() {
 		def mc = Selenium.metaClass
-		def dynamicMethods = [new AndWaitDynamicMethod(), new WaitForDynamicMethod()]
+		enhanceWithDynamicMethods(mc)
+		enhanceWithOverriddenMethods(mc)
+	}
 
+	private static void enhanceWithDynamicMethods(mc) {
+		def dynamicMethods = [new AndWaitDynamicMethod(), new WaitForDynamicMethod()]
 		mc.methodMissing = {String methodName, args ->
 			println "hit method missing"
 			DynamicMethodInvocation method = dynamicMethods.find {it.isMethodMatch(methodName)}
@@ -25,6 +29,12 @@ class SeleniumDynamicMethods {
 			else {
 				throw new MissingMethodException(methodName, delegate.getClass(), args)
 			}
+		}
+	}
+
+	private static void enhanceWithOverriddenMethods(MetaClass mc) {
+		mc.waitForPageToLoad = {->
+			delegate.waitForPageToLoad("$timeout")
 		}
 	}
 
