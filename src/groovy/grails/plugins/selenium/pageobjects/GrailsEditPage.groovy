@@ -1,5 +1,7 @@
 package grails.plugins.selenium.pageobjects
 
+import com.thoughtworks.selenium.Wait
+
 /**
  * A page object for Grails scaffolded edit pages.
  */
@@ -32,7 +34,7 @@ class GrailsEditPage extends GrailsFormPage {
 		selenium.chooseOkOnNextConfirmation()
 		selenium.click "css=.buttons input.delete"
 		selenium.getConfirmation()
-		selenium.waitForPageToLoad "$config.selenium.defaultTimeout" 
+		selenium.waitForPageToLoad "$Wait.DEFAULT_TIMEOUT" // TODO: need to use config here 
 		return new GrailsListPage()
 	}
 

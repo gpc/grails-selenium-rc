@@ -49,8 +49,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="grails-selenium-rc" />
-    <orderEntry type="module" module-name="selenium-test-grailsPlugins" />
-    <orderEntry type="library" name="grails-1.2.1" level="application" />
+    <orderEntry type="library" name="grails-trunk" level="application" />
   </component>
 </module>
 

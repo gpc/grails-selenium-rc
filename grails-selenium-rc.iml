@@ -49,7 +49,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="grails-1.3.0.M1" level="application" />
+    <orderEntry type="library" name="grails-trunk" level="application" />
   </component>
 </module>
 
