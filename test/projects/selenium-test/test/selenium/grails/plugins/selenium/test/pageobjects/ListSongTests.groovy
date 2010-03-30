@@ -50,7 +50,7 @@ class ListSongTests {
 		assertThat listPage.rows.Title, equalTo(["Twilight Galaxy", "I'm Confused", "Heads Will Roll"])
 	}
 
-	@Test void songsCanBeSortedByArtits() {
+	@Test void songsCanBeSortedByArtist() {
 		def listPage = GrailsListPage.open("/song/list")
 
 		listPage.sortByColumn "Artist"

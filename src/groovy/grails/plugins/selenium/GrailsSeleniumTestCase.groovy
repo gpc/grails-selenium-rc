@@ -14,12 +14,6 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 	@Delegate private final SeleneseTestBase base = new SeleneseTestBase()
 
 	@Override
-	void setUp() {
-		super.setUp()
-		selenium.context = "${getClass().simpleName}.$name"
-	}
-
-	@Override
 	void tearDown() {
 		super.tearDown()
 		checkForVerificationErrors()

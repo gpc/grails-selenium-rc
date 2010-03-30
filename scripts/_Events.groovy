@@ -36,3 +36,9 @@ eventTestSuiteEnd = {String type ->
 		stopSeleniumServer()
 	}
 }
+
+eventTestStart = {String name ->
+	if (seleniumManager) {
+		seleniumManager.selenium.context = name
+	}
+}

@@ -2,7 +2,6 @@
 
 ## Enhancements
 * Get rid of evil singleton SeleniumManager
-* Set context text in Selenium runner
 * Tidy up loading to use more classes & less scripts
 * Expose selenium config (or at least timeout value) to page objects
 * Support fixtures plugin via a controller and custom commands?
