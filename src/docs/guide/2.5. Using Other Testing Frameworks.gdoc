@@ -1,0 +1,21 @@
+Selenium tests do not have to be written as JUnit test cases. Theoretically the @SeleniumTest@ mixin could be applied to almost any test case written in another framework. Page objects are also agnostic of the test framework.
+
+Currently the plugin has tested support for the [Spock Plugin|http://grails.org/plugin/spock]. When using Grails 1.3+ tests can be written using JUnit 4 conventions. Other testing frameworks such as EasyB, may well work already and support is planned in future versions of the Selenium plugin.
+
+To write Selenium tests using Spock, simply create your specification under @test/selenium@ and (optionally) use the @SeleniumTest@ mixin then run tests as normal. For example:
+{code}
+import spock.lang.*
+import grails.plugins.selenium.*
+
+@Mixin(SeleniumTest)
+class HomepageSpecification extends Specification {
+    def "user can load application homepage"() {
+        when:
+            selenium.open(contextPath)
+        then:
+            selenium.isTextPresent("Welcome to Grails")
+    }
+}
+{code}
+
+You can isolate Spock Selenium tests with @grails test-app :spock-selenium@ or @grails test-app functional:spock-selenium@ just as you can for other test types. 

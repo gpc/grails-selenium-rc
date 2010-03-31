@@ -14,5 +14,8 @@ There are several options available for writing Selenium tests:
  # [Extending GrailsSeleniumTestCase|guide:2.2 Extending GrailsSeleniumTestCase]
  # [Using The Page Object Pattern|guide:2.3 The Page Object Pattern]
 
+In all cases the Selenium RC plugin provides some enhancements to the Selenium client library via the Groovy meta class:
+ * [The Selenium Object|guide:2.4 The Selenium Object]
+
 You are not limited to writing Selenium tests as JUnit test cases.
- # [Using Other Testing Frameworks|guide:2.4 Using Other Testing Frameworks]
+ # [Using Other Testing Frameworks|guide:2.5 Using Other Testing Frameworks]

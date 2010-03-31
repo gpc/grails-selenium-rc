@@ -3,7 +3,7 @@ Selenium tests are placed in @test/selenium@ and are executed as part of the fun
 groups of tests by specifying the test names without the _"Tests"_ suffix. Again, like unit and integration tests
 you can use @grails test-app -rerun@ to rerun failing tests.
 
-In Grails 1.2 you can use the new syntax to isolate Selenium tests, for example @grails test-app :selenium@
+In Grails 1.2+ you can use the new syntax to isolate Selenium tests, for example @grails test-app :selenium@
 
 The plugin will automatically start Selenium Server and Selenium instances at the start of the suite and close them
 down cleanly at the end so your tests do not need to (and indeed should not) do so.
@@ -17,7 +17,8 @@ browser) rather than anything the plugin can do anything about.
 *Browser* | *selenium.browser* | *Operating System* | *Comments*
 Firefox 3 | \*firefox | Linux | Works perfectly.
 Firefox 3.5 | \*firefox | Linux | Works perfectly.
-Firefox 3.5 | \*firefox | OSX 10.6 | Selenium is unable to launch the browser  due to a Selenium bug: http://jira.openqa.org/browse/SRC-743.
+Firefox 3.5 | \*firefox | OSX 10.6 | Works perfectly.
+Firefox 3.6 | \*firefox | OSX 10.6 | Works perfectly.
 Safari 4 | \*safari | OSX 10.6 | Multi-window mode doesn't work.
 Firefox 3.5 | \*firefox | Windows XP | Works perfectly.
 Google Chrome | \*googlechrome | Windows XP | Works perfectly.

@@ -12,9 +12,16 @@ h2. Roadmap
  * Upgrade to Selenium 2.0 / WebDriver.
  * Support automatic generation of screenshots when assertions fail.
  * [Selenium Grid|http://selenium-grid.seleniumhq.org/] support.
- * Support for other testing frameworks such as [EasyB|http://www.easyb.org/], [TestNG|http://testng.org/], etc.
+ * Support for other testing frameworks such as [EasyB|http://www.easyb.org/].
 
 h2. Changelog
+h4. Version 1.0
+New Features...
+ * Optionally capture screenshot on test case failure
+ * Selenium interface is decorated with waitFor* and *AndWait methods
+ * Selenium runner's context text is set correctly at the start of each test
+ * Firefox 3.6 and Firefox on OSX support via Selenium Server 1.0.3
+
 h4. Version 0.2
 New Features...
  * Added base classes for using the page object pattern with standard Grails pages

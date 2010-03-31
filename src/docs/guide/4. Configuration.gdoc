@@ -12,6 +12,8 @@ selenium.singleWindow | If false Selenium will run in multiple windows which can
 selenium.slow | If set to true the Selenium tests will run slowly. | false
 selenium.url | The base URL where the tests will be run. | The Grails server URL (grails.serverURL in the application config)
 selenium.windowMaximize | If set to true the browser window will be maximized when opened. This has no effect in single window mode. | false
+selenium.screenshot.dir | The directory where screenshots will be stored. | ${testReportsDir}/screenshots
+selenium.screenshot.onFail | If set to true a screenshot will be taken when a test fails. | false
 {table}
 
 Environment specific configuration can be included in @SeleniumConfig.groovy@ just as it can in Grails' regular
