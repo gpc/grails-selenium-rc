@@ -3,15 +3,17 @@ package grails.plugins.selenium
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
 import org.slf4j.LoggerFactory
+import grails.build.GrailsBuildListener
+import org.apache.commons.lang.StringUtils
 
-@Singleton class SeleniumManager {
+@Singleton class SeleniumManager implements GrailsBuildListener {
 
 	private static final log = LoggerFactory.getLogger(SeleniumManager)
 
 	private def seleniumServer
 	ConfigObject config
 	Selenium selenium
-	
+
 	void startServer(serverJar) {
 		// The Selenium server needs to be loaded into a clean class
 		// loader because the "selenium-server.jar" includes its own
@@ -69,7 +71,7 @@ import org.slf4j.LoggerFactory
 		selenium.start()
 		println "selenium should be open..."
 		if (config.selenium.windowMaximize) {
-			println "maximising window..."			
+			println "maximising window..."
 			selenium.windowMaximize()
 		}
 	}
@@ -79,4 +81,39 @@ import org.slf4j.LoggerFactory
 		selenium = null
 	}
 
+	private static final SUBSCRIBED_EVENTS = ["TestCaseStart", "TestStart", "TestFailure"]
+
+	private String currentTestCase
+
+	void receiveGrailsBuildEvent(String name, Object... args) {
+		if (name in SUBSCRIBED_EVENTS) {
+			"event$name"(* args)
+		}
+	}
+
+	private void eventTestCaseStart(String testCaseName) {
+		currentTestCase = testCaseName
+	}
+
+	private void eventTestStart(String testName) {
+		use(StringUtils) {
+			selenium.context = "${currentTestCase.substringAfterLast('.')}.${testName}"
+		}
+	}
+
+	private void eventTestFailure(String testName, failure, boolean isError) {
+		if (config.selenium.screenshot.onFail) {
+			captureScreenshot("${currentTestCase}.${testName}.png")
+		}
+	}
+
+	private void captureScreenshot(String fileName) {
+		def screenshotDir = config.selenium.screenshot.dir
+		def screenshotFile = new File(screenshotDir, fileName)
+		try {
+			selenium.captureScreenshot(screenshotFile.absolutePath)
+		} catch (Exception e) {
+			log.error "Failed to capture screenshot", e
+		}
+	}
 }

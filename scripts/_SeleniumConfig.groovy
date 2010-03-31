@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 seleniumConfig = null
 
 target(loadSeleniumConfig: "Loads Selenium config into seleniumConfig variable") {
-	event("StatusUpdate", ["loading selenium config"])
+	event "StatusUpdate", ["loading selenium config"]
 	depends(loadDefaultConfig, mergeApplicationConfig, mergeSystemProperties)
 }
 
@@ -20,8 +20,10 @@ selenium {
 	slow = false
 	singleWindow = true
 	windowMaximize = false
-	alwaysCaptureScreenshots = false
-	captureScreenshotOnFailure = false
+	screenshot {
+		dir = "${testReportsDir}/screenshots"
+		onFail = false
+	}
 	screenshotDir = "./test/reports/screenshots"
 }
 		"""
@@ -69,7 +71,7 @@ getSeleniumConfigClass = { ->
 	try {
 		return classLoader.loadClass('SeleniumConfig')
 	} catch (ClassNotFoundException ex) {
-		event("StatusUpdate", ["SeleniumConfig.groovy not found, proceeding without config file"])
+		event "StatusUpdate", ["SeleniumConfig.groovy not found, proceeding without config file"]
 		return null
 	}
 }

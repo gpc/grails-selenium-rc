@@ -8,10 +8,10 @@ eventCreateWarStart = { warName, stagingDir ->
 
 eventAllTestsStart = {
 	loadSeleniumConfig()
-	
+
 	def phase = "functional"
 	if (seleniumConfig.selenium.remote) {
-		event("StatusUpdate", ["Running Selenium in remote mode"])
+		event "StatusUpdate", ["Running Selenium in remote mode"]
 		phase = "other"
 	}
 
@@ -34,11 +34,5 @@ eventTestSuiteEnd = {String type ->
 	if (type =~ /selenium/) {
 		stopSelenium()
 		stopSeleniumServer()
-	}
-}
-
-eventTestStart = {String name ->
-	if (seleniumManager) {
-		seleniumManager.selenium.context = name
 	}
 }
