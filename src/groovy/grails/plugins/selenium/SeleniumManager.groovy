@@ -19,7 +19,7 @@ import grails.plugins.selenium.events.TestContextNotifier
 	Selenium selenium
 	private final Collection<EventHandler> eventHandlers = []
 
-	SeleniumManager() {
+	private SeleniumManager() {
 		// TODO: passing refs to this shouldn't be done in constructor
 		eventHandlers << new ScreenshotGrabber(this)
 		eventHandlers << new TestContextNotifier(this)
@@ -91,8 +91,6 @@ import grails.plugins.selenium.events.TestContextNotifier
 		selenium?.stop()
 		selenium = null
 	}
-
-	String getCurrentTestCase() { currentTestCase }
 
 	int getTimeout() {
 		config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
