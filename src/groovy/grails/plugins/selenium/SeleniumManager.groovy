@@ -5,6 +5,7 @@ import com.thoughtworks.selenium.Selenium
 import org.slf4j.LoggerFactory
 import grails.build.GrailsBuildListener
 import org.apache.commons.lang.StringUtils
+import com.thoughtworks.selenium.*
 
 @Singleton class SeleniumManager implements GrailsBuildListener {
 
@@ -79,6 +80,14 @@ import org.apache.commons.lang.StringUtils
 	void stopSelenium() {
 		selenium?.stop()
 		selenium = null
+	}
+
+	int getTimeout() {
+		config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
+	}
+
+	int getInterval() {
+		config?.selenium?.defaultInterval ?: Wait.DEFAULT_INTERVAL
 	}
 
 	private static final SUBSCRIBED_EVENTS = ["TestCaseStart", "TestStart", "TestFailure"]

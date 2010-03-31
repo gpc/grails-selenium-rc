@@ -4,7 +4,8 @@ customised according to your requirements. Configuration values are:
 {table}
 *Config Key* | *Description* | *Default*
 selenium.browser | The browser Selenium will use. | \*firefox on Linux, \*safari on OSX, \*iexplore on Windows
-selenium.defaultTimeout | The timeout in milliseconds that Selenium will use when waiting for a page to load or using the waitFor method | 60000
+selenium.defaultTimeout | The timeout in milliseconds after which an *AndWait or waitFor* method will fail | 60000
+selenium.defaultInterval | The polling interval in milliseconds used by *AndWait and waitFor* methods | 250
 selenium.remote | If set to true the test will run in the "other" phase rather than "functional" and therefore the app will not be started. This is useful for running tests against a running application instance. | false
 selenium.server.host | The host the Selenium Server will run on. | localhost
 selenium.server.port | The port the Selenium Server will run on. | 4444

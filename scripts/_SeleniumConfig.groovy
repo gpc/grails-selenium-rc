@@ -17,6 +17,7 @@ selenium {
 	}
 	browser = "${getDefaultBrowser()}"
 	defaultTimeout = 60000
+	defaultInterval = 250
 	slow = false
 	singleWindow = true
 	windowMaximize = false
