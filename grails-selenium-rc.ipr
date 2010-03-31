@@ -62,6 +62,7 @@
       <module fileurl="file://$PROJECT_DIR$/grails-selenium-rc.iml" filepath="$PROJECT_DIR$/grails-selenium-rc.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-headless/selenium-headless.iml" filepath="$PROJECT_DIR$/test/projects/selenium-headless/selenium-headless.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-test/selenium-test.iml" filepath="$PROJECT_DIR$/test/projects/selenium-test/selenium-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-test/selenium-test-grailsPlugins.iml" filepath="$PROJECT_DIR$/test/projects/selenium-test/selenium-test-grailsPlugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-jbehave/selenium-with-jbehave.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-jbehave/selenium-with-jbehave.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock.iml" />
     </modules>
