@@ -4,16 +4,26 @@ import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
 import org.slf4j.LoggerFactory
 import grails.build.GrailsBuildListener
-import org.apache.commons.lang.StringUtils
-import com.thoughtworks.selenium.*
 
-@Singleton class SeleniumManager implements GrailsBuildListener {
+import com.thoughtworks.selenium.*
+import grails.plugins.selenium.events.EventHandler
+import grails.plugins.selenium.events.ScreenshotGrabber
+import grails.plugins.selenium.events.TestContextNotifier
+
+@Singleton class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 
 	private static final log = LoggerFactory.getLogger(SeleniumManager)
 
 	private def seleniumServer
-	ConfigObject config
+	private ConfigObject config
 	Selenium selenium
+	private final Collection<EventHandler> eventHandlers = []
+
+	SeleniumManager() {
+		// TODO: passing refs to this shouldn't be done in constructor
+		eventHandlers << new ScreenshotGrabber(this)
+		eventHandlers << new TestContextNotifier(this)
+	}
 
 	void startServer(serverJar) {
 		// The Selenium server needs to be loaded into a clean class
@@ -82,6 +92,8 @@ import com.thoughtworks.selenium.*
 		selenium = null
 	}
 
+	String getCurrentTestCase() { currentTestCase }
+
 	int getTimeout() {
 		config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
 	}
@@ -90,39 +102,15 @@ import com.thoughtworks.selenium.*
 		config?.selenium?.defaultInterval ?: Wait.DEFAULT_INTERVAL
 	}
 
-	private static final SUBSCRIBED_EVENTS = ["TestCaseStart", "TestStart", "TestFailure"]
-
-	private String currentTestCase
-
-	void receiveGrailsBuildEvent(String name, Object... args) {
-		if (name in SUBSCRIBED_EVENTS) {
-			"event$name"(* args)
-		}
+	boolean screenshotOnFail() {
+		return config.selenium.screenshot.onFail
 	}
 
-	private void eventTestCaseStart(String testCaseName) {
-		currentTestCase = testCaseName
-	}
-
-	private void eventTestStart(String testName) {
-		use(StringUtils) {
-			selenium.context = "${currentTestCase.substringAfterLast('.')}.${testName}"
-		}
-	}
-
-	private void eventTestFailure(String testName, failure, boolean isError) {
-		if (config.selenium.screenshot.onFail) {
-			captureScreenshot("${currentTestCase}.${testName}.png")
-		}
-	}
-
-	private void captureScreenshot(String fileName) {
-		def screenshotDir = config.selenium.screenshot.dir
-		def screenshotFile = new File(screenshotDir, fileName)
-		try {
-			selenium.captureScreenshot(screenshotFile.absolutePath)
-		} catch (Exception e) {
-			log.error "Failed to capture screenshot", e
+	void receiveGrailsBuildEvent(String event, Object... args) {
+		eventHandlers.each {
+			if (it.handles(event)) {
+				it.onEvent(event, args)
+			}
 		}
 	}
 }
