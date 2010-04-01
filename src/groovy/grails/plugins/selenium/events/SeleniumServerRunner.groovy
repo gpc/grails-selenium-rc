@@ -2,6 +2,7 @@ package grails.plugins.selenium.events
 
 import grails.plugins.selenium.SeleniumTestContext
 import org.codehaus.groovy.grails.plugins.PluginManagerHolder
+import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
 
 class SeleniumServerRunner implements EventHandler {
 
@@ -75,7 +76,8 @@ class SeleniumServerRunner implements EventHandler {
 	}
 
 	private File getServerJar() {
-		new File("lib/server/selenium-server.jar") // TODO: inject this
+		def pluginDirectory = GrailsPluginUtils.getPluginDirForName("selenium-rc").file
+		new File(pluginDirectory, "lib/server/selenium-server.jar") // TODO: inject or scan for jar name
 	}
 
 }

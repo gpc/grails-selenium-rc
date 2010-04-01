@@ -2,14 +2,13 @@ package grails.plugins.selenium
 
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
-import org.slf4j.LoggerFactory
+import com.thoughtworks.selenium.Wait
 import grails.build.GrailsBuildListener
-
-import com.thoughtworks.selenium.*
 import grails.plugins.selenium.events.EventHandler
 import grails.plugins.selenium.events.ScreenshotGrabber
-import grails.plugins.selenium.events.TestContextNotifier
 import grails.plugins.selenium.events.SeleniumServerRunner
+import grails.plugins.selenium.events.TestContextNotifier
+import org.slf4j.LoggerFactory
 
 @Singleton class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 
@@ -33,8 +32,6 @@ import grails.plugins.selenium.events.SeleniumServerRunner
 		def browser = config.selenium.browser
 		def url = config.selenium.url ?: serverURL
 		selenium = new DefaultSelenium(host, port, browser, url)
-//		selenium.defaultTimeout = config.selenium.defaultTimeout
-//		selenium.screenshotDir = new File(config.selenium.screenshotDir)
 
 		selenium.start()
 		if (config.selenium.windowMaximize) {

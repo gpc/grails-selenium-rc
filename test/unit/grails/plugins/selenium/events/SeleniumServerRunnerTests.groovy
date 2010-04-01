@@ -62,6 +62,11 @@ selenium {
 		}
 	}
 
+	@Test void serverJarExists() {
+		def jar = runner.serverJar
+		assertTrue "Selenium server jar $jar.canonicalPath is not found", jar.isFile()
+	}
+
 	private boolean isServerRunning() {
 		def socket = null
 		try {
