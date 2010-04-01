@@ -3,32 +3,33 @@ package grails.plugins.selenium.events
 import grails.plugins.selenium.SeleniumTestContext
 import org.apache.commons.lang.StringUtils
 
-class TestContextNotifier implements EventHandler {
+class TestContextNotifier extends TestCaseMonitor {
 
 	private final SeleniumTestContext context
-	private String currentTestCase
 
 	TestContextNotifier(SeleniumTestContext context) {
 		this.context = context
 	}
 
 	boolean handles(String event) {
-		return event in [EVENT_TEST_START, EVENT_TEST_CASE_START]
+		event == EVENT_TEST_START || super.handles(event)
 	}
 
 	void onEvent(String event, Object... arguments) {
-		switch (event) {
-			case EVENT_TEST_CASE_START:
-				String testCaseName = arguments[0]
-				use(StringUtils) {
-					currentTestCase = testCaseName.contains(".") ? testCaseName.substringAfterLast(".") : testCaseName
-				}
-				break
-			case EVENT_TEST_START:
-				String testName = arguments[0]
-				context.selenium.context = "${currentTestCase}.${testName}"
-				break
+		if (event == EVENT_TEST_START) {
+			context.selenium.context = composeContextText(arguments[0])
+		} else {
+			super.onEvent(event, arguments)
 		}
+	}
+
+	private String composeContextText(String testName) {
+		def contextText = new StringBuilder()
+		use(StringUtils) {
+			contextText << (currentTestCase.contains(".") ? currentTestCase.substringAfterLast(".") : currentTestCase)
+		}
+		contextText << "." << testName
+		return contextText as String
 	}
 
 }

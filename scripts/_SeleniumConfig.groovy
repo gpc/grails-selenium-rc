@@ -25,7 +25,6 @@ selenium {
 		dir = "${testReportsDir}/screenshots"
 		onFail = false
 	}
-	screenshotDir = "./test/reports/screenshots"
 }
 		"""
 	seleniumConfig = new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)

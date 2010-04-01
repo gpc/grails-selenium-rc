@@ -35,7 +35,6 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 		} else {
 			throw new MissingMethodException(methodName, target.getClass(), arguments)
 		}
-		println "waiting for $timeout milliseconds"
 		waitCondition.wait("$methodName(${arguments.join(', ')}) timed out", SeleniumManager.instance.timeout, SeleniumManager.instance.interval)
 	}
 }

@@ -19,34 +19,41 @@ class ScreenshotGrabberTests {
 	@Before
 	void setUp() {
 		selenium = mock(Selenium)
+
 		context = mock(SeleniumTestContext)
 		context.selenium.returns(selenium).stub()
-		context.currentTestCase.returns("WhateverTests").stub()
+
 		screenshotGrabber = new ScreenshotGrabber(context)
 	}
 
 	@Test
 	void capturesScreenshotOnTestFailureEvent() {
-		context.screenshotOnFail().returns(true).stub()
+		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = true")
+		context.config.returns(config).stub()
 		selenium.captureScreenshot "WhateverTests.testWhatever.png"
 		play {
+			screenshotGrabber.onEvent(EVENT_TEST_CASE_START, "WhateverTests")
 			screenshotGrabber.onEvent(EVENT_TEST_FAILURE, "testWhatever")
 		}
 	}
 
 	@Test
 	void doesNotCaptureScreenshotIfDisabledInConfig() {
-		context.screenshotOnFail().returns(false).stub()
+		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = false")
+		context.config.returns(config).stub()
 		play {
+			screenshotGrabber.onEvent(EVENT_TEST_CASE_START, "WhateverTests")
 			screenshotGrabber.onEvent(EVENT_TEST_FAILURE, "testWhatever")
 		}
 	}
 
 	@Test
 	void handlesExceptionsThrownWhenCapturingScreen() {
-		context.screenshotOnFail().returns(true).stub()
+		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = true")
+		context.config.returns(config).stub()
 		selenium.captureScreenshot(anything()).raises(new SeleniumException("screenshot failed"))
 		play {
+			screenshotGrabber.onEvent(EVENT_TEST_CASE_START, "WhateverTests")
 			screenshotGrabber.onEvent(EVENT_TEST_FAILURE, "testWhatever")
 		}
 	}
