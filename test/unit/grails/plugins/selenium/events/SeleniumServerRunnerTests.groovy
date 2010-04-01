@@ -1,6 +1,5 @@
 package grails.plugins.selenium.events
 
-import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumTestContext
 import org.gmock.WithGMock
 import org.junit.Before
@@ -13,14 +12,11 @@ import static org.junit.Assert.assertTrue
 @WithGMock
 class SeleniumServerRunnerTests {
 
-	Selenium selenium
 	SeleniumTestContext context
 	SeleniumServerRunner runner
 
 	@Before
 	void setUp() {
-		selenium = mock(Selenium)
-
 		def config = new ConfigSlurper().parse("""
 selenium {
 	server {
@@ -42,7 +38,6 @@ selenium {
 
 		context = mock(SeleniumTestContext)
 		context.config.returns(config).stub()
-		context.selenium.returns(selenium).stub()
 
 		runner = new SeleniumServerRunner(context)
 	}
