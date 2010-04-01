@@ -9,11 +9,9 @@ import grails.plugins.selenium.events.EventHandler
 class ScreenshotGrabber extends TestCaseMonitor {
 
 	private final log = LoggerFactory.getLogger(ScreenshotGrabber)
-	private final SeleniumTestContext context
 
 	ScreenshotGrabber(SeleniumTestContext context) {
-		super(EventHandler.EVENT_TEST_FAILURE)
-		this.context = context
+		super(context, EventHandler.EVENT_TEST_FAILURE)
 	}
 
 	void onEvent(String event, Object... arguments) {

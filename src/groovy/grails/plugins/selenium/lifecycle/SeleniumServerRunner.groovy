@@ -7,12 +7,10 @@ import grails.plugins.selenium.events.EventHandler
 
 class SeleniumServerRunner extends EventHandlerSupport {
 
-	private final SeleniumTestContext context
 	private seleniumServer
 
 	SeleniumServerRunner(SeleniumTestContext context) {
-		super([EventHandler.EVENT_TEST_SUITE_START, EventHandler.EVENT_TEST_SUITE_END])
-		this.context = context
+		super(context, [EventHandler.EVENT_TEST_SUITE_START, EventHandler.EVENT_TEST_SUITE_END])
 	}
 
 	void onEvent(String event, Object... arguments) {

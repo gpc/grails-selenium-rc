@@ -1,11 +1,12 @@
 package grails.plugins.selenium.lifecycle
 
-import grails.plugins.selenium.events.EventHandler
+import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.events.EventHandlerSupport
 
-class SeleniumRunner implements EventHandler {
-
-	def boolean handles(String event) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+class SeleniumRunner extends EventHandlerSupport {
+	
+	SeleniumRunner(SeleniumTestContext context) {
+		super(context, [])
 	}
 
 	def void onEvent(String event, Object... arguments) {

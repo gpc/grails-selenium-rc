@@ -7,11 +7,8 @@ import grails.plugins.selenium.events.EventHandler
 
 class TestContextNotifier extends TestCaseMonitor {
 
-	private final SeleniumTestContext context
-
 	TestContextNotifier(SeleniumTestContext context) {
-		super(EventHandler.EVENT_TEST_START)
-		this.context = context
+		super(context, EventHandler.EVENT_TEST_START)
 	}
 
 	void onEvent(String event, Object... arguments) {
