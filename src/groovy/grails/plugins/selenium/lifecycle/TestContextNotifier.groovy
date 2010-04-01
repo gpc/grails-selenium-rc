@@ -1,18 +1,17 @@
-package grails.plugins.selenium.events
+package grails.plugins.selenium.lifecycle
 
 import grails.plugins.selenium.SeleniumTestContext
 import org.apache.commons.lang.StringUtils
+import grails.plugins.selenium.events.TestCaseMonitor
+import grails.plugins.selenium.events.EventHandler
 
 class TestContextNotifier extends TestCaseMonitor {
 
 	private final SeleniumTestContext context
 
 	TestContextNotifier(SeleniumTestContext context) {
+		super(EventHandler.EVENT_TEST_START)
 		this.context = context
-	}
-
-	boolean handles(String event) {
-		event == EVENT_TEST_START || super.handles(event)
 	}
 
 	void onEvent(String event, Object... arguments) {

@@ -1,4 +1,4 @@
-package grails.plugins.selenium.events
+package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumTestContext
@@ -7,6 +7,7 @@ import org.junit.Before
 import org.junit.Test
 import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_CASE_START
 import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_START
+import grails.plugins.selenium.lifecycle.TestContextNotifier
 
 @WithGMock
 class TestContextNotifierTests {

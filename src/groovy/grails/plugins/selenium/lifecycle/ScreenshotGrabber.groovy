@@ -1,8 +1,10 @@
-package grails.plugins.selenium.events
+package grails.plugins.selenium.lifecycle
 
 import grails.plugins.selenium.SeleniumTestContext
 import com.thoughtworks.selenium.SeleniumException
 import org.slf4j.LoggerFactory
+import grails.plugins.selenium.events.TestCaseMonitor
+import grails.plugins.selenium.events.EventHandler
 
 class ScreenshotGrabber extends TestCaseMonitor {
 
@@ -10,11 +12,8 @@ class ScreenshotGrabber extends TestCaseMonitor {
 	private final SeleniumTestContext context
 
 	ScreenshotGrabber(SeleniumTestContext context) {
+		super(EventHandler.EVENT_TEST_FAILURE)
 		this.context = context
-	}
-
-	boolean handles(String event) {
-		event == EVENT_TEST_FAILURE || super.handles(event)
 	}
 
 	void onEvent(String event, Object... arguments) {

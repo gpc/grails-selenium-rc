@@ -1,23 +1,21 @@
-package grails.plugins.selenium.events
+package grails.plugins.selenium.lifecycle
 
 import grails.plugins.selenium.SeleniumTestContext
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
+import grails.plugins.selenium.events.EventHandlerSupport
+import grails.plugins.selenium.events.EventHandler
 
-class SeleniumServerRunner implements EventHandler {
+class SeleniumServerRunner extends EventHandlerSupport {
 
 	private final SeleniumTestContext context
 	private seleniumServer
 
 	SeleniumServerRunner(SeleniumTestContext context) {
+		super([EventHandler.EVENT_TEST_SUITE_START, EventHandler.EVENT_TEST_SUITE_END])
 		this.context = context
 	}
 
-	def boolean handles(String event) {
-		event in [EVENT_TEST_SUITE_START, EVENT_TEST_SUITE_END]
-	}
-
-	def void onEvent(String event, Object... arguments) {
+	void onEvent(String event, Object... arguments) {
 		def testPhase = arguments[0]
 		if (testPhase =~ /selenium/) {
 			switch (event) {

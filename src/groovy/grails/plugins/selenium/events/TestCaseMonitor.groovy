@@ -1,16 +1,22 @@
 package grails.plugins.selenium.events
 
-import static grails.plugins.selenium.events.EventHandler.*
-
-class TestCaseMonitor implements EventHandler {
+class TestCaseMonitor extends EventHandlerSupport {
 
 	private String currentTestCase
 
-	protected String getCurrentTestCase() { currentTestCase }
-
-	boolean handles(String event) {
-		event == EVENT_TEST_CASE_START
+	TestCaseMonitor() {
+		super(EventHandler.EVENT_TEST_CASE_START)
 	}
+
+	TestCaseMonitor(Collection<String> handledEvents) {
+		super(handledEvents + EventHandler.EVENT_TEST_CASE_START)
+	}
+
+	TestCaseMonitor(String handledEvent) {
+		super([handledEvent, EventHandler.EVENT_TEST_CASE_START])
+	}
+
+	protected String getCurrentTestCase() { currentTestCase }
 
 	void onEvent(String event, Object... arguments) {
 		currentTestCase = arguments[0]

@@ -1,4 +1,4 @@
-package grails.plugins.selenium.events
+package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.SeleniumException
@@ -8,6 +8,7 @@ import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.anything
 import static grails.plugins.selenium.events.EventHandler.*
+import grails.plugins.selenium.lifecycle.ScreenshotGrabber
 
 @WithGMock
 class ScreenshotGrabberTests {

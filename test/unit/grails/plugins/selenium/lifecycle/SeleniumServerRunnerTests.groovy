@@ -1,4 +1,4 @@
-package grails.plugins.selenium.events
+package grails.plugins.selenium.lifecycle
 
 import grails.plugins.selenium.SeleniumTestContext
 import org.gmock.WithGMock
@@ -8,6 +8,7 @@ import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_SUITE_END
 import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_SUITE_START
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
+import grails.plugins.selenium.lifecycle.SeleniumServerRunner
 
 @WithGMock
 class SeleniumServerRunnerTests {

@@ -5,9 +5,9 @@ import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait
 import grails.build.GrailsBuildListener
 import grails.plugins.selenium.events.EventHandler
-import grails.plugins.selenium.events.ScreenshotGrabber
-import grails.plugins.selenium.events.SeleniumServerRunner
-import grails.plugins.selenium.events.TestContextNotifier
+import grails.plugins.selenium.lifecycle.ScreenshotGrabber
+import grails.plugins.selenium.lifecycle.SeleniumServerRunner
+import grails.plugins.selenium.lifecycle.TestContextNotifier
 import org.slf4j.LoggerFactory
 
 @Singleton class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
@@ -50,10 +50,6 @@ import org.slf4j.LoggerFactory
 
 	int getInterval() {
 		config?.selenium?.defaultInterval ?: Wait.DEFAULT_INTERVAL
-	}
-
-	boolean screenshotOnFail() {
-		return config.selenium.screenshot.onFail
 	}
 
 	void receiveGrailsBuildEvent(String event, Object... args) {
