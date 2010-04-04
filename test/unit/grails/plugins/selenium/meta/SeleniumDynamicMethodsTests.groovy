@@ -6,14 +6,15 @@ import com.thoughtworks.selenium.Wait.WaitTimedOutException
 import grails.plugins.selenium.SeleniumManager
 import org.gmock.WithGMock
 import org.junit.*
+import grails.test.GrailsUnitTestCase
 
 @WithGMock
-class SeleniumDynamicMethodsTests {
-
-	Selenium selenium = new DefaultSelenium(null)
+class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
 
 	@Before
 	void setUp() {
+		super.setUp()
+		registerMetaClass Selenium
 		SeleniumDynamicMethods.enhanceSelenium()
 		SeleniumManager.instance.config = new ConfigSlurper().parse("""
 			selenium {
@@ -25,14 +26,16 @@ class SeleniumDynamicMethodsTests {
 
 	@After
 	void tearDown() {
+		super.tearDown()
 		SeleniumManager.instance.config = null
 	}
 
 	@Test
 	void canAppendAndWaitToSeleniumMethods() {
+		def selenium = new DefaultSelenium(null)
 		mock(selenium) {
 			click "whatever"
-			waitForPageToLoad 500
+			waitForPageToLoad "500"
 		}
 
 		play {
@@ -42,6 +45,7 @@ class SeleniumDynamicMethodsTests {
 
 	@Test
 	void canWaitForSeleniumMethodThatReturnsBoolean() {
+		def selenium = new DefaultSelenium(null)
 		mock(selenium) {
 			isTextPresent("whatever").returns(false).times(2)
 			isTextPresent("whatever").returns(true)
@@ -54,6 +58,7 @@ class SeleniumDynamicMethodsTests {
 
 	@Test
 	void canWaitForSeleniumMethodThatReturnsString() {
+		def selenium = new DefaultSelenium(null)
 		mock(selenium) {
 			getText("whatever").returns("incorrect").times(2)
 			getText("whatever").returns("correct")
@@ -66,6 +71,7 @@ class SeleniumDynamicMethodsTests {
 
 	@Test(expected = WaitTimedOutException)
 	void waitForThrowsExceptionOnTimeout() {
+		def selenium = new DefaultSelenium(null)
 		mock(selenium) {
 			isTextPresent("whatever").returns(false).stub()
 		}
@@ -77,6 +83,7 @@ class SeleniumDynamicMethodsTests {
 
 	@Test(expected = MissingMethodException)
 	void waitForFailsForInvalidSeleniumMethod() {
+		def selenium = new DefaultSelenium(null)
 		selenium.waitForBlahBlahBlah("foo")
 	}
 

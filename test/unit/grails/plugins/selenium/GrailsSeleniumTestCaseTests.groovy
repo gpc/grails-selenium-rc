@@ -1,28 +1,32 @@
 package grails.plugins.selenium
 
-import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.SeleneseTestBase
+import com.thoughtworks.selenium.Selenium
 import grails.test.GrailsUnitTestCase
 import junit.framework.AssertionFailedError
 import junit.framework.ComparisonFailure
 import org.gmock.WithGMock
-import com.thoughtworks.selenium.Selenium
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.*
-import static org.hamcrest.CoreMatchers.*
-import org.junit.After
+import static org.hamcrest.CoreMatchers.equalTo
+import static org.junit.Assert.assertThat
+import com.thoughtworks.selenium.DefaultSelenium
+import org.junit.Ignore
 
 @WithGMock
 class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	GrailsSeleniumTestCase testCase = new GrailsSeleniumTestCase()
-	Selenium selenium = new DefaultSelenium(null)
+	Selenium selenium
 
 	@Before
 	void setUp() {
 		super.setUp()
+
 		testCase.name = "testSomething"
+
+		selenium = mock(Selenium)
 		SeleniumManager.instance.selenium = selenium
 	}
 
@@ -60,7 +64,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void dynamicBooleanAssertWithOneArgDelegatedToSelenium() {
-		mock(selenium).isTextPresent("some string").returns(true)
+		selenium.isTextPresent("some string").returns(true)
 		play {
 			try {
 				testCase.assertTextPresent("some string")
@@ -72,7 +76,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanAssertWithNoArgsDelegatedToSelenium() {
-		mock(selenium).isAlertPresent().returns(true)
+		selenium.isAlertPresent().returns(true)
 		play {
 			try {
 				testCase.assertAlertPresent()
@@ -84,7 +88,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityAssertWithOneArgDelegatedToSelenium() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.assertText("expected value", "id=foo")
@@ -96,7 +100,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityAssertWithNoArgsDelegatedToSelenium() {
-		mock(selenium).getLocation().returns("http://localhost:8080/foo")
+		selenium.getLocation().returns("http://localhost:8080/foo")
 		play {
 			try {
 				testCase.assertLocation("http://localhost:8080/foo")
@@ -108,7 +112,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanVerifyDelegatesToSelenium() {
-		mock(selenium).isTextPresent("some string").returns(true)
+		selenium.isTextPresent("some string").returns(true)
 		play {
 			try {
 				testCase.verifyTextPresent("some string")
@@ -120,7 +124,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanWaitForDelegatesToSelenium() {
-		mock(selenium).isTextPresent("some string").returns(true)
+		selenium.isTextPresent("some string").returns(true)
 		play {
 			try {
 				testCase.waitForTextPresent("some string")
@@ -132,7 +136,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityVerifyDelegatesToSelenium() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.verifyText("expected value", "id=foo")
@@ -144,7 +148,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityWaitForDelegatesToSelenium() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.waitForText("expected value", "id=foo")
@@ -156,7 +160,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void assertFailsCorrectly() {
-		mock(selenium).getText("id=foo").returns("not what I expected")
+		selenium.getText("id=foo").returns("not what I expected")
 		play {
 			shouldFail(AssertionError) {
 				testCase.assertText("expected value", "id=foo")
@@ -166,7 +170,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void verifyFailsCorrectly() {
-		mock(selenium).getText("id=foo").returns("not what I expected")
+		selenium.getText("id=foo").returns("not what I expected")
 		play {
 			testCase.verifyText("expected value", "id=foo")
 			// TODO: SeleneseTestBase throws the wrong error type :(
@@ -178,7 +182,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void waitForFailsCorrectly() {
-		mock(selenium).getText("id=foo").returns("not what I expected")
+		selenium.getText("id=foo").returns("not what I expected")
 		play {
 			shouldFail(AssertionFailedError) {
 				testCase.waitForText("expected value", "id=foo")
@@ -188,7 +192,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityAssertUsesSeleniumVersionOfAssertEquals() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.assertText(/regex:e[\w\s]+e/, "id=foo")
@@ -200,16 +204,15 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		}
 	}
 
-	@Test
+	@Ignore @Test(expected = MissingMethodException)
 	void failsCleanlyWhenWrongArgumentTypesPassedToDelegatedSeleniumMethod() {
-		shouldFail(MissingMethodException) {
-			testCase.assertText("expected", 3)
-		}
+		SeleniumManager.instance.selenium = new DefaultSelenium(null)
+		testCase.assertText("expected", 3)
 	}
 
 	@Test
 	void booleanDynamicAssertCanBeNegated() {
-		mock(selenium).isTextPresent("some string").returns(false)
+		selenium.isTextPresent("some string").returns(false)
 		play {
 			try {
 				testCase.assertNotTextPresent("some string")
@@ -221,7 +224,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanDynamicVerifyCanBeNegated() {
-		mock(selenium).isTextPresent("some string").returns(false)
+		selenium.isTextPresent("some string").returns(false)
 		play {
 			try {
 				testCase.verifyNotTextPresent("some string")
@@ -233,7 +236,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanDynamicWaitForCanBeNegated() {
-		mock(selenium).isTextPresent("some string").returns(false)
+		selenium.isTextPresent("some string").returns(false)
 		play {
 			try {
 				testCase.waitForNotTextPresent("some string")
@@ -245,7 +248,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityDynamicAssertCanBeNegated() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.assertNotText("not expected", "id=foo")
@@ -257,7 +260,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityDynamicVerifyCanBeNegated() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.verifyNotText("not expected", "id=foo")
@@ -269,7 +272,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityDynamicWaitForCanBeNegated() {
-		mock(selenium).getText("id=foo").returns("expected value")
+		selenium.getText("id=foo").returns("expected value")
 		play {
 			try {
 				testCase.waitForNotText("not expected", "id=foo")
