@@ -44,21 +44,11 @@ selenium {
 	}
 
 	@Test
-	void doesNotStartServerIfNotRunningSeleniumSuite() {
-		play {
-			runner.onEvent(EVENT_TEST_SUITE_START, "unit")
-			assertFalse "Selenium server should not be running", isServerRunning()
-			runner.onEvent(EVENT_TEST_SUITE_END, "unit")
-			assertFalse "Selenium server should not be running", isServerRunning()
-		}
-	}
-
-	@Test
 	void startsAndStopsServer() {
 		play {
-			runner.onEvent(EVENT_TEST_SUITE_START, "selenium")
+			runner.startServer()
 			assertTrue "Selenium server should be running", isServerRunning()
-			runner.onEvent(EVENT_TEST_SUITE_END, "selenium")
+			runner.stopServer()
 			assertFalse "Selenium server should not be running", isServerRunning()
 		}
 	}

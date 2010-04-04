@@ -1,30 +1,19 @@
 package grails.plugins.selenium.lifecycle
 
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.events.EventHandlerSupport
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
+import grails.plugins.selenium.SeleniumTestContext
 
-class SeleniumRunner extends EventHandlerSupport {
+class SeleniumRunner {
 
+	private final SeleniumTestContext context
 	private Selenium selenium
 
 	SeleniumRunner(SeleniumTestContext context) {
-		super(context, [])
+		this.context = context
 	}
 
-	def void onEvent(String event, Object... arguments) {
-		switch (event) {
-			case "start":
-				startSelenium()
-				break
-			case "stop":
-				stopSelenium()
-				break
-		}
-	}
-
-	private void startSelenium() {
+	void startSelenium() {
 		def host = context.config.selenium.server.host
 		def port = context.config.selenium.server.port
 		def browser = context.config.selenium.browser
@@ -40,7 +29,7 @@ class SeleniumRunner extends EventHandlerSupport {
 		context.selenium = selenium
 	}
 
-	private void stopSelenium() {
+	void stopSelenium() {
 		selenium?.stop()
 		context.selenium = null
 	}

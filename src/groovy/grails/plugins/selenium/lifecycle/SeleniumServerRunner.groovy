@@ -2,32 +2,17 @@ package grails.plugins.selenium.lifecycle
 
 import grails.plugins.selenium.SeleniumTestContext
 import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
-import grails.plugins.selenium.events.EventHandlerSupport
-import grails.plugins.selenium.events.EventHandler
 
-class SeleniumServerRunner extends EventHandlerSupport {
+class SeleniumServerRunner {
 
+	private final SeleniumTestContext context
 	private seleniumServer
 
 	SeleniumServerRunner(SeleniumTestContext context) {
-		super(context, [EventHandler.EVENT_TEST_SUITE_START, EventHandler.EVENT_TEST_SUITE_END])
+		this.context = context
 	}
 
-	void onEvent(String event, Object... arguments) {
-		def testPhase = arguments[0]
-		if (testPhase =~ /selenium/) {
-			switch (event) {
-				case EVENT_TEST_SUITE_START:
-					startServer()
-					break
-				case EVENT_TEST_SUITE_END:
-					stopServer()
-					break
-			}
-		}
-	}
-
-	private void startServer() {
+	void startServer() {
 		// The Selenium server needs to be loaded into a clean class
 		// loader because the "selenium-server.jar" includes its own
 		// dependencies which conflict with some of the Grails ones.
@@ -67,7 +52,7 @@ class SeleniumServerRunner extends EventHandlerSupport {
 		Thread.currentThread().contextClassLoader = oldContextCL
 	}
 
-	private void stopServer() {
+	void stopServer() {
 		seleniumServer?.stop()
 	}
 

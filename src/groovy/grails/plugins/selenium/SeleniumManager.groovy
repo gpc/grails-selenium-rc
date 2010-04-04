@@ -5,10 +5,9 @@ import com.thoughtworks.selenium.Wait
 import grails.build.GrailsBuildListener
 import grails.plugins.selenium.events.EventHandler
 import grails.plugins.selenium.lifecycle.ScreenshotGrabber
-import grails.plugins.selenium.lifecycle.SeleniumServerRunner
+import grails.plugins.selenium.lifecycle.SeleniumSuite
 import grails.plugins.selenium.lifecycle.TestContextNotifier
 import org.slf4j.LoggerFactory
-import grails.plugins.selenium.lifecycle.SeleniumRunner
 
 @Singleton class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 
@@ -19,8 +18,7 @@ import grails.plugins.selenium.lifecycle.SeleniumRunner
 
 	private SeleniumManager() {
 		// TODO: passing refs to this shouldn't be done in constructor
-		eventHandlers << new SeleniumServerRunner(this)
-		eventHandlers << new SeleniumRunner(this)
+		eventHandlers << new SeleniumSuite(this)
 		eventHandlers << new ScreenshotGrabber(this)
 		eventHandlers << new TestContextNotifier(this)
 	}

@@ -42,8 +42,8 @@ class SeleniumRunnerTests {
 		}
 
 		play {
-			runner.onEvent("start")
-			runner.onEvent("stop")
+			runner.startSelenium()
+			runner.stopSelenium()
 		}
 	}
 
@@ -68,7 +68,7 @@ class SeleniumRunnerTests {
 		}
 
 		play {
-			runner.onEvent("start")
+			runner.startSelenium()
 		}
 	}
 
