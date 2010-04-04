@@ -16,20 +16,8 @@ target(startSeleniumServer: "Starts Selenium server") {
 
 target(startSelenium: "Starts Selenium instance, launching a browser window") {
 	depends(configureServerContextPath, createConfig)
-	def url
-	if (seleniumManager.config.selenium.url) {
-		url = seleniumManager.config.selenium.url
-	} else if (config.grails.serverURL) {
-		url = config.grails.serverURL
-	} else {
-		def host = serverHost ?: "localhost"
-		def port = serverPort
-		def path = serverContextPath
-		url = "http://$host:${port}$path"
-	}
-	if (!url.endsWith("/")) url = "$url/"
-	event "StatusUpdate", ["starting selenium instance for $url"]
-	seleniumManager.startSelenium(url)
+	event "StatusUpdate", ["starting selenium instance"]
+	seleniumManager.startSelenium()
 }
 
 target(stopSelenium: "Stops Selenium instance, closing the browser window") {

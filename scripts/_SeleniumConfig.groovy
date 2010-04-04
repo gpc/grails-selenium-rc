@@ -25,6 +25,7 @@ selenium {
 		dir = "${testReportsDir}/screenshots"
 		onFail = false
 	}
+	url = ${getDefaultUrl()}
 }
 		"""
 	seleniumConfig = new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)
@@ -56,6 +57,15 @@ target(mergeSystemProperties: "Loads Selenium config overrides from system prope
 	}
 }
 
+getSeleniumConfigClass = { ->
+	try {
+		return classLoader.loadClass('SeleniumConfig')
+	} catch (ClassNotFoundException ex) {
+		event "StatusUpdate", ["SeleniumConfig.groovy not found, proceeding without config file"]
+		return null
+	}
+}
+
 getDefaultBrowser = { ->
 	switch (System.properties."os.name") {
 		case ~/^Mac OS.*/:
@@ -67,11 +77,16 @@ getDefaultBrowser = { ->
 	}
 }
 
-getSeleniumConfigClass = { ->
-	try {
-		return classLoader.loadClass('SeleniumConfig')
-	} catch (ClassNotFoundException ex) {
-		event "StatusUpdate", ["SeleniumConfig.groovy not found, proceeding without config file"]
-		return null
+getDefaultUrl = { ->
+	def url
+	if (config.grails.serverURL) {
+		url = config.grails.serverURL
+	} else {
+		def host = serverHost ?: "localhost"
+		def port = serverPort
+		def path = serverContextPath
+		url = "http://$host:${port}$path"
 	}
+	if (!url.endsWith("/")) url = "$url/"
+	return url
 }
