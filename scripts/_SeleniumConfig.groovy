@@ -1,5 +1,4 @@
 import grails.util.GrailsUtil
-import org.slf4j.LoggerFactory
 
 seleniumUrl = null
 seleniumConfig = null

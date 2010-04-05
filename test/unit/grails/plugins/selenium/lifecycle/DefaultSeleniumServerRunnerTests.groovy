@@ -4,17 +4,15 @@ import grails.plugins.selenium.SeleniumTestContext
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
-import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_SUITE_END
-import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_SUITE_START
+
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
-import grails.plugins.selenium.lifecycle.SeleniumServerRunner
 
 @WithGMock
-class SeleniumServerRunnerTests {
+class DefaultSeleniumServerRunnerTests {
 
 	SeleniumTestContext context
-	SeleniumServerRunner runner
+	DefaultSeleniumServerRunner runner
 
 	@Before
 	void setUp() {
@@ -40,7 +38,7 @@ selenium {
 		context = mock(SeleniumTestContext)
 		context.config.returns(config).stub()
 
-		runner = new SeleniumServerRunner(context)
+		runner = new DefaultSeleniumServerRunner(context)
 	}
 
 	@Test

@@ -1,27 +1,25 @@
-package grails.plugins.selenium.lifecycle
+package grails.plugins.selenium
 
 import com.thoughtworks.selenium.DefaultSelenium
-import grails.plugins.selenium.SeleniumTestContext
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
-import static org.hamcrest.CoreMatchers.nullValue
-import static org.hamcrest.CoreMatchers.sameInstance
+import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_SUITE_END
+import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_SUITE_START
+import grails.plugins.selenium.lifecycle.SeleniumServerRunner
 
 @WithGMock
-class SeleniumRunnerTests {
+class SeleniumManagerTests {
 
-	def config
-	SeleniumTestContext context
-	SeleniumRunner runner
+	SeleniumManager manager
 
 	@Before void setUp() {
-		context = mock(SeleniumTestContext)
-		runner = new SeleniumRunner(context)
+		manager = new SeleniumManager()
+		manager.seleniumServerRunner = mock(SeleniumServerRunner)
 	}
 
-	@Test void startsAndStopsSelenium() {
-		def config = new ConfigSlurper().parse("""
+	@Test void startsAndStopsSeleniumAndServerInCorrectSequence() {
+		manager.config = new ConfigSlurper().parse("""
 			selenium {
 				server {
 					host = "localhost"
@@ -32,23 +30,22 @@ class SeleniumRunnerTests {
 				windowMaximize = false
 			}
 		""")
-		context.config.returns(config).stub()
 		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080"))
 		ordered {
+			manager.seleniumServerRunner.startServer()
 			selenium.start()
-			context.selenium.set(sameInstance(selenium))
 			selenium.stop()
-			context.selenium.set(nullValue())
+			manager.seleniumServerRunner.stopServer()
 		}
 
 		play {
-			runner.startSelenium()
-			runner.stopSelenium()
+			manager.receiveGrailsBuildEvent EVENT_TEST_SUITE_START, "selenium"
+			manager.receiveGrailsBuildEvent EVENT_TEST_SUITE_END, "selenium"
 		}
 	}
 
 	@Test void maximisesWindowIfRequired() {
-		def config = new ConfigSlurper().parse("""
+		manager.config = new ConfigSlurper().parse("""
 			selenium {
 				server {
 					host = "localhost"
@@ -59,16 +56,15 @@ class SeleniumRunnerTests {
 				windowMaximize = true
 			}
 		""")
-		context.config.returns(config).stub()
 		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080"))
 		ordered {
+			manager.seleniumServerRunner.startServer()
 			selenium.start()
 			selenium.windowMaximize()
-			context.selenium.set(sameInstance(selenium))
 		}
 
 		play {
-			runner.startSelenium()
+			manager.receiveGrailsBuildEvent EVENT_TEST_SUITE_START, "selenium"
 		}
 	}
 

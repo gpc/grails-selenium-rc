@@ -4,11 +4,12 @@ import com.thoughtworks.selenium.Selenium
 
 interface SeleniumTestContext {
 
-	ConfigObject getConfig()
-	void setConfig(ConfigObject config)
+	ConfigObject getConfig() // TODO: really needed?
 	Selenium getSelenium()
-	void setSelenium(Selenium selenium)
 	int getTimeout()
 	int getInterval()
+
+	// TODO: remove from interface
+	void setConfig(ConfigObject config)
 
 }

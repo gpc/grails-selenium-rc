@@ -19,10 +19,10 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 	@Before
 	void configureSelenium() {
 		SeleniumManager.instance.config = new ConfigSlurper().parse("""
-selenium {
-	browser = "*firefox"
-	defaultTimeout = 250
-}
+			selenium {
+				browser = "*firefox"
+				defaultTimeout = 250
+			}
 		""")
 	}
 

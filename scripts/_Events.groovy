@@ -15,7 +15,7 @@ eventAllTestsStart = {
 		phase = "other"
 	}
 
-	event "StatusUpdate", ["Running Selenium tests in ${phase} phase"]
+	event "StatusUpdate", ["Selenium tests will run in the ${phase} phase"]
 	binding."${phase}Tests" << "selenium"
 
 	if (binding.variables.containsKey("spockPluginDir")) {
