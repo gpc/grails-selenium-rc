@@ -44,6 +44,13 @@ class SeleniumManagerTests {
 		}
 	}
 
+	@Test void ignoresNonSeleniumSuiteEvents() {
+		play {
+			manager.receiveGrailsBuildEvent EVENT_TEST_SUITE_START, "unit"
+			manager.receiveGrailsBuildEvent EVENT_TEST_SUITE_END, "unit"
+		}
+	}
+
 	@Test void maximisesWindowIfRequired() {
 		manager.config = new ConfigSlurper().parse("""
 			selenium {

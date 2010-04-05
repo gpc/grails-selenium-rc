@@ -61,7 +61,7 @@ class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 	}
 
 	private boolean isSeleniumSuite(String testType) {
-		true
+		return testType ==~ /selenium/
 	}
 
 	private void onSeleniumSuiteStart() {
