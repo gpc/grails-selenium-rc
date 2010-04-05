@@ -1,3 +1,5 @@
+defaultTasks "clean", "test"
+
 allprojects {
 	task clean << { task ->
 	    ant.exec(executable: "grails", dir: "$task.project.projectDir", failonerror: true) {
