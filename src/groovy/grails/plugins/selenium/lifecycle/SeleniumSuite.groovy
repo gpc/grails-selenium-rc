@@ -9,8 +9,10 @@ class SeleniumSuite extends EventHandlerSupport {
 	SeleniumServerRunner seleniumServerRunner
 	SeleniumRunner seleniumRunner
 
-	SeleniumSuite(SeleniumTestContext context) {
+	SeleniumSuite(SeleniumTestContext context, SeleniumServerRunner seleniumServerRunner, SeleniumRunner seleniumRunner) {
 		super(context, [EventHandler.EVENT_TEST_SUITE_START, EventHandler.EVENT_TEST_SUITE_END])
+		this.seleniumServerRunner = seleniumServerRunner
+		this.seleniumRunner = seleniumRunner
 	}
 
 	void onEvent(String event, Object... arguments) {

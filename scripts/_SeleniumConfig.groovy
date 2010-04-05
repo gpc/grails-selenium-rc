@@ -1,6 +1,7 @@
 import grails.util.GrailsUtil
 import org.slf4j.LoggerFactory
 
+seleniumUrl = null
 seleniumConfig = null
 
 target(loadSeleniumConfig: "Loads Selenium config into seleniumConfig variable") {
@@ -9,6 +10,7 @@ target(loadSeleniumConfig: "Loads Selenium config into seleniumConfig variable")
 }
 
 target(loadDefaultConfig: "Loads default Selenium configuration") {
+	depends(determineSeleniumUrl)
 	def defaultConfig = """
 selenium {
 	server {
@@ -25,14 +27,29 @@ selenium {
 		dir = "${testReportsDir}/screenshots"
 		onFail = false
 	}
-	url = ${getDefaultUrl()}
+	url = "${seleniumUrl}"
 }
 		"""
 	seleniumConfig = new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)
 }
 
+target(determineSeleniumUrl: "Determines URL Selenium tests will connect to") {
+	depends(configureServerContextPath, createConfig)
+	def url
+	if (config.grails.serverURL) {
+		url = config.grails.serverURL
+	} else {
+		def host = serverHost ?: "localhost"
+		def port = serverPort
+		def path = serverContextPath
+		url = "http://$host:${port}$path"
+	}
+	if (!url.endsWith("/")) url = "$url/"
+	event "StatusUpdate", ["Selenium will connect to $url"]
+	seleniumUrl = url
+}
+
 target(mergeApplicationConfig: "Loads Selenium config from grails-app/conf/SeleniumConfig.groovy") {
-	
 	def configClass = getSeleniumConfigClass()
 	if (configClass) {
 		def slurper = new ConfigSlurper(GrailsUtil.environment)
@@ -77,16 +94,3 @@ getDefaultBrowser = { ->
 	}
 }
 
-getDefaultUrl = { ->
-	def url
-	if (config.grails.serverURL) {
-		url = config.grails.serverURL
-	} else {
-		def host = serverHost ?: "localhost"
-		def port = serverPort
-		def path = serverContextPath
-		url = "http://$host:${port}$path"
-	}
-	if (!url.endsWith("/")) url = "$url/"
-	return url
-}

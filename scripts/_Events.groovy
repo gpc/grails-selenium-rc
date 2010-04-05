@@ -15,6 +15,7 @@ eventAllTestsStart = {
 		phase = "other"
 	}
 
+	event "StatusUpdate", ["Running Selenium tests in ${phase} phase"]
 	binding."${phase}Tests" << "selenium"
 
 	if (binding.variables.containsKey("spockPluginDir")) {
@@ -27,13 +28,13 @@ eventTestSuiteStart = {String type ->
 	if (type =~ /selenium/) {
 		seleniumInit()
 //		startSeleniumServer()
-		startSelenium()
+//		startSelenium()
 	}
 }
 
-eventTestSuiteEnd = {String type ->
-	if (type =~ /selenium/) {
-		stopSelenium()
+//eventTestSuiteEnd = {String type ->
+//	if (type =~ /selenium/) {
+//		stopSelenium()
 //		stopSeleniumServer()
-	}
-}
+//	}
+//}
