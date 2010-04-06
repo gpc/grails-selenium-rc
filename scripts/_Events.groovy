@@ -27,14 +27,5 @@ eventAllTestsStart = {
 eventTestSuiteStart = {String type ->
 	if (type =~ /selenium/) {
 		seleniumInit()
-//		startSeleniumServer()
-//		startSelenium()
 	}
 }
-
-//eventTestSuiteEnd = {String type ->
-//	if (type =~ /selenium/) {
-//		stopSelenium()
-//		stopSeleniumServer()
-//	}
-//}
