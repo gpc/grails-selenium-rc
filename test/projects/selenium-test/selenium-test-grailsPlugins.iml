@@ -2,10 +2,13 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$USER_HOME_GRAILS$/1.3.0.BUILD-SNAPSHOT/projects/selenium-test/plugins/build-test-data-0.2.3">
-      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.BUILD-SNAPSHOT/projects/selenium-test/plugins/build-test-data-0.2.3/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.BUILD-SNAPSHOT/projects/selenium-test/plugins/build-test-data-0.2.3/src/groovy" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.BUILD-SNAPSHOT/projects/selenium-test/plugins/build-test-data-0.2.3/grails-app/services" isTestSource="false" />
+    <content url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/build-test-data-0.2.3">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/build-test-data-0.2.3/src/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/build-test-data-0.2.3/src/groovy" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/build-test-data-0.2.3/grails-app/services" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/tomcat-1.3.0.RC1">
+      <sourceFolder url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/tomcat-1.3.0.RC1/src/groovy" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -13,10 +16,12 @@
       <library name="Grails User Library">
         <CLASSES>
           <root url="file://$USER_HOME_GRAILS$/1.3.0.BUILD-SNAPSHOT/projects/selenium-test/plugins/tomcat-1.3.0.BUILD-SNAPSHOT/lib" />
+          <root url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/tomcat-1.3.0.RC1/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
         <jarDirectory url="file://$USER_HOME_GRAILS$/1.3.0.BUILD-SNAPSHOT/projects/selenium-test/plugins/tomcat-1.3.0.BUILD-SNAPSHOT/lib" recursive="false" />
+        <jarDirectory url="file://$USER_HOME_GRAILS$/1.3.0.RC1/projects/selenium-test/plugins/tomcat-1.3.0.RC1/lib" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="library" name="grails-1.3.0.RC1" level="application" />

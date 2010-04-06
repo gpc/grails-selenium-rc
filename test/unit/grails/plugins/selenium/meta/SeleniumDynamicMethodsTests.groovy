@@ -4,9 +4,11 @@ import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait.WaitTimedOutException
 import grails.plugins.selenium.SeleniumManager
-import org.gmock.WithGMock
-import org.junit.*
 import grails.test.GrailsUnitTestCase
+import org.gmock.WithGMock
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
 @WithGMock
 class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
@@ -16,18 +18,19 @@ class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
 		super.setUp()
 		registerMetaClass Selenium
 		SeleniumDynamicMethods.enhanceSelenium()
-		SeleniumManager.instance.config = new ConfigSlurper().parse("""
+		def config = new ConfigSlurper().parse("""
 			selenium {
 				defaultTimeout = 500
 				defaultInterval = 50
 			}
 		""")
+		SeleniumManager.instance = new SeleniumManager(config: config)
 	}
 
 	@After
 	void tearDown() {
 		super.tearDown()
-		SeleniumManager.instance.config = null
+		SeleniumManager.instance = null
 	}
 
 	@Test

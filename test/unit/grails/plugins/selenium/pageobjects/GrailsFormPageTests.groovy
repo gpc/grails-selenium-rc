@@ -3,9 +3,11 @@ package grails.plugins.selenium.pageobjects
 import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import org.gmock.WithGMock
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import static org.hamcrest.CoreMatchers.*
+import static org.hamcrest.CoreMatchers.equalTo
+import static org.hamcrest.CoreMatchers.nullValue
 import static org.junit.Assert.assertThat
 
 @WithGMock
@@ -33,9 +35,14 @@ class GrailsFormPageTests {
 			getAttribute("aMultipleSelect@multiple").returns("multiple").stub()
 		}
 
-		SeleniumManager.instance.selenium = mockSelenium
+		SeleniumManager.instance = new SeleniumManager(selenium: mockSelenium)
 
 		page = new TestFormPage()
+	}
+
+	@After
+	void tearDown() {
+		SeleniumManager.instance = null
 	}
 
 	@Test

@@ -3,6 +3,7 @@ package grails.plugins.selenium.pageobjects
 import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import org.gmock.WithGMock
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
@@ -16,7 +17,12 @@ class GrailsListPageTests {
 	@Before
 	void setUp() {
 		selenium = mock(Selenium)
-		SeleniumManager.instance.selenium = selenium
+		SeleniumManager.instance = new SeleniumManager(selenium: selenium)
+	}
+
+	@After
+	void tearDown() {
+		SeleniumManager.instance = null
 	}
 
 	@Test(expected = InvalidPageStateException)

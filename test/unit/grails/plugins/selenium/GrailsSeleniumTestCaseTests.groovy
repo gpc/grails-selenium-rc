@@ -1,5 +1,6 @@
 package grails.plugins.selenium
 
+import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.SeleneseTestBase
 import com.thoughtworks.selenium.Selenium
 import grails.test.GrailsUnitTestCase
@@ -8,11 +9,10 @@ import junit.framework.ComparisonFailure
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
-import com.thoughtworks.selenium.DefaultSelenium
-import org.junit.Ignore
 
 @WithGMock
 class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
@@ -27,13 +27,13 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		testCase.name = "testSomething"
 
 		selenium = mock(Selenium)
-		SeleniumManager.instance.selenium = selenium
+		SeleniumManager.instance = new SeleniumManager(selenium: selenium)
 	}
 
 	@After
 	void tearDown() {
 		super.tearDown()
-		SeleniumManager.instance.selenium = null
+		SeleniumManager.instance = null
 	}
 
 	@Test

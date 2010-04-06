@@ -5,11 +5,12 @@ import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait
 import grails.build.GrailsBuildListener
 import grails.plugins.selenium.events.EventHandler
-import grails.plugins.selenium.lifecycle.ScreenshotGrabber
 import grails.plugins.selenium.lifecycle.DefaultSeleniumServerRunner
-import grails.plugins.selenium.lifecycle.TestContextNotifier
-import org.slf4j.LoggerFactory
+import grails.plugins.selenium.lifecycle.ScreenshotGrabber
 import grails.plugins.selenium.lifecycle.SeleniumServerRunner
+import grails.plugins.selenium.lifecycle.TestContextNotifier
+import org.codehaus.groovy.grails.cli.support.GrailsBuildEventListener
+import org.slf4j.LoggerFactory
 
 class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 
@@ -21,14 +22,20 @@ class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 
 	// TODO: clean up this evil singleton stuff
 	private static SeleniumTestContext instance
-	synchronized static SeleniumTestContext getInstance() {
+	static SeleniumTestContext getInstance() {
 		if (!instance) {
-			instance = new SeleniumManager()
-			instance.seleniumServerRunner = new DefaultSeleniumServerRunner(instance)
-			instance.eventHandlers << new ScreenshotGrabber(instance)
-			instance.eventHandlers << new TestContextNotifier(instance)
+			throw new IllegalStateException("Selenium test context is not initialized")
 		}
 		return instance
+	}
+
+	static void initialize(ConfigObject seleniumConfig, GrailsBuildEventListener eventListener) {
+		instance = new SeleniumManager()
+		instance.config = seleniumConfig
+		instance.seleniumServerRunner = new DefaultSeleniumServerRunner(instance)
+		instance.eventHandlers << new ScreenshotGrabber(instance)
+		instance.eventHandlers << new TestContextNotifier(instance)
+		eventListener.addGrailsBuildListener(instance)
 	}
 
 	Selenium getSelenium() {

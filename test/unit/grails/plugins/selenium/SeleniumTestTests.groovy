@@ -5,11 +5,10 @@ import com.thoughtworks.selenium.Wait.WaitTimedOutException
 import grails.test.GrailsUnitTestCase
 import org.gmock.WithGMock
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
-import static org.junit.Assert.*
-import org.junit.Before
-import java.util.concurrent.TimeUnit
+import static org.junit.Assert.assertThat
 
 @WithGMock
 class SeleniumTestTests extends GrailsUnitTestCase {
@@ -18,18 +17,18 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 
 	@Before
 	void configureSelenium() {
-		SeleniumManager.instance.config = new ConfigSlurper().parse("""
+		def config = new ConfigSlurper().parse("""
 			selenium {
 				browser = "*firefox"
 				defaultTimeout = 250
 			}
 		""")
+		SeleniumManager.instance = new SeleniumManager(config: config)
 	}
 
 	@After
 	void tearDown() {
-		SeleniumManager.instance.selenium = null
-		SeleniumManager.instance.config = null
+		SeleniumManager.instance = null
 	}
 
 	@Test

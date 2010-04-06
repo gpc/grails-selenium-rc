@@ -9,7 +9,4 @@ interface SeleniumTestContext {
 	int getTimeout()
 	int getInterval()
 
-	// TODO: remove from interface
-	void setConfig(ConfigObject config)
-
 }
