@@ -41,7 +41,7 @@ class SeleniumTest {
 	 */
 	void waitFor(String message = null, Closure condition) {
 		def msg = message ? "Timed out waiting for: $message." : "Timed out."
-		def timeout = config?.selenium?.defaultTimeout ?: Wait.DEFAULT_TIMEOUT
+		def timeout = SeleniumTestContextHolder.context.timeout
 		new ClosureEvaluatingWait(condition: condition).wait(msg, timeout)
 	}
 

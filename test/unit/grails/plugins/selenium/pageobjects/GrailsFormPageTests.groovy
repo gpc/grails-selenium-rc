@@ -1,7 +1,8 @@
 package grails.plugins.selenium.pageobjects
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumManager
+import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
@@ -9,7 +10,6 @@ import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.nullValue
 import static org.junit.Assert.assertThat
-import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class GrailsFormPageTests {
@@ -36,7 +36,8 @@ class GrailsFormPageTests {
 			getAttribute("aMultipleSelect@multiple").returns("multiple").stub()
 		}
 
-		SeleniumTestContextHolder.context = new SeleniumManager(selenium: mockSelenium)
+		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
+		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
 
 		page = new TestFormPage()
 	}

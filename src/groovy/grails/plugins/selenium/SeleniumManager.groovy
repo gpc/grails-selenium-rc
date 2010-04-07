@@ -16,9 +16,9 @@ class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 
 	private static final log = LoggerFactory.getLogger(SeleniumManager)
 	private final Collection<EventHandler> eventHandlers = []
-	private SeleniumServerRunner seleniumServerRunner
-	private Selenium selenium
-	private ConfigObject config
+	SeleniumServerRunner seleniumServerRunner
+	Selenium selenium
+	ConfigObject config
 
 	static void initialize(ConfigObject seleniumConfig, GrailsBuildEventListener eventListener) {
 		def seleniumManager = new SeleniumManager()

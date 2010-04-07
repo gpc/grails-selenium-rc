@@ -7,7 +7,6 @@ import grails.plugins.selenium.SeleniumTestContextHolder
 
 abstract class Page {
 
-	protected final Selenium selenium
 	private final String expectedTitle
 
 	Page() {
@@ -15,7 +14,6 @@ abstract class Page {
 	}
 
 	Page(String expectedTitle) {
-		this.selenium = SeleniumTestContextHolder.context.selenium
 		this.expectedTitle = expectedTitle
 		validate()
 	}
@@ -29,6 +27,10 @@ abstract class Page {
 
 	static String getContext() {
 		ConfigurationHolder.config.grails.app.context
+	}
+
+	protected Selenium getSelenium() {
+		return SeleniumTestContextHolder.context.selenium
 	}
 
 	protected void validate() throws InvalidPageStateException {

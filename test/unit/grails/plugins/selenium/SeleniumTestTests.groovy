@@ -17,13 +17,15 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 
 	@Before
 	void configureSelenium() {
-		def config = new ConfigSlurper().parse("""
+		def mockConfig = new ConfigSlurper().parse("""
 			selenium {
 				browser = "*firefox"
-				defaultTimeout = 250
 			}
 		""")
-		SeleniumTestContextHolder.context = new SeleniumManager(config: config)
+		SeleniumTestContextHolder.context = mock(SeleniumTestContext) {
+			getConfig().returns(mockConfig).stub()
+			getTimeout().returns(250).stub()
+		}
 	}
 
 	@After
@@ -33,9 +35,10 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 
 	@Test
 	void seleniumInstanceIsAvailable() {
-		SeleniumTestContextHolder.context.selenium = mock(Selenium) {
+		def mockSelenium = mock(Selenium) {
 			open "/"
 		}
+		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
 		play {
 			testCase.testOpenPage()
 		}
@@ -43,7 +46,9 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 
 	@Test
 	void configIsAvailable() {
-		assertThat testCase.config.selenium.browser, equalTo("*firefox")
+		play {
+			assertThat testCase.config.selenium.browser, equalTo("*firefox")
+		}
 	}
 
 	@Test
@@ -60,24 +65,29 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 
 	@Test
 	void waitForSuccess() {
-		testCase.waitFor {
-			true
+		play {
+			testCase.waitFor {
+				true
+			}
 		}
 	}
 
-
 	@Test(expected = WaitTimedOutException)
 	void waitForThrowsTimeoutException() {
-		testCase.waitFor {
-			false
+		play {
+			testCase.waitFor {
+				false
+			}
 		}
 	}
 
 	@Test
 	void waitForFailsWithMessage() {
 		try {
-			testCase.waitFor("something to happen") {
-				false
+			play {
+				testCase.waitFor("something to happen") {
+					false
+				}
 			}
 			fail "waitFor should have timed out"
 		} catch (WaitTimedOutException e) {

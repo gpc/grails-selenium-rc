@@ -3,13 +3,13 @@ package grails.plugins.selenium.meta
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait.WaitTimedOutException
-import grails.plugins.selenium.SeleniumManager
+import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
 import grails.test.GrailsUnitTestCase
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
@@ -19,13 +19,10 @@ class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
 		super.setUp()
 		registerMetaClass Selenium
 		SeleniumDynamicMethods.enhanceSelenium()
-		def config = new ConfigSlurper().parse("""
-			selenium {
-				defaultTimeout = 500
-				defaultInterval = 50
-			}
-		""")
-		SeleniumTestContextHolder.context = new SeleniumManager(config: config)
+		SeleniumTestContextHolder.context = mock(SeleniumTestContext) {
+			getTimeout().returns(500).stub()
+			getInterval().returns(50).stub()
+		}
 	}
 
 	@After

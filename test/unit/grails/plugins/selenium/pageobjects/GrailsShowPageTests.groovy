@@ -9,17 +9,19 @@ import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
 import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.SeleniumTestContext
 
 @WithGMock
 class GrailsShowPageTests {
 
-	def selenium
+	Selenium mockSelenium
 
 	@Before
 	void setUp() {
-		selenium = mock(Selenium)
-		selenium.getTitle().returns("Show Thing").stub()
-		SeleniumTestContextHolder.context = new SeleniumManager(selenium: selenium)
+		mockSelenium = mock(Selenium)
+		mockSelenium.getTitle().returns("Show Thing").stub()
+		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
+		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
 	}
 
 	@After
@@ -29,11 +31,11 @@ class GrailsShowPageTests {
 
 	@Test
 	void propertyGetDelegatedToTable() {
-		selenium.getXpathCount("//table/tbody/tr").returns(2)
-		selenium.getTable("//table.0.0").returns("name")
-		selenium.getTable("//table.0.1").returns("Rob")
-		selenium.getTable("//table.1.0").returns("email")
-		selenium.getTable("//table.1.1").returns("rob@energizedwork.com")
+		mockSelenium.getXpathCount("//table/tbody/tr").returns(2)
+		mockSelenium.getTable("//table.0.0").returns("name")
+		mockSelenium.getTable("//table.0.1").returns("Rob")
+		mockSelenium.getTable("//table.1.0").returns("email")
+		mockSelenium.getTable("//table.1.1").returns("rob@energizedwork.com")
 		play {
 			def page = new GrailsShowPage()
 			assertThat page.name, equalTo("Rob")
@@ -43,8 +45,8 @@ class GrailsShowPageTests {
 
 	@Test(expected = MissingPropertyException)
 	void unknownPropertiesHandledCorrectly() {
-		selenium.getXpathCount("//table/tbody/tr").returns(1)
-		selenium.getTable("//table.0.0").returns("name")
+		mockSelenium.getXpathCount("//table/tbody/tr").returns(1)
+		mockSelenium.getTable("//table.0.0").returns("name")
 		play {
 			def page = new GrailsShowPage()
 			page.foo
@@ -53,8 +55,8 @@ class GrailsShowPageTests {
 
 	@Test(expected = MissingPropertyException)
 	void propertySetDoesNotWork() {
-		selenium.getXpathCount("//table/tbody/tr").returns(1)
-		selenium.getTable("//table.0.0").returns("name")
+		mockSelenium.getXpathCount("//table/tbody/tr").returns(1)
+		mockSelenium.getTable("//table.0.0").returns("name")
 		play {
 			def page = new GrailsShowPage()
 			page.name = "Rob"

@@ -1,24 +1,25 @@
 package grails.plugins.selenium.pageobjects
 
-import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumManager
+import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
-import grails.plugins.selenium.SeleniumTestContextHolder
+import com.thoughtworks.selenium.Selenium
 
 @WithGMock
 class GrailsListPageTests {
 
-	def selenium
+	Selenium mockSelenium
 
 	@Before
 	void setUp() {
-		selenium = mock(Selenium)
-		SeleniumTestContextHolder.context = new SeleniumManager(selenium: selenium)
+		mockSelenium = mock(Selenium)
+		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
+		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
 	}
 
 	@After
@@ -28,7 +29,7 @@ class GrailsListPageTests {
 
 	@Test(expected = InvalidPageStateException)
 	void openFailsIfWrongPageLoads() {
-		selenium.getTitle().returns("WTF Page is this?")
+		mockSelenium.getTitle().returns("WTF Page is this?")
 		play {
 			new GrailsListPage()
 		}
@@ -36,10 +37,10 @@ class GrailsListPageTests {
 
 	@Test
 	void columnNamesAreLazyLoaded() {
-		selenium.getTitle().returns("Thing List").stub()
-		selenium.getXpathCount("//table/thead/tr[1]/th").returns(3)
+		mockSelenium.getTitle().returns("Thing List").stub()
+		mockSelenium.getXpathCount("//table/thead/tr[1]/th").returns(3)
 		(1..3).each {i ->
-			selenium.getText("//table/thead/tr/th[$i]").returns("Column $i" as String)
+			mockSelenium.getText("//table/thead/tr/th[$i]").returns("Column $i" as String)
 		}
 		play {
 			def page = new GrailsListPage()
@@ -49,15 +50,15 @@ class GrailsListPageTests {
 
 	@Test
 	void getRowsScrapesTable() {
-		selenium.getTitle().returns("Thing List").stub()
-		selenium.getXpathCount("//table/thead/tr[1]/th").returns(3)
-		selenium.getXpathCount("//table/tbody/tr").returns(3)
+		mockSelenium.getTitle().returns("Thing List").stub()
+		mockSelenium.getXpathCount("//table/thead/tr[1]/th").returns(3)
+		mockSelenium.getXpathCount("//table/tbody/tr").returns(3)
 		(1..3).each {i ->
-			selenium.getText("//table/thead/tr/th[$i]").returns("Column $i")
+			mockSelenium.getText("//table/thead/tr/th[$i]").returns("Column $i")
 		}
 		(1..3).each {y ->
 			(1..3).each {x ->
-				selenium.getText("//table/tbody/tr[$y]/td[$x]").returns("$x.$y".toString())
+				mockSelenium.getText("//table/tbody/tr[$y]/td[$x]").returns("$x.$y".toString())
 			}
 		}
 
