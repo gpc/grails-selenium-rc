@@ -4,6 +4,7 @@ import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.Wait
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import grails.plugins.selenium.condition.ClosureEvaluatingWait
 
 /**
  * Mixin for Selenium tests that provides access to the running Selenium instance, config, etc. 

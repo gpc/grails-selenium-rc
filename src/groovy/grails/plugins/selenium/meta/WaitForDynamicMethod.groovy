@@ -1,10 +1,9 @@
 package grails.plugins.selenium.meta
 
-import grails.plugins.selenium.ClosureEvaluatingWait
+import grails.plugins.selenium.condition.ClosureEvaluatingWait
 import grails.plugins.selenium.SeleniumManager
 import java.util.regex.Pattern
 import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
-import org.hamcrest.Matcher
 
 class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 

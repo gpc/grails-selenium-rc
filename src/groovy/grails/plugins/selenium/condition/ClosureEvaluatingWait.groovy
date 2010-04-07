@@ -1,4 +1,4 @@
-package grails.plugins.selenium
+package grails.plugins.selenium.condition
 
 import com.thoughtworks.selenium.Wait
 
