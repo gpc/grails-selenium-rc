@@ -6,13 +6,14 @@ import grails.test.GrailsUnitTestCase
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Test
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class PageTests extends GrailsUnitTestCase {
 
 	@After
 	void tearDown() {
-		SeleniumManager.instance = null
+		SeleniumTestContextHolder.context = null
 	}
 
 	@Test
@@ -24,7 +25,7 @@ class PageTests extends GrailsUnitTestCase {
 		def selenium = mock(Selenium) {
 			open "/foo/pirate/list"
 		}
-		SeleniumManager.instance = new SeleniumManager(selenium: selenium)
+		SeleniumTestContextHolder.context = new SeleniumManager(selenium: selenium)
 
 		play {
 			Page.open "/pirate/list"

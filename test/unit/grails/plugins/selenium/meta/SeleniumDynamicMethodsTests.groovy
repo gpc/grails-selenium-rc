@@ -9,6 +9,7 @@ import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
@@ -24,13 +25,13 @@ class SeleniumDynamicMethodsTests extends GrailsUnitTestCase {
 				defaultInterval = 50
 			}
 		""")
-		SeleniumManager.instance = new SeleniumManager(config: config)
+		SeleniumTestContextHolder.context = new SeleniumManager(config: config)
 	}
 
 	@After
 	void tearDown() {
 		super.tearDown()
-		SeleniumManager.instance = null
+		SeleniumTestContextHolder.context = null
 	}
 
 	@Test

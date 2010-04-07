@@ -15,14 +15,14 @@ class SeleniumTest {
 	 * Returns Selenium configuration.
 	 */
 	ConfigObject getConfig() {
-		SeleniumManager.instance.config
+		SeleniumTestContextHolder.context.config
 	}
 
 	/**
 	 * Returns the running Selenium instance.
 	 */
 	Selenium getSelenium() {
-		SeleniumManager.instance.selenium
+		SeleniumTestContextHolder.context.selenium
 	}
 
 	/**

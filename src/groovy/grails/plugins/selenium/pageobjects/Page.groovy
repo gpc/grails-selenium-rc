@@ -3,6 +3,7 @@ package grails.plugins.selenium.pageobjects
 import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 abstract class Page {
 
@@ -14,7 +15,7 @@ abstract class Page {
 	}
 
 	Page(String expectedTitle) {
-		this.selenium = SeleniumManager.instance.selenium
+		this.selenium = SeleniumTestContextHolder.context.selenium
 		this.expectedTitle = expectedTitle
 		validate()
 	}
@@ -23,7 +24,7 @@ abstract class Page {
 		if (!uri.startsWith(context)) {
 			uri = context + uri
 		}
-		SeleniumManager.instance.selenium.open(uri)
+		SeleniumTestContextHolder.context.selenium.open(uri)
 	}
 
 	static String getContext() {

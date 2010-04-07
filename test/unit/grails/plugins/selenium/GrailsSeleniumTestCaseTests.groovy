@@ -27,13 +27,13 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		testCase.name = "testSomething"
 
 		selenium = mock(Selenium)
-		SeleniumManager.instance = new SeleniumManager(selenium: selenium)
+		SeleniumTestContextHolder.context = new SeleniumManager(selenium: selenium)
 	}
 
 	@After
 	void tearDown() {
 		super.tearDown()
-		SeleniumManager.instance = null
+		SeleniumTestContextHolder.context = null
 	}
 
 	@Test
@@ -206,7 +206,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Ignore @Test(expected = MissingMethodException)
 	void failsCleanlyWhenWrongArgumentTypesPassedToDelegatedSeleniumMethod() {
-		SeleniumManager.instance.selenium = new DefaultSelenium(null)
+		SeleniumTestContextHolder.context.selenium = new DefaultSelenium(null)
 		testCase.assertText("expected", 3)
 	}
 

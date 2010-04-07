@@ -3,6 +3,7 @@ package grails.plugins.selenium.meta
 import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
 import java.util.regex.Pattern
 import grails.plugins.selenium.SeleniumManager
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 class AndWaitDynamicMethod extends AbstractDynamicMethodInvocation {
 
@@ -15,6 +16,6 @@ class AndWaitDynamicMethod extends AbstractDynamicMethodInvocation {
 	Object invoke(Object target, String methodName, Object[] arguments) {
 		String decoratedSeleniumMethod = methodName.find(AND_WAIT_PATTERN) { match, name -> name }
 		target."$decoratedSeleniumMethod"(* arguments)
-		target.waitForPageToLoad("$SeleniumManager.instance.timeout")
+		target.waitForPageToLoad("$SeleniumTestContextHolder.context.timeout")
 	}
 }

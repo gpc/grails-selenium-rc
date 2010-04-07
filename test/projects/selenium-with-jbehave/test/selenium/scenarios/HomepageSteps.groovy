@@ -23,5 +23,5 @@ class HomepageSteps extends Steps {
 		assert selenium.isTextPresent(message)
 	}
 
-	@Lazy private Selenium selenium = SeleniumManager.instance.selenium
+	@Lazy private Selenium selenium = SeleniumTestContextHolder.context.selenium
 }

@@ -3,6 +3,7 @@ package grails.plugins.selenium.meta
 import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.SeleniumManager
 import org.codehaus.groovy.grails.commons.metaclass.DynamicMethodInvocation
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 class SeleniumDynamicMethods {
 
@@ -38,7 +39,7 @@ class SeleniumDynamicMethods {
 	}
 
 	private static int getTimeout() {
-		return SeleniumManager.instance.config.selenium.defaultTimeout
+		return SeleniumTestContextHolder.context.config.selenium.defaultTimeout
 	}
 
 }

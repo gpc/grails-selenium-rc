@@ -9,6 +9,7 @@ import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.nullValue
 import static org.junit.Assert.assertThat
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class GrailsFormPageTests {
@@ -35,14 +36,14 @@ class GrailsFormPageTests {
 			getAttribute("aMultipleSelect@multiple").returns("multiple").stub()
 		}
 
-		SeleniumManager.instance = new SeleniumManager(selenium: mockSelenium)
+		SeleniumTestContextHolder.context = new SeleniumManager(selenium: mockSelenium)
 
 		page = new TestFormPage()
 	}
 
 	@After
 	void tearDown() {
-		SeleniumManager.instance = null
+		SeleniumTestContextHolder.context = null
 	}
 
 	@Test

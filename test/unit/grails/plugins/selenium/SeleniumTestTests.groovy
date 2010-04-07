@@ -23,17 +23,17 @@ class SeleniumTestTests extends GrailsUnitTestCase {
 				defaultTimeout = 250
 			}
 		""")
-		SeleniumManager.instance = new SeleniumManager(config: config)
+		SeleniumTestContextHolder.context = new SeleniumManager(config: config)
 	}
 
 	@After
 	void tearDown() {
-		SeleniumManager.instance = null
+		SeleniumTestContextHolder.context = null
 	}
 
 	@Test
 	void seleniumInstanceIsAvailable() {
-		SeleniumManager.instance.selenium = mock(Selenium) {
+		SeleniumTestContextHolder.context.selenium = mock(Selenium) {
 			open "/"
 		}
 		play {

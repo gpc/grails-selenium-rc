@@ -18,28 +18,24 @@ class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 	private final Collection<EventHandler> eventHandlers = []
 	private SeleniumServerRunner seleniumServerRunner
 	private Selenium selenium
-	ConfigObject config
-
-	// TODO: clean up this evil singleton stuff
-	private static SeleniumTestContext instance
-	static SeleniumTestContext getInstance() {
-		if (!instance) {
-			throw new IllegalStateException("Selenium test context is not initialized")
-		}
-		return instance
-	}
+	private ConfigObject config
 
 	static void initialize(ConfigObject seleniumConfig, GrailsBuildEventListener eventListener) {
-		instance = new SeleniumManager()
-		instance.config = seleniumConfig
-		instance.seleniumServerRunner = new DefaultSeleniumServerRunner(instance)
-		instance.eventHandlers << new ScreenshotGrabber(instance)
-		instance.eventHandlers << new TestContextNotifier(instance)
-		eventListener.addGrailsBuildListener(instance)
+		def seleniumManager = new SeleniumManager()
+		seleniumManager.config = seleniumConfig
+		seleniumManager.seleniumServerRunner = new DefaultSeleniumServerRunner(seleniumManager)
+		seleniumManager.eventHandlers << new ScreenshotGrabber(seleniumManager)
+		seleniumManager.eventHandlers << new TestContextNotifier(seleniumManager)
+		eventListener.addGrailsBuildListener(seleniumManager)
+		SeleniumTestContextHolder.context = seleniumManager
 	}
 
 	Selenium getSelenium() {
 		return selenium
+	}
+
+	ConfigObject getConfig() {
+		return config
 	}
 
 	int getTimeout() {

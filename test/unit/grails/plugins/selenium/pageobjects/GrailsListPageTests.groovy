@@ -8,6 +8,7 @@ import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class GrailsListPageTests {
@@ -17,12 +18,12 @@ class GrailsListPageTests {
 	@Before
 	void setUp() {
 		selenium = mock(Selenium)
-		SeleniumManager.instance = new SeleniumManager(selenium: selenium)
+		SeleniumTestContextHolder.context = new SeleniumManager(selenium: selenium)
 	}
 
 	@After
 	void tearDown() {
-		SeleniumManager.instance = null
+		SeleniumTestContextHolder.context = null
 	}
 
 	@Test(expected = InvalidPageStateException)
