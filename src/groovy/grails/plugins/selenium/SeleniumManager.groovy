@@ -20,7 +20,7 @@ class SeleniumManager implements SeleniumTestContext, GrailsBuildListener {
 	Selenium selenium
 	ConfigObject config
 
-	static void initialize(ConfigObject seleniumConfig, GrailsBuildEventListener eventListener) {
+	static void initialize(ConfigObject seleniumConfig, eventListener) {
 		def seleniumManager = new SeleniumManager()
 		seleniumManager.config = seleniumConfig
 		seleniumManager.seleniumServerRunner = new DefaultSeleniumServerRunner(seleniumManager)
