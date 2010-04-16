@@ -14,3 +14,4 @@
 
 ## Docs
 * Screenshots
+* Page objects
