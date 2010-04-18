@@ -4,9 +4,9 @@ import grails.build.GrailsBuildListener
 
 abstract class TestLifecycleListener implements GrailsBuildListener {
 
-	static final String EVENT_TEST_FAILURE = "TestFailure"
-	static final String EVENT_TEST_START = "TestStart"
-	static final String EVENT_TEST_CASE_START = "TestCaseStart"
+	public static final String EVENT_TEST_FAILURE = "TestFailure"
+	public static final String EVENT_TEST_START = "TestStart"
+	public static final String EVENT_TEST_CASE_START = "TestCaseStart"
 
 	private String currentTestCaseName
 

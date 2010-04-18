@@ -1,15 +1,13 @@
 package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.DefaultSeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
-import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_CASE_START
-import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_START
-import grails.plugins.selenium.lifecycle.TestContextNotifier
-import grails.plugins.selenium.DefaultSeleniumTestContext
-import grails.plugins.selenium.SeleniumTestContextHolder
+import static grails.plugins.selenium.events.TestLifecycleListener.EVENT_TEST_CASE_START
+import static grails.plugins.selenium.events.TestLifecycleListener.EVENT_TEST_START
 
 @WithGMock
 class TestContextNotifierTests {
@@ -26,7 +24,8 @@ class TestContextNotifierTests {
 		notifier = new TestContextNotifier()
 	}
 
-	@Test void updatesSeleniumWithTestNames() {
+	@Test
+	void updatesSeleniumWithTestNames() {
 		selenium.context.set("TestCase1.test1")
 		selenium.context.set("TestCase1.test2")
 		selenium.context.set("TestCase2.test1")
@@ -39,7 +38,8 @@ class TestContextNotifierTests {
 		}
 	}
 
-	@Test void removesPackageNameFromTestCaseName() {
+	@Test
+	void removesPackageNameFromTestCaseName() {
 		selenium.context.set("TestCase1.test1")
 		play {
 			notifier.receiveGrailsBuildEvent(EVENT_TEST_CASE_START, "com.whatever.project.TestCase1")
