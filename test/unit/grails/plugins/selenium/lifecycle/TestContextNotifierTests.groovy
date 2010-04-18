@@ -8,20 +8,22 @@ import org.junit.Test
 import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_CASE_START
 import static grails.plugins.selenium.events.EventHandler.EVENT_TEST_START
 import grails.plugins.selenium.lifecycle.TestContextNotifier
+import grails.plugins.selenium.DefaultSeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class TestContextNotifierTests {
 
 	Selenium selenium
-	SeleniumTestContext context
 	TestContextNotifier notifier
 
 	@Before
 	void setUp() {
 		selenium = mock(Selenium)
-		context = mock(SeleniumTestContext)
-		context.selenium.returns(selenium).stub()
-		notifier = new TestContextNotifier(context)
+
+		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, null)
+
+		notifier = new TestContextNotifier()
 	}
 
 	@Test void updatesSeleniumWithTestNames() {
@@ -29,19 +31,19 @@ class TestContextNotifierTests {
 		selenium.context.set("TestCase1.test2")
 		selenium.context.set("TestCase2.test1")
 		play {
-			notifier.onEvent(EVENT_TEST_CASE_START, "TestCase1")
-			notifier.onEvent(EVENT_TEST_START, "test1")
-			notifier.onEvent(EVENT_TEST_START, "test2")
-			notifier.onEvent(EVENT_TEST_CASE_START, "TestCase2")
-			notifier.onEvent(EVENT_TEST_START, "test1")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_CASE_START, "TestCase1")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_START, "test1")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_START, "test2")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_CASE_START, "TestCase2")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_START, "test1")
 		}
 	}
 
 	@Test void removesPackageNameFromTestCaseName() {
 		selenium.context.set("TestCase1.test1")
 		play {
-			notifier.onEvent(EVENT_TEST_CASE_START, "com.whatever.project.TestCase1")
-			notifier.onEvent(EVENT_TEST_START, "test1")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_CASE_START, "com.whatever.project.TestCase1")
+			notifier.receiveGrailsBuildEvent(EVENT_TEST_START, "test1")
 		}
 	}
 }

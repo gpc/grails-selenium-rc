@@ -1,28 +1,19 @@
 package grails.plugins.selenium.lifecycle
 
-import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.events.TestLifecycleListener
 import org.apache.commons.lang.StringUtils
-import grails.plugins.selenium.events.TestCaseMonitor
-import grails.plugins.selenium.events.EventHandler
 
-class TestContextNotifier extends TestCaseMonitor {
+class TestContextNotifier extends TestLifecycleListener {
 
-	TestContextNotifier(SeleniumTestContext context) {
-		super(context, EventHandler.EVENT_TEST_START)
+	void onTestStart(String testCaseName, String testName) {
+		SeleniumTestContextHolder.context.selenium.context = composeContextText(testCaseName, testName)
 	}
 
-	void onEvent(String event, Object... arguments) {
-		if (event == EVENT_TEST_START) {
-			context.selenium.context = composeContextText(arguments[0])
-		} else {
-			super.onEvent(event, arguments)
-		}
-	}
-
-	private String composeContextText(String testName) {
+	private String composeContextText(String testCaseName, String testName) {
 		def contextText = new StringBuilder()
 		use(StringUtils) {
-			contextText << (currentTestCase.contains(".") ? currentTestCase.substringAfterLast(".") : currentTestCase)
+			contextText << (testCaseName.contains(".") ? testCaseName.substringAfterLast(".") : testCaseName)
 		}
 		contextText << "." << testName
 		return contextText as String

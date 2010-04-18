@@ -1,31 +1,21 @@
 package grails.plugins.selenium.lifecycle
 
-import grails.plugins.selenium.SeleniumTestContext
 import com.thoughtworks.selenium.SeleniumException
+import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.events.TestLifecycleListener
 import org.slf4j.LoggerFactory
-import grails.plugins.selenium.events.TestCaseMonitor
-import grails.plugins.selenium.events.EventHandler
 
-class ScreenshotGrabber extends TestCaseMonitor {
+class ScreenshotGrabber extends TestLifecycleListener {
 
 	private final log = LoggerFactory.getLogger(ScreenshotGrabber)
 
-	ScreenshotGrabber(SeleniumTestContext context) {
-		super(context, EventHandler.EVENT_TEST_FAILURE)
-	}
-
-	void onEvent(String event, Object... arguments) {
-		if (event == EVENT_TEST_FAILURE) {
-			if (context.config.selenium.screenshot.onFail) {
-				String testName = arguments[0]
-				try {
-					context.selenium.captureScreenshot "${currentTestCase}.${testName}.png"
-				} catch (SeleniumException e) {
-					log.error "Failed to capture screenshot", e
-				}
+	protected void onTestFailure(String testCaseName, String testName) {
+		if (SeleniumTestContextHolder.context.config.selenium.screenshot.onFail) {
+			try {
+				SeleniumTestContextHolder.context.selenium.captureScreenshot "${testCaseName}.${testName}.png"
+			} catch (SeleniumException e) {
+				log.error "Failed to capture screenshot", e
 			}
-		} else {
-			super.onEvent(event, arguments)
 		}
 	}
 }
