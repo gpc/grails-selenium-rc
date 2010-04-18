@@ -1,9 +1,8 @@
 package grails.plugins.selenium.meta
 
-import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
-import java.util.regex.Pattern
-import grails.plugins.selenium.SeleniumManager
 import grails.plugins.selenium.SeleniumTestContextHolder
+import java.util.regex.Pattern
+import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
 
 class AndWaitDynamicMethod extends AbstractDynamicMethodInvocation {
 

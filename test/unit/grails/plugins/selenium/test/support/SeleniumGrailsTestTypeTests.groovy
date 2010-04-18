@@ -5,6 +5,9 @@ import org.junit.Before
 import static org.junit.Assert.*
 import org.gmock.WithGMock
 import org.codehaus.groovy.grails.test.GrailsTestType
+import static org.hamcrest.CoreMatchers.*
+import org.junit.After
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 @WithGMock
 class SeleniumGrailsTestTypeTests {
@@ -30,11 +33,16 @@ selenium {
 		dir = "target/test-reports/screenshots"
 		onFail = false
 	}
+	url = "http://localhost:8080/"
 }
 		""")
 
 		delegateTestType = mock(GrailsTestType)
 		seleniumTestType = new SeleniumGrailsTestType(delegateTestType, config)
+	}
+
+	@After void stopSelenium() {
+		seleniumTestType.cleanup()
 	}
 
 	@Test
@@ -62,6 +70,19 @@ selenium {
 			assertFalse "Selenium server has been started", isServerRunning()
 			seleniumTestType.cleanup()
 			assertFalse "Selenium server has not stopped", isServerRunning()
+		}
+	}
+
+	@Test void initialisesTestContext() {
+		delegateTestType.prepare(anything(), anything(), anything()).returns(1)
+
+		play {
+			seleniumTestType.prepare(null, null, null)
+			def context = SeleniumTestContextHolder.context
+			assertThat "Selenium test context", context, not(nullValue())
+			assertThat "Selenium instance", context.selenium, not(nullValue())
+			assertThat "Timeout", context.timeout, equalTo(60000)
+			assertThat "Interval", context.interval, equalTo(250)
 		}
 	}
 

@@ -1,15 +1,14 @@
 package grails.plugins.selenium.pageobjects
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumManager
+import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
-import grails.plugins.selenium.SeleniumTestContextHolder
-import grails.plugins.selenium.SeleniumTestContext
 
 @WithGMock
 class GrailsShowPageTests {

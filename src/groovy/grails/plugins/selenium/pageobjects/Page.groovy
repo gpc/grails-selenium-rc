@@ -1,9 +1,8 @@
 package grails.plugins.selenium.pageobjects
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumManager
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import grails.plugins.selenium.SeleniumTestContextHolder
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 abstract class Page {
 

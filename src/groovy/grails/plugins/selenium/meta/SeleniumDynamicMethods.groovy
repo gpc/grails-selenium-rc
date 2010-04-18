@@ -1,9 +1,8 @@
 package grails.plugins.selenium.meta
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumManager
-import org.codehaus.groovy.grails.commons.metaclass.DynamicMethodInvocation
 import grails.plugins.selenium.SeleniumTestContextHolder
+import org.codehaus.groovy.grails.commons.metaclass.DynamicMethodInvocation
 
 class SeleniumDynamicMethods {
 

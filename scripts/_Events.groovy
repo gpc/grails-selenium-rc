@@ -1,3 +1,5 @@
+import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
+
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 
 eventCreateWarStart = { warName, stagingDir ->
@@ -27,8 +29,9 @@ eventAllTestsStart = {
 	}
 
 	event "StatusUpdate", ["Selenium tests will run in the ${phase} phase"]
+	def testType = new JUnit4GrailsTestType("selenium", "selenium")
 	def seleniumTestTypeClass = loadSeleniumTestTypeClass()
-	binding."${phase}Tests" << seleniumTestTypeClass.newInstance(seleniumConfig)
+	binding."${phase}Tests" << seleniumTestTypeClass.newInstance(testType, seleniumConfig)
 
 //	if (binding.variables.containsKey("spockPluginDir")) {
 //		def specTestTypeClass = loadSpecTestTypeClass()

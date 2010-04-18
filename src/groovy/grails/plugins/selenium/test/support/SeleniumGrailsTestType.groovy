@@ -5,9 +5,14 @@ import com.thoughtworks.selenium.Selenium
 import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
 import org.codehaus.groovy.grails.test.GrailsTestTargetPattern
 import org.codehaus.groovy.grails.test.GrailsTestType
+import grails.plugins.selenium.SeleniumTestContextHolder
+import com.thoughtworks.selenium.Wait
+import grails.plugins.selenium.SeleniumTestContext
+import grails.plugins.selenium.DefaultSeleniumTestContext
 
 class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 
+	private seleniumServer
 	private Selenium selenium
 	private ConfigObject config
 
@@ -21,6 +26,7 @@ class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 		if (testCount > 0) {
 			startServer()
 			startSelenium()
+			SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
 		}
 		return testCount
 	}
@@ -50,7 +56,7 @@ class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 		selenium = null
 	}
 
-	void startServer() {
+	private void startServer() {
 		// The Selenium server needs to be loaded into a clean class
 		// loader because the "selenium-server.jar" includes its own
 		// dependencies which conflict with some of the Grails ones.
@@ -95,7 +101,7 @@ class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 		}
 	}
 
-	void stopServer() {
+	private void stopServer() {
 		seleniumServer?.stop()
 	}
 
