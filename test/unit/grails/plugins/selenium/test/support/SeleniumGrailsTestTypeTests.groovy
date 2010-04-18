@@ -8,6 +8,8 @@ import org.codehaus.groovy.grails.test.GrailsTestType
 import static org.hamcrest.CoreMatchers.*
 import org.junit.After
 import grails.plugins.selenium.SeleniumTestContextHolder
+import com.thoughtworks.selenium.Selenium
+import com.thoughtworks.selenium.DefaultSelenium
 
 @WithGMock
 class SeleniumGrailsTestTypeTests {
@@ -48,6 +50,9 @@ selenium {
 	@Test
 	void startsSeleniumThenRunsTestsThenStopsSelenium() {
 		delegateTestType.prepare(anything(), anything(), anything()).returns(1)
+		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
+		selenium.start()
+		selenium.stop()
 		delegateTestType.cleanup()
 
 		play {
@@ -62,6 +67,7 @@ selenium {
 	@Test
 	void doesNotStartSeleniumWhenThereAreNoTestsToRun() {
 		delegateTestType.prepare(anything(), anything(), anything()).returns(0)
+		mock(DefaultSelenium)
 		delegateTestType.cleanup()
 
 		play {
@@ -75,6 +81,8 @@ selenium {
 
 	@Test void initialisesTestContext() {
 		delegateTestType.prepare(anything(), anything(), anything()).returns(1)
+		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
+		selenium.start()
 
 		play {
 			seleniumTestType.prepare(null, null, null)
