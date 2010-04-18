@@ -33,6 +33,7 @@ eventAllTestsStart = {
 	def seleniumTestTypeClass = loadPluginClass("grails.plugins.selenium.test.support.SeleniumGrailsTestType")
 	binding."${phase}Tests" << seleniumTestTypeClass.newInstance(testType, seleniumConfig)
 
+	// TODO: test type needs to do this otherwise these get fired for non-Selenium tests
 	eventListener.addGrailsBuildListener(loadPluginClass("grails.plugins.selenium.lifecycle.TestContextNotifier").newInstance())
 	eventListener.addGrailsBuildListener(loadPluginClass("grails.plugins.selenium.lifecycle.ScreenshotGrabber").newInstance())
 
