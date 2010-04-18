@@ -1,15 +1,14 @@
 package grails.plugins.selenium.test.support
 
-import org.junit.Test
-import org.junit.Before
-import static org.junit.Assert.*
-import org.gmock.WithGMock
-import org.codehaus.groovy.grails.test.GrailsTestType
-import static org.hamcrest.CoreMatchers.*
-import org.junit.After
-import grails.plugins.selenium.SeleniumTestContextHolder
-import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.DefaultSelenium
+import grails.plugins.selenium.SeleniumTestContextHolder
+import org.codehaus.groovy.grails.test.GrailsTestType
+import org.gmock.WithGMock
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.Assert.*
 
 @WithGMock
 class SeleniumGrailsTestTypeTests {

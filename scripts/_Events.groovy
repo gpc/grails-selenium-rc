@@ -7,8 +7,8 @@ eventCreateWarStart = { warName, stagingDir ->
 	ant.delete dir: "${stagingDir}/plugins/selenium-rc-0.2"
 }
 
-loadSeleniumTestTypeClass = {->
-	def doLoad = {-> classLoader.loadClass("grails.plugins.selenium.test.support.SeleniumGrailsTestType") }
+loadPluginClass = { String className ->
+	def doLoad = {-> classLoader.loadClass(className) }
 	try {
 		doLoad()
 	} catch (ClassNotFoundException e) {
@@ -30,8 +30,11 @@ eventAllTestsStart = {
 
 	event "StatusUpdate", ["Selenium tests will run in the ${phase} phase"]
 	def testType = new JUnit4GrailsTestType("selenium", "selenium")
-	def seleniumTestTypeClass = loadSeleniumTestTypeClass()
+	def seleniumTestTypeClass = loadPluginClass("grails.plugins.selenium.test.support.SeleniumGrailsTestType")
 	binding."${phase}Tests" << seleniumTestTypeClass.newInstance(testType, seleniumConfig)
+
+	eventListener.addGrailsBuildListener(loadPluginClass("grails.plugins.selenium.lifecycle.TestContextNotifier").newInstance())
+	eventListener.addGrailsBuildListener(loadPluginClass("grails.plugins.selenium.lifecycle.ScreenshotGrabber").newInstance())
 
 //	if (binding.variables.containsKey("spockPluginDir")) {
 //		def specTestTypeClass = loadSpecTestTypeClass()

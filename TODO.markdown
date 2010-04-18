@@ -1,8 +1,6 @@
 ## Bugs
 
 ## Enhancements
-* Get rid of evil singleton SeleniumManager
-* Tidy up loading to use more classes & less scripts
 * Support fixtures plugin via a controller and custom commands?
 * Run against running Selenium Server
 
