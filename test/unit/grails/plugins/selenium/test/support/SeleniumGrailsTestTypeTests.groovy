@@ -43,17 +43,20 @@ selenium {
 		seleniumTestType = new SeleniumGrailsTestType(delegateTestType, config)
 	}
 
-	@After void stopSelenium() {
+	@After
+	void stopSelenium() {
 		seleniumTestType.cleanup()
 	}
 
 	@Test
 	void startsSeleniumThenRunsTestsThenStopsSelenium() {
-		delegateTestType.prepare(anything(), anything(), anything()).returns(1)
-		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
-		selenium.start()
-		selenium.stop()
-		delegateTestType.cleanup()
+		ordered {
+			delegateTestType.prepare(anything(), anything(), anything()).returns(1)
+			def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
+			selenium.start()
+			selenium.stop()
+			delegateTestType.cleanup()
+		}
 
 		play {
 			assertFalse "Selenium server is already running", isServerRunning()
@@ -66,9 +69,11 @@ selenium {
 
 	@Test
 	void doesNotStartSeleniumWhenThereAreNoTestsToRun() {
-		delegateTestType.prepare(anything(), anything(), anything()).returns(0)
-		mock(DefaultSelenium)
-		delegateTestType.cleanup()
+		ordered {
+			delegateTestType.prepare(anything(), anything(), anything()).returns(0)
+			mock(DefaultSelenium)
+			delegateTestType.cleanup()
+		}
 
 		play {
 			assertFalse "Selenium server is already running", isServerRunning()
@@ -79,7 +84,8 @@ selenium {
 		}
 	}
 
-	@Test void initialisesTestContext() {
+	@Test
+	void initialisesTestContext() {
 		delegateTestType.prepare(anything(), anything(), anything()).returns(1)
 		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
 		selenium.start()
