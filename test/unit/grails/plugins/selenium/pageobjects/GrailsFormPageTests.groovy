@@ -32,6 +32,8 @@ class GrailsFormPageTests {
 			getAttribute("css=input[name=aHiddenField]@type").returns("hidden").stub()
 			getAttribute("css=input[name=aCheckbox]@type").returns("checkbox").stub()
 			getAttribute("css=input[name=anUnspecifiedField]@type").returns(null).stub()
+			isElementPresent("aSelect").returns(true).stub()
+			isElementPresent("aMultipleSelect").returns(true).stub()
 			getAttribute("aSelect@multiple").returns(null).stub()
 			getAttribute("aMultipleSelect@multiple").returns("multiple").stub()
 		}
@@ -85,7 +87,7 @@ class GrailsFormPageTests {
 	@Test
 	void propertyGetRetrievesValueFromSelectBox() {
 		mockSelenium.isSomethingSelected("aSelect").returns(true)
-		mockSelenium.getSelectedValue("aSelect").returns("foo")
+		mockSelenium.getSelectedLabel("aSelect").returns("foo")
 		play {
 			assertThat page.aSelect, equalTo("foo")
 		}
@@ -94,9 +96,9 @@ class GrailsFormPageTests {
 	@Test
 	void propertyGetRetrievesMultipleValuesFromSelectBox() {
 		mockSelenium.isSomethingSelected("aMultipleSelect").returns(true)
-		mockSelenium.getSelectedValues("aMultipleSelect").returns(["foo", "bar", "baz"] as String[])
+		mockSelenium.getSelectedLabels("aMultipleSelect").returns(["foo", "bar", "baz"] as String[])
 		play {
-			assertThat page.aMultipleSelect, equalTo(["foo", "bar", "baz"] as String[])
+			assertThat page.aMultipleSelect, equalTo(["foo", "bar", "baz"])
 		}
 	}
 
