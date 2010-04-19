@@ -23,7 +23,7 @@ selenium {
 	singleWindow = true
 	windowMaximize = false
 	screenshot {
-		dir = "${testReportsDir}/screenshots"
+		dir = "${testReportsDir}/test-screenshots"
 		onFail = false
 	}
 	url = "${seleniumUrl}"

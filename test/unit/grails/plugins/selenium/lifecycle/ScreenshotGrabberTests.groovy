@@ -36,6 +36,19 @@ class ScreenshotGrabberTests {
 	}
 
 	@Test
+	void usesConfiguredDirectory() {
+		def config = new ConfigSlurper().parse("""
+			selenium.screenshot.onFail = true
+			selenium.screenshot.dir = "some/directory/path"
+		""")
+		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
+		selenium.captureScreenshot pathTo(new File("some/directory/path/WhateverTests.testWhatever.png"))
+		play {
+			screenshotGrabber.onTestFailure("some.package.WhateverTests", "testWhatever")
+		}
+	}
+
+	@Test
 	void doesNotCaptureScreenshotIfDisabledInConfig() {
 		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = false")
 		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
