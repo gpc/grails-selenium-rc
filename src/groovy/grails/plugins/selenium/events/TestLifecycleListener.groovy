@@ -1,6 +1,7 @@
 package grails.plugins.selenium.events
 
 import grails.build.GrailsBuildListener
+import grails.plugins.selenium.SeleniumTestContextHolder
 
 abstract class TestLifecycleListener implements GrailsBuildListener {
 
@@ -11,13 +12,14 @@ abstract class TestLifecycleListener implements GrailsBuildListener {
 	private String currentTestCaseName
 
 	void receiveGrailsBuildEvent(String eventName, Object... args) {
+		if (SeleniumTestContextHolder.context == null) return
 		switch (eventName) {
 			case EVENT_TEST_CASE_START:
 				currentTestCaseName = args[0]
 				break
 			case EVENT_TEST_START:
 				String testName = args[0]
-			onTestStart(currentTestCaseName, testName)
+				onTestStart(currentTestCaseName, testName)
 				break
 			case EVENT_TEST_FAILURE:
 				String testName = args[0]
