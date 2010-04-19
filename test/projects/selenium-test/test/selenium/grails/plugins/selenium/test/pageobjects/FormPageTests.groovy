@@ -6,14 +6,15 @@ import grails.plugins.selenium.test.Genre
 import grails.plugins.selenium.test.Playlist
 import grails.plugins.selenium.test.Song
 import org.junit.After
-import org.junit.Before
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
 
 class FormPageTests {
 
-	@Before
-	void setUp() {
+	@BeforeClass
+	static void setUpSongs() {
 		Song.withTransaction {
 			Song.build(title: "Heads Will Roll", artist: "Yeah Yeah Yeahs", album: "It's Blitz!", durationSeconds: 221)
 			Song.build(title: "Twilight Galaxy", artist: "Metric", album: "Fantasies", durationSeconds: 293)
@@ -21,13 +22,17 @@ class FormPageTests {
 		}
 	}
 
-	@After
-	void tearDown() {
+	@AfterClass
+	static void tearDownSongs() {
 		Song.withTransaction {
-			Song.withNewSession {
-			Playlist.list()*.delete()
 			Song.list()*.delete()
-			}
+		}
+	}
+
+	@After
+	void tearDownPlaylists() {
+		Song.withTransaction {
+			Playlist.list()*.delete()
 		}
 	}
 
@@ -47,7 +52,7 @@ class FormPageTests {
 
 	void testPropertyGetOnVariousInputTypes() {
 		def id
-		Playlist.withTransaction {
+		Playlist.withNewSession {
 			id = Playlist.build(name: "My Playlist", active: true, genre: Genre.ROCK, songs: Song.findAllByAlbumLike("F%")).id
 		}
 
