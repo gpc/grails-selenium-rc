@@ -7,7 +7,10 @@ import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
-import static org.hamcrest.CoreMatchers.anything
+import static org.hamcrest.CoreMatchers.*
+import org.hamcrest.Matcher
+import org.hamcrest.BaseMatcher
+import org.hamcrest.Description
 
 @WithGMock
 class ScreenshotGrabberTests {
@@ -26,9 +29,9 @@ class ScreenshotGrabberTests {
 	void capturesScreenshotOnTestFailureEvent() {
 		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = true")
 		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
-		selenium.captureScreenshot "WhateverTests.testWhatever.png"
+		selenium.captureScreenshot pathTo(new File("target/test-screenshots/WhateverTests.testWhatever.png"))
 		play {
-			screenshotGrabber.onTestFailure("WhateverTests", "testWhatever")
+			screenshotGrabber.onTestFailure("some.package.WhateverTests", "testWhatever")
 		}
 	}
 
@@ -49,6 +52,10 @@ class ScreenshotGrabberTests {
 		play {
 			screenshotGrabber.onTestFailure("WhateverTests", "testWhatever")
 		}
+	}
+
+	static Matcher<String> pathTo(File expectedFile) {
+		equalTo(expectedFile.canonicalPath)
 	}
 
 }
