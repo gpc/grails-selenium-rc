@@ -1,5 +1,8 @@
 package grails.plugins.selenium.pageobjects
 
+import com.thoughtworks.selenium.SeleniumException
+import org.apache.commons.lang.StringUtils
+
 /**
  * A base page object for scaffolded Grails form pages (i.e. create & edit).
  */
@@ -50,7 +53,7 @@ abstract class GrailsFormPage extends GrailsPage {
 			case FieldType.CHECKBOX:
 				return selenium.isChecked(name)
 			case FieldType.SELECT:
-				if (selenium.getAttribute("$name@multiple")) {
+				if (isMultiSelect(name)) {
 					return selenium.isSomethingSelected(name) ? selenium.getSelectedLabels(name) as List : []
 				} else {
 					return selenium.isSomethingSelected(name) ? selenium.getSelectedLabel(name) : null
@@ -108,6 +111,23 @@ abstract class GrailsFormPage extends GrailsPage {
 		}
 		return fieldType
 	}
+
+	private boolean isMultiSelect(String name) {
+		return isAttributePresent("$name@multiple") && selenium.getAttribute("$name@multiple") in ["multiple", "true", "yes"]
+	}
+
+	/** TODO: seriously Selenium, thanks for not providing an isAttributePresent  */
+	private boolean isAttributePresent(String locator) {
+		if (!selenium.isElementPresent(StringUtils.substringBefore(locator, "@"))) {
+			return false
+		}
+		try {
+			return selenium.getAttribute(locator)
+		} catch (SeleniumException e) {
+			return false
+		}
+	}
+
 }
 
 enum FieldType {

@@ -24,8 +24,10 @@ class FormPageTests {
 	@After
 	void tearDown() {
 		Song.withTransaction {
+			Song.withNewSession {
 			Playlist.list()*.delete()
 			Song.list()*.delete()
+			}
 		}
 	}
 
@@ -44,16 +46,16 @@ class FormPageTests {
 	}
 
 	void testPropertyGetOnVariousInputTypes() {
-		def playlist
+		def id
 		Playlist.withTransaction {
-			playlist = Playlist.build(name: "My Playlist", active: true, genre: Genre.ROCK, songs: Song.findAllByAlbumLike("F%"))
+			id = Playlist.build(name: "My Playlist", active: true, genre: Genre.ROCK, songs: Song.findAllByAlbumLike("F%")).id
 		}
 
-		def page = GrailsEditPage.open("/playlist/edit/$playlist.id")
-		assertThat "name", page.name, equalTo(playlist.name)
+		def page = GrailsEditPage.open("/playlist/edit/$id")
+		assertThat "name", page.name, equalTo("My Playlist")
 		assertThat "active", page.active, equalTo(true)
-		assertThat "songs", page.songs, equalTo(playlist.songs*.toString())
-		assertThat "genre", page.genre, equalTo(playlist.genre.name())
+		assertThat "songs", page.songs, equalTo(["Twilight Galaxy by Metric", "I'm Confused by Handsome Furs"])
+		assertThat "genre", page.genre, equalTo("ROCK")
 		page.save()
 	}
 

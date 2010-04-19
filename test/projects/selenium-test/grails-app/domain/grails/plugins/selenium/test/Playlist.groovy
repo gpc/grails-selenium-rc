@@ -15,8 +15,7 @@ class Playlist {
 
 	String toString() {
 		def buffer = new StringBuilder()
-		buffer << "Playlist '" << name << "'"
-		buffer << " ["
+		buffer << "Playlist '" << name << "' ["
 		buffer << songs*.toString().join(", ")
 		buffer << "]"
 		return buffer as String
