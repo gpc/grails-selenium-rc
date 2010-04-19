@@ -12,7 +12,7 @@ loadPluginClass = { String className ->
 	try {
 		doLoad()
 	} catch (ClassNotFoundException e) {
-		event "StatusUpdate", ["O NOES: compiling stuffz"]
+		event "StatusUpdate", ["Could not load $className, compiling"]
 		includeTargets << grailsScript("_GrailsCompile")
 		compile()
 		doLoad()
@@ -32,10 +32,6 @@ eventAllTestsStart = {
 	def testType = new JUnit4GrailsTestType("selenium", "selenium")
 	def seleniumTestTypeClass = loadPluginClass("grails.plugins.selenium.test.support.SeleniumGrailsTestType")
 	binding."${phase}Tests" << seleniumTestTypeClass.newInstance(testType, seleniumConfig)
-
-	// TODO: test type needs to do this otherwise these get fired for non-Selenium tests
-	eventListener.addGrailsBuildListener(loadPluginClass("grails.plugins.selenium.lifecycle.TestContextNotifier").newInstance())
-	eventListener.addGrailsBuildListener(loadPluginClass("grails.plugins.selenium.lifecycle.ScreenshotGrabber").newInstance())
 
 //	if (binding.variables.containsKey("spockPluginDir")) {
 //		def specTestTypeClass = loadSpecTestTypeClass()

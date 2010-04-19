@@ -2,15 +2,19 @@ package grails.plugins.selenium.test.support
 
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.Selenium
+import grails.plugins.selenium.DefaultSeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.lifecycle.ScreenshotGrabber
+import grails.plugins.selenium.lifecycle.TestContextNotifier
+import org.codehaus.groovy.grails.cli.support.GrailsBuildEventListener
 import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
 import org.codehaus.groovy.grails.test.GrailsTestTargetPattern
 import org.codehaus.groovy.grails.test.GrailsTestType
-import grails.plugins.selenium.SeleniumTestContextHolder
-import com.thoughtworks.selenium.Wait
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.DefaultSeleniumTestContext
+import org.slf4j.LoggerFactory
 
 class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
+
+	private final log = LoggerFactory.getLogger(SeleniumGrailsTestType)
 
 	private seleniumServer
 	private Selenium selenium
@@ -27,14 +31,23 @@ class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 			startServer()
 			startSelenium()
 			SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
+			registerBuildEventListeners(buildBinding)
 		}
 		return testCount
 	}
 
 	void cleanup() {
+		SeleniumTestContextHolder.context = null
 		stopSelenium()
 		stopServer()
 		super.cleanup()
+	}
+
+	private void registerBuildEventListeners(Binding buildBinding) {
+		assert buildBinding.variables.containsKey("eventListener"), "eventListener is not present in the build binding"
+		GrailsBuildEventListener eventListener = buildBinding.eventListener
+		eventListener.addGrailsBuildListener(new TestContextNotifier())
+		eventListener.addGrailsBuildListener(new ScreenshotGrabber())
 	}
 
 	private void startSelenium() {
@@ -111,6 +124,6 @@ class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 	}
 
 	private boolean runInSlowMode() {
-		config.selenium.slow ?: false
+			config.selenium.slow ?: false
 	}
 }

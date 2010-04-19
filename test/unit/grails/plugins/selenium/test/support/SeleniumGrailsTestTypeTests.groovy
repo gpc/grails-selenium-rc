@@ -9,6 +9,9 @@ import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.*
+import org.codehaus.groovy.grails.cli.support.GrailsBuildEventListener
+import grails.plugins.selenium.lifecycle.TestContextNotifier
+import grails.plugins.selenium.lifecycle.ScreenshotGrabber
 
 @WithGMock
 class SeleniumGrailsTestTypeTests {
@@ -49,6 +52,11 @@ selenium {
 
 	@Test
 	void startsSeleniumThenRunsTestsThenStopsSelenium() {
+		def binding = new Binding()
+		binding.eventListener = mock(GrailsBuildEventListener) {
+			addGrailsBuildListener(instanceOf(TestContextNotifier))
+			addGrailsBuildListener(instanceOf(ScreenshotGrabber))
+		}
 		ordered {
 			delegateTestType.prepare(anything(), anything(), anything()).returns(1)
 			def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
@@ -59,10 +67,19 @@ selenium {
 
 		play {
 			assertFalse "Selenium server is already running", isServerRunning()
-			seleniumTestType.prepare(null, null, null)
+			seleniumTestType.prepare(null, null, binding)
 			assertTrue "Selenium server has not started", isServerRunning()
+
+			def context = SeleniumTestContextHolder.context
+			assertThat "Selenium test context", context, not(nullValue())
+			assertThat "Selenium instance", context.selenium, not(nullValue())
+			assertThat "Timeout", context.timeout, equalTo(60000)
+			assertThat "Interval", context.interval, equalTo(250)
+			
 			seleniumTestType.cleanup()
 			assertFalse "Selenium server has not stopped", isServerRunning()
+
+			assertThat "Selenium test context", SeleniumTestContextHolder.context, nullValue()
 		}
 	}
 
@@ -76,26 +93,10 @@ selenium {
 
 		play {
 			assertFalse "Selenium server is already running", isServerRunning()
-			seleniumTestType.prepare(null, null, null)
+			seleniumTestType.prepare(null, null, new Binding())
 			assertFalse "Selenium server has been started", isServerRunning()
 			seleniumTestType.cleanup()
 			assertFalse "Selenium server has not stopped", isServerRunning()
-		}
-	}
-
-	@Test
-	void initialisesTestContext() {
-		delegateTestType.prepare(anything(), anything(), anything()).returns(1)
-		def selenium = mock(DefaultSelenium, constructor("localhost", 4444, "*firefox", "http://localhost:8080/"))
-		selenium.start()
-
-		play {
-			seleniumTestType.prepare(null, null, null)
-			def context = SeleniumTestContextHolder.context
-			assertThat "Selenium test context", context, not(nullValue())
-			assertThat "Selenium instance", context.selenium, not(nullValue())
-			assertThat "Timeout", context.timeout, equalTo(60000)
-			assertThat "Interval", context.interval, equalTo(250)
 		}
 	}
 
