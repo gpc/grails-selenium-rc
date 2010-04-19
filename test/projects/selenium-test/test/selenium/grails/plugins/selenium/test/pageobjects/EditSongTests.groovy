@@ -11,12 +11,16 @@ import static org.junit.matchers.JUnitMatchers.*
 import org.junit.After
 import org.junit.AfterClass
 import org.hamcrest.Matcher
+import org.hamcrest.BaseMatcher
+import org.hamcrest.Description
+import grails.plugins.selenium.pageobjects.GrailsPage
 
 class EditSongTests {
 
 	def id
 
-	@Before void setUp() {
+	@Before
+	void setUp() {
 		Song.withTransaction {
 			Song.withSession {session ->
 				def song = Song.build(title: "Rockers To Swallow", artist: "Yeah Yeah Yeahs")
@@ -26,50 +30,49 @@ class EditSongTests {
 		}
 	}
 
-	@After void tearDown() {
+	@After
+	void tearDown() {
 		Song.withTransaction {
 			Song.list()*.delete()
 		}
 	}
 
-	@Test void cannotRemoveTitleOrArtist() {
+	@Test
+	void cannotRemoveTitleOrArtist() {
 		GrailsEditPage editPage = GrailsEditPage.open("/song/edit/$id")
 		editPage.title = ""
 		editPage.artist = ""
 
 		editPage = editPage.saveExpectingFailure()
 
-		assertThat editPage.errorMessages, hasItem("Title cannot be blank")
-		assertThat editPage.errorMessages, hasItem("Artist cannot be blank")
+		assertThat "Error messages", editPage.errorMessages, hasItems("Title cannot be blank", "Artist cannot be blank")
 
-		assertTrue "title field should be highlighted", editPage.hasFieldErrors("title")
-		assertTrue "artist field should be highlighted", editPage.hasFieldErrors("artist")
+		assertTrue "Title field should be highlighted", editPage.hasFieldErrors("title")
+		assertTrue "Artist field should be highlighted", editPage.hasFieldErrors("artist")
 	}
 
-	@Test void addAlbumAndDurationToSong() {
+	@Test
+	void addAlbumAndDurationToSong() {
 		GrailsEditPage editPage = GrailsEditPage.open("/song/edit/$id")
 		editPage.album = "Is Is (EP)"
 		editPage.durationSeconds = "193"
 
 		def showPage = editPage.save()
 
-		assertThat showPage.flashMessage, equalTo("Song $id updated")
+		assertThat "Flash message", showPage.flashMessage, equalTo("Song $id updated" as String)
 		def song = Song.read(id)
-		assertThat song.album, equalTo("Is Is (EP)")
-		assertThat song.durationSeconds, equalTo(193)
+		assertThat "Song album name", song.album, equalTo("Is Is (EP)")
+		assertThat "Song duration", song.durationSeconds, equalTo(193)
 	}
 
-	@Test void deleteSong() {
+	@Test
+	void deleteSong() {
 		GrailsEditPage editPage = GrailsEditPage.open("/song/edit/$id")
 
 		def listPage = editPage.delete()
 
-		assertThat listPage.flashMessage, equalTo("Song $id deleted")
-		assertThat "Song list is not empty", listPage.rowCount, equalTo(0)
-		assertThat "Song has not been deleted from the database", Song.count(), equalTo(0)
-	}
-
-	static Matcher<String> equalTo(GString expected) {
-		equalTo(expected as String)
+		assertThat "Flash message", listPage.flashMessage, equalTo("Song $id deleted" as String)
+		assertThat "Song list size", listPage.rowCount, equalTo(0)
+		assertThat "Song entity count", Song.count(), equalTo(0)
 	}
 }
