@@ -2,16 +2,28 @@ package grails.plugins.selenium.test
 
 class Playlist {
 
-	String name    // text field
-	List songs     // multi-select
+	String name	// text field
+	List songs	 // multi-select
 	boolean active // checkbox
-	Genre genre    // single select
+	Genre genre	// single select
 
 	static hasMany = [songs: Song]
 
-    static constraints = {
+	static constraints = {
 		name blank: false, unique: true
-    }
+	}
+
+	String toString() {
+		def buffer = new StringBuilder()
+		buffer << "Playlist '" << name << "'"
+		buffer << " ["
+		buffer << songs*.toString().join(", ")
+		buffer << "]"
+		return buffer as String
+	}
+
 }
 
-enum Genre { ROCK, POP, COUNTRY }
+enum Genre {
+	ROCK, POP, COUNTRY
+}
