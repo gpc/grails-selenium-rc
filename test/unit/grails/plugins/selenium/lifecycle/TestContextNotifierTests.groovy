@@ -1,7 +1,7 @@
 package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.DefaultSeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContext
 import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.Before
@@ -19,16 +19,16 @@ class TestContextNotifierTests {
 	void setUp() {
 		selenium = mock(Selenium)
 
-		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, null)
+		SeleniumTestContextHolder.context = new SeleniumTestContext(selenium, null)
 
 		notifier = new TestContextNotifier()
 	}
 
 	@Test
 	void updatesSeleniumWithTestNames() {
-		selenium.context.set("TestCase1.test1")
-		selenium.context.set("TestCase1.test2")
-		selenium.context.set("TestCase2.test1")
+		selenium.showContextualBanner("TestCase1", "test1")
+		selenium.showContextualBanner("TestCase1", "test2")
+		selenium.showContextualBanner("TestCase2", "test1")
 		play {
 			notifier.receiveGrailsBuildEvent(EVENT_TEST_CASE_START, "TestCase1")
 			notifier.receiveGrailsBuildEvent(EVENT_TEST_START, "test1")
@@ -40,7 +40,7 @@ class TestContextNotifierTests {
 
 	@Test
 	void removesPackageNameFromTestCaseName() {
-		selenium.context.set("TestCase1.test1")
+		selenium.showContextualBanner("TestCase1", "test1")
 		play {
 			notifier.receiveGrailsBuildEvent(EVENT_TEST_CASE_START, "com.whatever.project.TestCase1")
 			notifier.receiveGrailsBuildEvent(EVENT_TEST_START, "test1")

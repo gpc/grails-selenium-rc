@@ -2,15 +2,14 @@ package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.SeleniumException
-import grails.plugins.selenium.DefaultSeleniumTestContext
+import grails.plugins.selenium.SeleniumTestContext
 import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
+import org.hamcrest.Matcher
 import org.junit.Before
 import org.junit.Test
-import static org.hamcrest.CoreMatchers.*
-import org.hamcrest.Matcher
-import org.hamcrest.BaseMatcher
-import org.hamcrest.Description
+import static org.hamcrest.CoreMatchers.anything
+import static org.hamcrest.CoreMatchers.equalTo
 
 @WithGMock
 class ScreenshotGrabberTests {
@@ -28,7 +27,7 @@ class ScreenshotGrabberTests {
 	@Test
 	void capturesScreenshotOnTestFailureEvent() {
 		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = true")
-		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
+		SeleniumTestContextHolder.context = new SeleniumTestContext(selenium, config)
 		selenium.captureScreenshot pathTo(new File("target/test-screenshots/WhateverTests.testWhatever.png"))
 		play {
 			screenshotGrabber.onTestFailure("some.package.WhateverTests", "testWhatever")
@@ -41,7 +40,7 @@ class ScreenshotGrabberTests {
 			selenium.screenshot.onFail = true
 			selenium.screenshot.dir = "some/directory/path"
 		""")
-		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
+		SeleniumTestContextHolder.context = new SeleniumTestContext(selenium, config)
 		selenium.captureScreenshot pathTo(new File("some/directory/path/WhateverTests.testWhatever.png"))
 		play {
 			screenshotGrabber.onTestFailure("some.package.WhateverTests", "testWhatever")
@@ -51,7 +50,7 @@ class ScreenshotGrabberTests {
 	@Test
 	void doesNotCaptureScreenshotIfDisabledInConfig() {
 		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = false")
-		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
+		SeleniumTestContextHolder.context = new SeleniumTestContext(selenium, config)
 		play {
 			screenshotGrabber.onTestFailure("WhateverTests", "testWhatever")
 		}
@@ -60,7 +59,7 @@ class ScreenshotGrabberTests {
 	@Test
 	void handlesExceptionsThrownWhenCapturingScreen() {
 		def config = new ConfigSlurper().parse("selenium.screenshot.onFail = true")
-		SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(selenium, config)
+		SeleniumTestContextHolder.context = new SeleniumTestContext(selenium, config)
 		selenium.captureScreenshot(anything()).raises(new SeleniumException("screenshot failed"))
 		play {
 			screenshotGrabber.onTestFailure("WhateverTests", "testWhatever")

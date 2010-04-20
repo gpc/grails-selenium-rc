@@ -1,11 +1,11 @@
 package grails.plugins.selenium.lifecycle
 
+import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.SeleniumException
 import grails.plugins.selenium.SeleniumTestContextHolder
 import grails.plugins.selenium.events.TestLifecycleListener
 import org.slf4j.LoggerFactory
-import org.apache.commons.lang.StringUtils
-import com.thoughtworks.selenium.Selenium
+import static grails.util.GrailsNameUtils.getShortName
 
 class ScreenshotGrabber extends TestLifecycleListener {
 
@@ -25,16 +25,8 @@ class ScreenshotGrabber extends TestLifecycleListener {
 
 	private String generateScreenshotFilepath(String testCaseName, String testName) {
 		def directory = new File(config.selenium.screenshot.dir ?: "target/test-screenshots")
-		def filename = "${removePackageName(testCaseName)}.${testName}.png"
+		def filename = "${getShortName(testCaseName)}.${testName}.png"
 		return new File(directory, filename).canonicalPath
-	}
-
-	String removePackageName(String testCaseName) {
-		if (testCaseName.contains(".")) {
-			return StringUtils.substringAfterLast(testCaseName, ".")
-		} else {
-			return testCaseName
-		}
 	}
 
 	private ConfigObject getConfig() {

@@ -1,14 +1,13 @@
 package grails.plugins.selenium.events
 
-import org.junit.Test
-import org.gmock.WithGMock
-import org.junit.Before
-import static grails.plugins.selenium.events.TestLifecycleListener.*
-import static org.junit.Assert.*
-import static org.hamcrest.CoreMatchers.*
+import grails.plugins.selenium.SeleniumTestContext
 import grails.plugins.selenium.SeleniumTestContextHolder
-import grails.plugins.selenium.DefaultSeleniumTestContext
+import org.gmock.WithGMock
 import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import static grails.plugins.selenium.events.TestLifecycleListener.*
+import static org.hamcrest.CoreMatchers.anything
 
 @WithGMock
 class TestLifecycleListenerTests {
@@ -31,7 +30,7 @@ class TestLifecycleListenerTests {
 			onTestStart("TestCaseName", "testName")
 		}
 		play {
-			SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(null, null)
+			SeleniumTestContextHolder.context = new SeleniumTestContext(null, null)
 			listener.receiveGrailsBuildEvent EVENT_TEST_CASE_START, ["TestCaseName"] as Object[]
 			listener.receiveGrailsBuildEvent EVENT_TEST_START, ["testName"] as Object[]
 		}
@@ -43,7 +42,7 @@ class TestLifecycleListenerTests {
 			onTestFailure("TestCaseName", "testName")
 		}
 		play {
-			SeleniumTestContextHolder.context = new DefaultSeleniumTestContext(null, null)
+			SeleniumTestContextHolder.context = new SeleniumTestContext(null, null)
 			listener.receiveGrailsBuildEvent EVENT_TEST_CASE_START, ["TestCaseName"] as Object[]
 			listener.receiveGrailsBuildEvent EVENT_TEST_FAILURE, ["testName"] as Object[]
 		}

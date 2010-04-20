@@ -34,18 +34,15 @@ selenium {
 
 target(determineSeleniumUrl: "Determines URL Selenium tests will connect to") {
 	depends(configureServerContextPath, createConfig)
-	def url
 	if (config.grails.serverURL) {
-		url = config.grails.serverURL
+		seleniumUrl = config.grails.serverURL
 	} else {
 		def host = serverHost ?: "localhost"
 		def port = serverPort
 		def path = serverContextPath
-		url = "http://$host:${port}$path"
+		seleniumUrl = "http://$host:${port}$path"
 	}
-	if (!url.endsWith("/")) url = "$url/"
-	event "StatusUpdate", ["Selenium will connect to $url"]
-	seleniumUrl = url
+	if (!seleniumUrl.endsWith("/")) seleniumUrl = "$seleniumUrl/"
 }
 
 target(mergeApplicationConfig: "Loads Selenium config from grails-app/conf/SeleniumConfig.groovy") {
@@ -82,7 +79,7 @@ getSeleniumConfigClass = { ->
 	}
 }
 
-getDefaultBrowser = { ->
+private getDefaultBrowser() {
 	switch (System.properties."os.name") {
 		case ~/^Mac OS.*/:
 			return "*safari"
