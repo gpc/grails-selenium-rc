@@ -1,4 +1,4 @@
-import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
+import grails.util.GrailsUtil
 
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 
@@ -29,12 +29,23 @@ eventAllTestsStart = {
 	}
 
 	event "StatusUpdate", ["Selenium tests will run in the ${phase} phase"]
-	def testType = new JUnit4GrailsTestType("selenium", "selenium")
+
+	def testTypeClass = getJUnitTestType()
+	def testType = testTypeClass.newInstance("selenium", "selenium")
 	def seleniumTestTypeClass = loadPluginClass("grails.plugins.selenium.test.support.SeleniumGrailsTestType")
 	binding."${phase}Tests" << seleniumTestTypeClass.newInstance(testType, seleniumConfig)
 
-//	if (binding.variables.containsKey("spockPluginDir")) {
-//		def specTestTypeClass = loadSpecTestTypeClass()
-//		binding."${phase}Tests" << specTestTypeClass.newInstance("spock-selenium", "selenium")
-//	}
+	if (binding.variables.containsKey("spockPluginDir")) {
+		def specTestTypeClass = loadSpecTestTypeClass()
+		def spockTestType = specTestTypeClass.newInstance("spock-selenium", "selenium")
+		binding."${phase}Tests" << seleniumTestTypeClass.newInstance(spockTestType, seleniumConfig)
+	}
+}
+
+getJUnitTestType = { ->
+	if (GrailsUtil.grailsVersion.startsWith("1.3")) {
+		testType = classLoader.loadClass("org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType")
+	} else {
+		testType = classLoader.loadClass("org.codehaus.groovy.grails.test.junit3.JUnit3GrailsTestType")
+	}
 }
