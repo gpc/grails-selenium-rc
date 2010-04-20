@@ -36,8 +36,7 @@ target(startSelenium: "Starts Selenium and launches a browser") {
 		selenium.windowMaximize()
 	}
 
-	def holderClass = Class.forName("grails.plugins.selenium.SeleniumTestContextHolder", true, classLoader)
-	holderClass.initialise(selenium, seleniumConfig)
+	intialiseSeleniumTestContext()
 }
 
 target(stopSelenium: "Stops Selenium") {
@@ -45,6 +44,15 @@ target(stopSelenium: "Stops Selenium") {
 	selenium?.stop()
 	selenium = null
 	stopSeleniumServer()
+	clearSeleniumTestContext()
+}
+
+target(intialiseSeleniumTestContext: "Makes the Selenium instance and config available to tests") {
+	def holderClass = Class.forName("grails.plugins.selenium.SeleniumTestContextHolder", true, classLoader)
+	holderClass.initialise(selenium, seleniumConfig)
+}
+
+target(clearSeleniumTestContext: "Cleans up test context at the end of the suite") {
 	def holderClass = Class.forName("grails.plugins.selenium.SeleniumTestContextHolder", true, classLoader)
 	holderClass.clear()
 }
