@@ -124,6 +124,6 @@ class SeleniumGrailsTestType extends GrailsTestTypeDecorator {
 	}
 
 	private boolean runInSlowMode() {
-			config.selenium.slow ?: false
+		return config.selenium.slow ?: false
 	}
 }

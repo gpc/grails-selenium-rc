@@ -8,7 +8,6 @@ grails.project.dependency.resolution = {
 	repositories {
 		grailsHome()
 		grailsPlugins()
-		grailsCentral()
 		mavenCentral()
 	}
 	dependencies {
