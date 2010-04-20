@@ -1,9 +1,8 @@
-import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.meta.SeleniumDynamicMethods
 
 class SeleniumRcGrailsPlugin {
 
-	def version = "1.0-SNAPSHOT"
+	def version = "1.0"
 	def grailsVersion = "1.2.0 > *"
 	def dependsOn = [:]
 	def pluginExcludes = [
