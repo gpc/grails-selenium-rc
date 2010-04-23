@@ -70,10 +70,11 @@ target(mergeSystemProperties: "Loads Selenium config overrides from system prope
 	}
 }
 
-getSeleniumConfigClass = { ->
-	try {
-		return classLoader.loadClass('SeleniumConfig')
-	} catch (ClassNotFoundException ex) {
+private URL getSeleniumConfigClass() {
+	def configFile = new File(basedir, "grails-app/conf/SeleniumConfig.groovy")
+	if (configFile.isFile()) {
+		return configFile.toURI().toURL()
+	} else {
 		event "StatusUpdate", ["SeleniumConfig.groovy not found, proceeding without config file"]
 		return null
 	}

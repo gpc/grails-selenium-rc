@@ -1,12 +1,15 @@
 import com.thoughtworks.selenium.DefaultSelenium
 
+includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
+includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumServer.groovy")
+
 selenium = null
 
 target(registerSeleniumTestType: "Registers the selenium test type with the appropriate test phase") {
 	depends(loadSeleniumConfig)
 
 	def phase = "functional"
-	if (seleniumConfig.selenium.remote) {
+	if (testOptions.remote || seleniumConfig.selenium.remote) {
 		event "StatusUpdate", ["Running Selenium in remote mode"]
 		phase = "other"
 	}
