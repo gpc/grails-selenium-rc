@@ -1,4 +1,6 @@
 ## Current Snapshot
+* Added ability to specify `selenium.userExtensions`
+* Added `-remote` command line option
 
 ## 0.2
 ### New Features

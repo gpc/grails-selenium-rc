@@ -21,7 +21,7 @@ target(startSeleniumServer: "Starts the Selenium server") {
 	// Load the server class and start the server
 	seleniumServer = serverClassLoader.loadClass("org.openqa.selenium.server.SeleniumServer").newInstance(runInSlowMode(), conf)
 	event "StatusUpdate", ["Starting Selenium server on port $conf.port"]
-	seleniumServer.start()
+	seleniumServer.boot()
 
 	// Jetty is now listening on separate threads, so it appears
 	// to be safe to reset the context class loader for this thread.
@@ -37,6 +37,7 @@ target(stopSeleniumServer: "Stops the Selenium server") {
 private void initRemoteControlConfiguration(conf) {
 	conf.port = seleniumConfig.selenium.server.port
 	conf.singleWindow = seleniumConfig.selenium.singleWindow
+	conf.userExtensions = getUserExtensionsFile()
 	// some nasty browser specific forced config
 	if (isSafari() && !conf.singleWindow) {
 		event "StatusError", ["selenium.singleWindow=false is not supported in Safari"]
@@ -44,6 +45,20 @@ private void initRemoteControlConfiguration(conf) {
 	} else if (isInternetExplorer() && conf.singleWindow) {
 		event "StatusError", ["selenium.singleWindow=true is not supported in Internet Explorer"]
 		conf.singleWindow = false
+	}
+}
+
+private File getUserExtensionsFile() {
+	if (seleniumConfig.selenium.userExtensions) {
+		def userExtensionsFile = new File(seleniumConfig.selenium.userExtensions)
+		if (userExtensionsFile.isFile()) {
+			return userExtensionsFile
+		} else {
+			event "StatusError", ["Specified user extensions file $userExtensionsFile.canonicalPath not found."]
+			return null
+		}
+	} else {
+		return null
 	}
 }
 

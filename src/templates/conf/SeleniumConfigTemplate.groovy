@@ -14,5 +14,6 @@ selenium {
 		host = "localhost"							// the host the selenium server will run on
 		port = 4444									// the port the selenium server will run on
 	}
+	userExtensions = ""								// path to user extensions javascript file
 */
 }
