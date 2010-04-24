@@ -11,7 +11,10 @@ target(registerSeleniumTestType: "Registers the selenium test type with the appr
 	def phase = "functional"
 	if (testOptions.remote || seleniumConfig.selenium.remote) {
 		event "StatusUpdate", ["Running Selenium in remote mode"]
-		phase = "other"
+		// override the functional test phase prep so it does not start the app
+		// TODO: this is a little crude but we need doWithDynamicMethods to run
+		functionalTestPhasePreparation = integrationTestPhasePreparation
+		functionalTestPhaseCleanUp = integrationTestPhaseCleanUp
 	}
 
 	event "StatusUpdate", ["Selenium tests will run in the ${phase} phase"]
