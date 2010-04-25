@@ -11,7 +11,7 @@ import com.thoughtworks.selenium.Selenium
 @Mixin (SeleniumTest)
 class GrailsSeleniumTestCase extends GroovyTestCase {
 
-	@Delegate private final SeleneseTestBase base = new SeleneseTestBase()
+	@Delegate private SeleneseTestBase base = new SeleneseTestBase()
 
 	@Override
 	void tearDown() {
