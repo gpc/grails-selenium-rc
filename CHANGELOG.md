@@ -1,6 +1,9 @@
-## Current Snapshot
+## 1.0
+### New Features
+* Upgrades to Selenium Server 1.0.3 for Firefox 3.6 / Snow Leopard compatibility
 * Added ability to specify `selenium.userExtensions`
 * Added `-remote` command line option
+* Added ability to capture screenshots on test failures
 
 ## 0.2
 ### New Features

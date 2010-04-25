@@ -8,7 +8,7 @@
 * support for comparing text with message key to make i18n based testing less brittle
 * Upgrade to Selenium 2.0 / Webdriver
 * Selenium Grid
-* Support additional test frameworks e.g. JUnit 4, TestNG, EasyB, JBehave
+* Support additional test frameworks e.g. TestNG, EasyB, JBehave
 
 ## Docs
 * Screenshots
