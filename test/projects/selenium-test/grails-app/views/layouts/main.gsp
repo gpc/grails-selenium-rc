@@ -13,6 +13,10 @@
     </head>
     <body>
         <div id="grailsLogo" class="logo"><a href="http://grails.org"><img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails" border="0" /></a></div>
+		<div class="loginInfo">
+			<g:isLoggedIn>Logged in as <g:loggedInUserInfo field="username"/></g:isLoggedIn>
+			<g:isNotLoggedIn>Not logged in</g:isNotLoggedIn>
+		</div>
         <g:layoutBody />
     </body>
 </html>
