@@ -28,6 +28,9 @@ target(registerSeleniumTestType: "Registers the selenium test type with the appr
 
 target(startSelenium: "Starts Selenium and launches a browser") {
 	startSeleniumServer()
+
+	// this isn't done in initial config construction as it requires app config to be loaded and use of -clean can cause problems
+	depends(determineSeleniumUrl)
 	
 	def host = seleniumConfig.selenium.server.host
 	def port = seleniumConfig.selenium.server.port
@@ -62,3 +65,21 @@ target(clearSeleniumTestContext: "Cleans up test context at the end of the suite
 	def holderClass = Class.forName("grails.plugins.selenium.SeleniumTestContextHolder", true, classLoader)
 	holderClass.clear()
 }
+
+target(determineSeleniumUrl: "Determines URL Selenium tests will connect to") {
+	if (!seleniumConfig.selenium.url) {
+		depends(configureServerContextPath, createConfig)
+		def url
+		if (config.grails.serverURL) {
+			url = config.grails.serverURL
+		} else {
+			def host = serverHost ?: "localhost"
+			def port = serverPort
+			def path = serverContextPath
+			url = "http://$host:${port}$path"
+		}
+		if (!url.endsWith("/")) url = "$url/"
+		seleniumConfig.selenium.url = url
+	}
+}
+

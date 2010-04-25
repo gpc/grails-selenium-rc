@@ -9,7 +9,6 @@ target(loadSeleniumConfig: "Loads Selenium config into seleniumConfig variable")
 }
 
 target(loadDefaultConfig: "Loads default Selenium configuration") {
-	depends(determineSeleniumUrl)
 	def defaultConfig = """
 selenium {
 	server {
@@ -26,23 +25,9 @@ selenium {
 		dir = "${testReportsDir}/test-screenshots"
 		onFail = false
 	}
-	url = "${seleniumUrl}"
 }
 		"""
 	seleniumConfig = new ConfigSlurper(GrailsUtil.environment).parse(defaultConfig)
-}
-
-target(determineSeleniumUrl: "Determines URL Selenium tests will connect to") {
-	depends(configureServerContextPath, createConfig)
-	if (config.grails.serverURL) {
-		seleniumUrl = config.grails.serverURL
-	} else {
-		def host = serverHost ?: "localhost"
-		def port = serverPort
-		def path = serverContextPath
-		seleniumUrl = "http://$host:${port}$path"
-	}
-	if (!seleniumUrl.endsWith("/")) seleniumUrl = "$seleniumUrl/"
 }
 
 target(mergeApplicationConfig: "Loads Selenium config from grails-app/conf/SeleniumConfig.groovy") {
