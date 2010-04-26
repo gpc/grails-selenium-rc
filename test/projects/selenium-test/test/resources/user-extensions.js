@@ -1,8 +1,12 @@
 Selenium.prototype.doLogin = function(username, password) {
-	this.open("/login");
+	selenium.doOpen("/login");
 
-    this.type("j_username", username);
-    this.type("j_password", password);
+	var usernameField = this.page().findElement("id=j_username");
+	var passwordField = this.page().findElement("id=j_password");
+	var loginButton = this.page().findElement("css=input[type=submit]");
 
-	this.clickAndWait("css=input[type=submit]");
+    selenium.doType(usernameField, username);
+    selenium.doType(passwordField, password);
+
+	selenium.doClickAndWait(loginButton);
 };

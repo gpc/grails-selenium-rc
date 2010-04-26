@@ -1,4 +1,5 @@
 import com.thoughtworks.selenium.DefaultSelenium
+import com.thoughtworks.selenium.HttpCommandProcessor
 
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumServer.groovy")
@@ -39,7 +40,11 @@ target(startSelenium: "Starts Selenium and launches a browser") {
 	def maximize = seleniumConfig.selenium.windowMaximize
 
 	event "StatusUpdate", ["Starting Selenium session for $url"]
-	selenium = new DefaultSelenium(host, port, browser, url)
+	def proc = new HttpCommandProcessor(host, port, browser, url)
+	selenium = new DefaultSelenium(proc)
+	selenium.metaClass.getCommandProcessor = {->
+		return proc
+	}
 	selenium.start()
 	if (maximize) {
 		selenium.windowMaximize()

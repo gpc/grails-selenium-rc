@@ -16,5 +16,9 @@ grails.project.dependency.resolution = {
 			excludes "junit"
 			exported = false
 		}
+		test("org.hamcrest:hamcrest-all:1.1") {
+			excludes "jmock", "easymock", "junit"
+			exported = false
+		}
 	}
 }
