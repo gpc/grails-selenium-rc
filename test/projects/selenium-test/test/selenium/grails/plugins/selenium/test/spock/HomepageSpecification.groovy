@@ -1,4 +1,4 @@
-package grails.plugins.selenium.test
+package grails.plugins.selenium.test.spock
 
 import grails.plugins.selenium.*
 import spock.lang.Specification

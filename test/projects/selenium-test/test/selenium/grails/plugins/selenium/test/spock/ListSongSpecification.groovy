@@ -1,4 +1,4 @@
-package grails.plugins.selenium.test
+package grails.plugins.selenium.test.spock
 
 import grails.plugins.selenium.SeleniumTest
 import grails.plugins.selenium.pageobjects.GrailsListPage
@@ -7,7 +7,6 @@ import spock.lang.Specification
 
 @Mixin(SeleniumTest)
 class ListSongSpecification extends Specification {
-
 
 	void cleanupSpec() {
 		Song.list()*.delete()
