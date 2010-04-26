@@ -39,12 +39,12 @@ class UserExtensionsTests {
 	@Test
 	void canUseSeleniumUserExtensions() {
 		selenium.open "/"
-		assertThat "login state", selenium.getText("css=.loginInfo"), equalTo("Not logged in")
+		assertThat "login state", selenium.getLoginState(), equalTo("Not logged in")
 
 		selenium.open "/login"
 		selenium.login "blackbeard", "password"
 
-		assertThat "login state", selenium.getText("css=.loginInfo"), equalTo("Logged in as blackbeard")
+		assertThat "login state", selenium.getLoginState(), equalTo("Logged in as blackbeard")
 	}
 
 }

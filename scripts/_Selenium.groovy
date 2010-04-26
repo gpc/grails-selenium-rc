@@ -1,5 +1,6 @@
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.HttpCommandProcessor
+import org.apache.commons.lang.StringUtils
 
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumServer.groovy")
@@ -43,7 +44,8 @@ target(startSelenium: "Starts Selenium and launches a browser") {
 	def proc = new HttpCommandProcessor(host, port, browser, url)
 	selenium = new DefaultSelenium(proc)
 	selenium.metaClass.methodMissing = { String name, args ->
-		proc.doCommand(name, args as String[])
+		def result = proc.doCommand(name, args as String[])
+		return StringUtils.substringAfter(result, "OK,")
 	}
 	selenium.start()
 	if (maximize) {
