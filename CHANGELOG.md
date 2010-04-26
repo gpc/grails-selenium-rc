@@ -2,6 +2,7 @@
 ### New Features
 * Upgrades to Selenium Server 1.0.3 for Firefox 3.6 / Snow Leopard compatibility
 * Added ability to specify `selenium.userExtensions`
+* Added ability to invoke JavaScript user extension functions directly on Selenium object from Groovy
 * Added `-remote` command line option
 * Added ability to capture screenshots on test failures
 
