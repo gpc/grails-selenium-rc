@@ -1,6 +1,5 @@
 package grails.plugins.selenium.test.extensions
 
-import com.thoughtworks.selenium.HttpCommandProcessor
 import grails.plugins.selenium.SeleniumTest
 import grails.plugins.selenium.test.auth.Role
 import grails.plugins.selenium.test.auth.User
