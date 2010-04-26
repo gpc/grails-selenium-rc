@@ -42,8 +42,8 @@ target(startSelenium: "Starts Selenium and launches a browser") {
 	event "StatusUpdate", ["Starting Selenium session for $url"]
 	def proc = new HttpCommandProcessor(host, port, browser, url)
 	selenium = new DefaultSelenium(proc)
-	selenium.metaClass.getCommandProcessor = {->
-		return proc
+	selenium.metaClass.methodMissing = { String name, args ->
+		proc.doCommand(name, args as String[])
 	}
 	selenium.start()
 	if (maximize) {

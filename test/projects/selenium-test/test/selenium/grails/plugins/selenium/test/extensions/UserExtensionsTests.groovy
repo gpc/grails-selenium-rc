@@ -42,10 +42,8 @@ class UserExtensionsTests {
 		selenium.open "/"
 		assertThat "login state", selenium.getText("css=.loginInfo"), equalTo("Not logged in")
 
-//		selenium.login "blackbeard", "password"
 		selenium.open "/login"
-		HttpCommandProcessor proc = selenium.commandProcessor
-		proc.doCommand("login", ["blackbeard", "password"] as String[])
+		selenium.login "blackbeard", "password"
 
 		assertThat "login state", selenium.getText("css=.loginInfo"), equalTo("Logged in as blackbeard")
 	}
