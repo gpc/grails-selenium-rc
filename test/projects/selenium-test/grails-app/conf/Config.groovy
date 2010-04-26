@@ -74,7 +74,8 @@ log4j = {
 
     warn   'org.mortbay.log'
 
-	debug  'com.thoughtworks.selenium'
+	debug  'com.thoughtworks.selenium',
+			'grails.plugins.selenium'
 }
 
 
