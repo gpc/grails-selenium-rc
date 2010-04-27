@@ -11,6 +11,9 @@ grails.project.dependency.resolution = {
 		mavenCentral()
 	}
 	dependencies {
+//		provided(group: "org.seleniumhq.selenium.server", name: "selenium-server", version: "1.0.3") {
+//			excludes "ant", "commons-codec", "commons-logging", "servlet-api"
+//		}
 		test("org.seleniumhq.selenium.client-drivers:selenium-java-client-driver:1.0.2") {
 			excludes "selenium-server", "gmaven-runtime-default", "junit"
 		}
