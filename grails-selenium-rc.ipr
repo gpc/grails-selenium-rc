@@ -60,6 +60,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/grails-selenium-rc.iml" filepath="$PROJECT_DIR$/grails-selenium-rc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/projects/jetty-compatibility/jetty-compatibility.iml" filepath="$PROJECT_DIR$/test/projects/jetty-compatibility/jetty-compatibility.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/projects/jetty-compatibility/jetty-compatibility-grailsPlugins.iml" filepath="$PROJECT_DIR$/test/projects/jetty-compatibility/jetty-compatibility-grailsPlugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-headless/selenium-headless.iml" filepath="$PROJECT_DIR$/test/projects/selenium-headless/selenium-headless.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-test/selenium-test.iml" filepath="$PROJECT_DIR$/test/projects/selenium-test/selenium-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-test/selenium-test-grailsPlugins.iml" filepath="$PROJECT_DIR$/test/projects/selenium-test/selenium-test-grailsPlugins.iml" />

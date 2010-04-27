@@ -13,7 +13,6 @@ class SeleniumTestContext {
 		this.config = config
 	}
 
-	// TODO: is this method really necessary?
 	ConfigObject getConfig() {
 		return config
 	}
