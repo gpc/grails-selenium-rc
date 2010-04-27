@@ -24,7 +24,7 @@ class ScreenshotGrabber extends TestLifecycleListener {
 	}
 
 	private String generateScreenshotFilepath(String testCaseName, String testName) {
-		def directory = new File(config.selenium.screenshot.dir ?: "target/test-screenshots")
+		def directory = new File(config.selenium.screenshot.dir)
 		def filename = "${getShortName(testCaseName)}.${testName}.png"
 		return new File(directory, filename).canonicalPath
 	}

@@ -1,6 +1,5 @@
 ## Bugs
-* Path for screenshots is wrong
-* Sort out dependency mess - build is the wrong scope but weird stuff happens with transient dependencies otherwise
+* Can we resolve selenium server using the dependency DSL?
 
 ## Testing
 * Test against different Grails versions 1.2.0+
