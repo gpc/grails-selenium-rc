@@ -22,3 +22,5 @@ grails.project.dependency.resolution = {
 		}
     }
 }
+
+grails.plugin.location."selenium-rc" = "../../.."
