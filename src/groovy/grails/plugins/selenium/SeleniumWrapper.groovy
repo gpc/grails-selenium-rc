@@ -4,10 +4,10 @@ import com.thoughtworks.selenium.CommandProcessor
 import com.thoughtworks.selenium.Selenium
 import grails.plugins.selenium.meta.AndWaitDynamicMethod
 import grails.plugins.selenium.meta.WaitForDynamicMethod
+import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.codehaus.groovy.grails.commons.metaclass.DynamicMethodInvocation
-import org.apache.commons.lang.StringUtils
 
 /**
  * Enhances a standard Selenium object with a handful of new methods.

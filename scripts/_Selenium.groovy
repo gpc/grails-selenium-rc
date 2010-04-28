@@ -1,9 +1,7 @@
-import com.thoughtworks.selenium.DefaultSelenium
-import com.thoughtworks.selenium.HttpCommandProcessor
-
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumServer.groovy")
 
+seleniumRunner = null
 selenium = null
 
 target(registerSeleniumTestType: "Registers the selenium test type with the appropriate test phase") {
@@ -33,45 +31,21 @@ target(startSelenium: "Starts Selenium and launches a browser") {
 	// this isn't done in initial config construction as it requires app config to be loaded and use of -clean can cause problems
 	depends(determineSeleniumUrl)
 	
-	def host = seleniumConfig.selenium.server.host
-	def port = seleniumConfig.selenium.server.port
-	def browser = seleniumConfig.selenium.browser
-	def url = seleniumConfig.selenium.url
-	def maximize = seleniumConfig.selenium.windowMaximize
-
-	event "StatusUpdate", ["Starting Selenium session for $url"]
-	// TODO: pull all this into a factory method
-	def commandProcessor = new HttpCommandProcessor(host, port, browser, url)
-	selenium = Class.forName("grails.plugins.selenium.SeleniumWrapper", true, classLoader).newInstance(new DefaultSelenium(commandProcessor), commandProcessor, seleniumConfig)
-	selenium.start()
-	if (maximize) {
-		selenium.windowMaximize()
-	}
-
-	intialiseSeleniumHolder()
+	event "StatusUpdate", ["Starting Selenium session for $seleniumConfig.selenium.url"]
+	seleniumRunner = Class.forName("grails.plugins.selenium.SeleniumRunner", true, classLoader).newInstance()
+	selenium = seleniumRunner.startSelenium(seleniumConfig)
 }
 
 target(stopSelenium: "Stops Selenium") {
 	event "StatusUpdate", ["Stopping Selenium session"]
-	selenium?.stop()
+	seleniumRunner.stopSelenium()
 	selenium = null
 	stopSeleniumServer()
-	clearSeleniumHolder()
 }
 
 target(registerSeleniumTestListeners: "Registers listeners for the Selenium test lifecycle") {
 	eventListener.addGrailsBuildListener(Class.forName("grails.plugins.selenium.lifecycle.TestContextNotifier", true, classLoader).newInstance(selenium))
 	eventListener.addGrailsBuildListener(Class.forName("grails.plugins.selenium.lifecycle.ScreenshotGrabber", true, classLoader).newInstance(selenium, seleniumConfig))
-}
-
-target(intialiseSeleniumHolder: "Makes the Selenium instance and config available to tests") {
-	def holderClass = Class.forName("grails.plugins.selenium.SeleniumHolder", true, classLoader)
-	holderClass.selenium = selenium
-}
-
-target(clearSeleniumHolder: "Cleans up test context at the end of the suite") {
-	def holderClass = Class.forName("grails.plugins.selenium.SeleniumHolder", true, classLoader)
-	holderClass.selenium = null
 }
 
 target(determineSeleniumUrl: "Determines URL Selenium tests will connect to") {
