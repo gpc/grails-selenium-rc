@@ -1,25 +1,22 @@
 package grails.plugins.selenium
 
-import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.SeleneseTestBase
-import com.thoughtworks.selenium.Selenium
+import com.thoughtworks.selenium.Wait.WaitTimedOutException
 import grails.test.GrailsUnitTestCase
-import junit.framework.AssertionFailedError
 import junit.framework.ComparisonFailure
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
-import com.thoughtworks.selenium.Wait.WaitTimedOutException
+import grails.plugins.selenium.condition.ClosureEvaluatingWait
 
 @WithGMock
 class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	GrailsSeleniumTestCase testCase = new GrailsSeleniumTestCase()
-	Selenium mockSelenium
+	SeleniumWrapper mockSelenium
 
 	@Before
 	void setUp() {
@@ -27,16 +24,14 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 		testCase.name = "testSomething"
 
-		mockSelenium = mock(Selenium)
-		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
-		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
-		SeleniumTestContextHolder.context.getTimeout().returns(500).stub()
+		mockSelenium = mock(SeleniumWrapper)
+		SeleniumHolder.selenium = mockSelenium
 	}
 
 	@After
 	void tearDown() {
 		super.tearDown()
-		SeleniumTestContextHolder.context = null
+		SeleniumHolder.selenium = null
 	}
 
 	@Test
@@ -127,7 +122,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanWaitForDelegatesToSelenium() {
-		mockSelenium.isTextPresent("some string").returns(true)
+		mockSelenium.waitForTextPresent("some string")
 		play {
 			try {
 				testCase.waitForTextPresent("some string")
@@ -151,7 +146,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityWaitForDelegatesToSelenium() {
-		mockSelenium.getText("id=foo").returns("expected value")
+		mockSelenium.waitForText("id=foo", "expected value")
 		play {
 			try {
 				testCase.waitForText("expected value", "id=foo")
@@ -183,14 +178,6 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		}
 	}
 
-	@Test(expected = WaitTimedOutException)
-	void waitForFailsCorrectly() {
-		mockSelenium.getText("id=foo").returns("not what I expected")
-		play {
-			testCase.waitForText("expected value", "id=foo")
-		}
-	}
-
 	@Test
 	void equalityAssertUsesSeleniumVersionOfAssertEquals() {
 		mockSelenium.getText("id=foo").returns("expected value")
@@ -205,9 +192,9 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 		}
 	}
 
-	@Ignore @Test(expected = MissingMethodException)
+	@Test(expected = MissingMethodException)
 	void failsCleanlyWhenWrongArgumentTypesPassedToDelegatedSeleniumMethod() {
-		SeleniumTestContextHolder.context.selenium = new DefaultSelenium(null)
+		SeleniumHolder.selenium = new SeleniumWrapper(null, null, null)
 		testCase.assertText("expected", 3)
 	}
 
@@ -237,7 +224,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void booleanDynamicWaitForCanBeNegated() {
-		mockSelenium.isTextPresent("some string").returns(false)
+		mockSelenium.waitForNotTextPresent("some string")
 		play {
 			try {
 				testCase.waitForNotTextPresent("some string")
@@ -273,7 +260,7 @@ class GrailsSeleniumTestCaseTests extends GrailsUnitTestCase {
 
 	@Test
 	void equalityDynamicWaitForCanBeNegated() {
-		mockSelenium.getText("id=foo").returns("expected value")
+		mockSelenium.waitForNotText("id=foo", "not expected")
 		play {
 			try {
 				testCase.waitForNotText("not expected", "id=foo")

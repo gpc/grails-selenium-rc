@@ -12,8 +12,7 @@ eventAllTestsStart = {
 eventTestSuiteStart = {String type ->
 	if (type =~ /selenium/) {
 		startSelenium()
-		eventListener.addGrailsBuildListener("grails.plugins.selenium.lifecycle.TestContextNotifier")
-		eventListener.addGrailsBuildListener("grails.plugins.selenium.lifecycle.ScreenshotGrabber")
+		registerSeleniumTestListeners()
 	}
 }
 

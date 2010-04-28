@@ -1,27 +1,25 @@
 package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test
 import static grails.plugins.selenium.events.TestLifecycleListener.EVENT_TEST_CASE_START
 import static grails.plugins.selenium.events.TestLifecycleListener.EVENT_TEST_START
+import grails.plugins.selenium.SeleniumWrapper
 
 @WithGMock
 class TestContextNotifierTests {
 
-	Selenium selenium
+	SeleniumWrapper selenium
 	TestContextNotifier notifier
 
 	@Before
 	void setUp() {
-		selenium = mock(Selenium)
-
-		SeleniumTestContextHolder.context = new SeleniumTestContext(selenium, null)
-
-		notifier = new TestContextNotifier()
+		selenium = mock(SeleniumWrapper) {
+			isAlive().returns(true).stub()
+		}
+		notifier = new TestContextNotifier(selenium)
 	}
 
 	@Test

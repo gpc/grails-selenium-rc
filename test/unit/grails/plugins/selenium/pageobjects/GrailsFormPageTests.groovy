@@ -1,8 +1,7 @@
 package grails.plugins.selenium.pageobjects
 
-import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.SeleniumHolder
+import grails.plugins.selenium.SeleniumWrapper
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
@@ -14,12 +13,12 @@ import static org.junit.Assert.assertThat
 @WithGMock
 class GrailsFormPageTests {
 
-	Selenium mockSelenium
+	SeleniumWrapper mockSelenium
 	GrailsFormPage page
 
 	@Before
 	void setUp() {
-		mockSelenium = mock(Selenium) {
+		mockSelenium = mock(SeleniumWrapper) {
 			isElementPresent("css=input[name=aTextField]").returns(true).stub()
 			isElementPresent("css=input[name=aHiddenField]").returns(true).stub()
 			isElementPresent("css=input[name=aCheckbox]").returns(true).stub()
@@ -38,15 +37,14 @@ class GrailsFormPageTests {
 			getAttribute("aMultipleSelect@multiple").returns("multiple").stub()
 		}
 
-		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
-		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
+		SeleniumHolder.selenium = mockSelenium
 
 		page = new TestFormPage()
 	}
 
 	@After
 	void tearDown() {
-		SeleniumTestContextHolder.context = null
+		SeleniumHolder.selenium = null
 	}
 
 	@Test

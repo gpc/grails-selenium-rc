@@ -3,11 +3,11 @@
 
 ## Testing
 * Test against different Grails versions 1.2.0+
-* Test with Jetty plugin
 
 ## Enhancements
 * Support fixtures plugin via a controller and custom commands?
 * Run against running Selenium Server
+* JBehave needs different context setting listener
 
 ## Long term
 * support for comparing text with message key to make i18n based testing less brittle

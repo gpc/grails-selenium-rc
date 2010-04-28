@@ -1,6 +1,6 @@
 package grails.plugins.selenium.test.extensions
 
-import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.SeleniumAware
 import grails.plugins.selenium.test.auth.Role
 import grails.plugins.selenium.test.auth.User
 import org.junit.After
@@ -9,7 +9,7 @@ import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
 
-@Mixin(SeleniumTest)
+@Mixin(SeleniumAware)
 class UserExtensionsTests {
 
 	def authenticateService

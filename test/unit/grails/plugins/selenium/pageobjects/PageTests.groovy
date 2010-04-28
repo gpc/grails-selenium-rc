@@ -1,8 +1,7 @@
 package grails.plugins.selenium.pageobjects
 
-import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.SeleniumHolder
+import grails.plugins.selenium.SeleniumWrapper
 import grails.test.GrailsUnitTestCase
 import org.gmock.WithGMock
 import org.junit.After
@@ -12,20 +11,19 @@ import org.junit.Test
 @WithGMock
 class PageTests extends GrailsUnitTestCase {
 
-	Selenium mockSelenium
+	SeleniumWrapper mockSelenium
 
 	@Before
 	void setUp() {
 		super.setUp()
-		mockSelenium = mock(Selenium)
-		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
-		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
+		mockSelenium = mock(SeleniumWrapper)
+		SeleniumHolder.selenium = mockSelenium
 	}
 
 	@After
 	void tearDown() {
 		super.tearDown()
-		SeleniumTestContextHolder.context = null
+		SeleniumHolder.selenium = null
 	}
 
 	@Test

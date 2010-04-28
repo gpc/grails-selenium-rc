@@ -1,5 +1,3 @@
-import grails.plugins.selenium.meta.SeleniumDynamicMethods
-
 class SeleniumRcGrailsPlugin {
 
 	def version = "1.0"
@@ -28,7 +26,6 @@ Runs Selenium RC tests written in Groovy in the Grails functional test phase.
 	}
 
 	def doWithDynamicMethods = {ctx ->
-		SeleniumDynamicMethods.enhanceSelenium()
 	}
 
 	def doWithApplicationContext = {applicationContext ->

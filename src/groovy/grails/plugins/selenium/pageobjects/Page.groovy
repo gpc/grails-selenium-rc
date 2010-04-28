@@ -1,9 +1,10 @@
 package grails.plugins.selenium.pageobjects
 
-import com.thoughtworks.selenium.Selenium
-import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.SeleniumAware
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
+import grails.plugins.selenium.SeleniumHolder
 
+@Mixin(SeleniumAware)
 abstract class Page {
 
 	private final String expectedTitle
@@ -21,15 +22,11 @@ abstract class Page {
 		if (!uri.startsWith(context)) {
 			uri = context + uri
 		}
-		SeleniumTestContextHolder.context.selenium.open(uri)
+		SeleniumHolder.selenium.open(uri) // TODO: aargh! not the evil singleton
 	}
 
 	static String getContext() {
 		ConfigurationHolder.config.grails.app.context
-	}
-
-	protected Selenium getSelenium() {
-		return SeleniumTestContextHolder.context.selenium
 	}
 
 	protected void validate() throws InvalidPageStateException {

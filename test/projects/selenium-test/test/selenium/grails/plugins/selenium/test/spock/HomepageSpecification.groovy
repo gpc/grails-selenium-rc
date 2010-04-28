@@ -3,7 +3,7 @@ package grails.plugins.selenium.test.spock
 import grails.plugins.selenium.*
 import spock.lang.Specification
 
-@Mixin (SeleniumTest)
+@Mixin(SeleniumAware)
 class HomepageSpecification extends Specification {
 
 	def "user can load application homepage"() {

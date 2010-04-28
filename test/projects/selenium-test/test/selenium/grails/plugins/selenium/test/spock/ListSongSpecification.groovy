@@ -1,11 +1,9 @@
 package grails.plugins.selenium.test.spock
 
-import grails.plugins.selenium.SeleniumTest
 import grails.plugins.selenium.pageobjects.GrailsListPage
 import grails.plugins.selenium.test.Song
 import spock.lang.Specification
 
-@Mixin(SeleniumTest)
 class ListSongSpecification extends Specification {
 
 	void cleanupSpec() {

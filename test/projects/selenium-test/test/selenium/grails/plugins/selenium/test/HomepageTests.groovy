@@ -1,8 +1,8 @@
 package grails.plugins.selenium.test
 
-import grails.plugins.selenium.*
+import grails.plugins.selenium.SeleniumAware
 
-@Mixin(SeleniumTest)
+@Mixin(SeleniumAware)
 class HomepageTests extends GroovyTestCase {
 
 	void testHomepageLoads() {

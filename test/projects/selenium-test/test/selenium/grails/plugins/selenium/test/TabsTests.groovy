@@ -12,9 +12,7 @@ class TabsTests extends AbstractTabsTestCase {
 		selenium.open "/tabs.gsp"
 		[3, 2, 1].each {i ->
 			selenium.click "//div[@id='tabs']/ul/li[$i]/a"
-			waitFor {
-				selenium.isVisible("tabs-$i")
-			}
+			selenium.waitForVisible("tabs-$i")
 			assertTabSelected i
 		}
 	}

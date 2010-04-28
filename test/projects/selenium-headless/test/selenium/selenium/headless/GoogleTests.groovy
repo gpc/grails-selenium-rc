@@ -1,8 +1,8 @@
 package selenium.headless
 
-import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.SeleniumAware
 
-@Mixin(SeleniumTest)
+@Mixin(SeleniumAware)
 class GoogleTests extends GroovyTestCase {
 
 	void testHitRemoteServerWithoutStartingGrails() {

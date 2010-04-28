@@ -1,19 +1,16 @@
 package grails.plugins.selenium.test.pageobjects
 
-import grails.plugins.selenium.SeleniumTest
-import grails.plugins.selenium.pageobjects.GrailsFormPage
-import grails.plugins.selenium.pageobjects.GrailsPage
-import grails.plugins.selenium.test.Song
+import grails.plugins.selenium.SeleniumAware
 import grails.plugins.selenium.pageobjects.GrailsCreatePage
-import org.junit.Before
-import org.junit.Test
-import static org.junit.Assert.*
-import static org.hamcrest.CoreMatchers.*
-import static org.junit.matchers.JUnitMatchers.*
-import org.junit.After
+import grails.plugins.selenium.test.Song
 import org.junit.AfterClass
+import org.junit.Test
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.Assert.assertThat
+import static org.junit.Assert.assertTrue
+import static org.junit.matchers.JUnitMatchers.hasItem
 
-@Mixin (SeleniumTest)
+@Mixin(SeleniumAware)
 class CreateSongTests {
 
 	@AfterClass static void cleanUpData() {
@@ -22,7 +19,8 @@ class CreateSongTests {
 		}
 	}
 
-	@Test void userMustEnterTitleAndArtist() {
+	@Test
+	void userMustEnterTitleAndArtist() {
 		def page = GrailsCreatePage.open("/song/create")
 
 		page.saveExpectingFailure()
@@ -34,7 +32,8 @@ class CreateSongTests {
 		assertTrue "artist field should be highlighted", page.hasFieldErrors("artist")
 	}
 
-	@Test void userCanCreateSongWithAlbum() {
+	@Test
+	void userCanCreateSongWithAlbum() {
 		def createPage = GrailsCreatePage.open("/song/create")
 
 		createPage.title = "Queen Bitch"
@@ -51,7 +50,8 @@ class CreateSongTests {
 		assertThat song.album, equalTo("Hunky Dory")
 	}
 
-	@Test void userCanCreateSongWithoutAlbum() {
+	@Test
+	void userCanCreateSongWithoutAlbum() {
 		def createPage = GrailsCreatePage.open("/song/create")
 
 		createPage.title = "A Song From Under The Floorboards"
@@ -67,7 +67,8 @@ class CreateSongTests {
 		assertThat song.album, nullValue()
 	}
 
-	@Test void songDetailsShownOnSuccessfulCreate() {
+	@Test
+	void songDetailsShownOnSuccessfulCreate() {
 		def createPage = GrailsCreatePage.open("/song/create")
 
 		createPage.title = "Myriad Harbor"

@@ -1,6 +1,5 @@
 import com.thoughtworks.selenium.DefaultSelenium
 import com.thoughtworks.selenium.HttpCommandProcessor
-import org.apache.commons.lang.StringUtils
 
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumConfig.groovy")
 includeTargets << new File("$seleniumRcPluginDir/scripts/_SeleniumServer.groovy")
@@ -14,7 +13,7 @@ target(registerSeleniumTestType: "Registers the selenium test type with the appr
 	if (testOptions.remote || seleniumConfig.selenium.remote) {
 		event "StatusUpdate", ["Running Selenium in remote mode"]
 		// override the functional test phase prep so it does not start the app
-		// TODO: this is a little crude but we need doWithDynamicMethods to run
+		// TODO: this is a little crude but we need some setup to be present but without starting the app
 		functionalTestPhasePreparation = integrationTestPhasePreparation
 		functionalTestPhaseCleanUp = integrationTestPhaseCleanUp
 	}
@@ -41,18 +40,15 @@ target(startSelenium: "Starts Selenium and launches a browser") {
 	def maximize = seleniumConfig.selenium.windowMaximize
 
 	event "StatusUpdate", ["Starting Selenium session for $url"]
-	def proc = new HttpCommandProcessor(host, port, browser, url)
-	selenium = new DefaultSelenium(proc)
-	selenium.metaClass.methodMissing = { String name, args ->
-		def result = proc.doCommand(name, args as String[])
-		return StringUtils.substringAfter(result, "OK,")
-	}
+	// TODO: pull all this into a factory method
+	def commandProcessor = new HttpCommandProcessor(host, port, browser, url)
+	selenium = Class.forName("grails.plugins.selenium.SeleniumWrapper", true, classLoader).newInstance(new DefaultSelenium(commandProcessor), commandProcessor, seleniumConfig)
 	selenium.start()
 	if (maximize) {
 		selenium.windowMaximize()
 	}
 
-	intialiseSeleniumTestContext()
+	intialiseSeleniumHolder()
 }
 
 target(stopSelenium: "Stops Selenium") {
@@ -60,17 +56,22 @@ target(stopSelenium: "Stops Selenium") {
 	selenium?.stop()
 	selenium = null
 	stopSeleniumServer()
-	clearSeleniumTestContext()
+	clearSeleniumHolder()
 }
 
-target(intialiseSeleniumTestContext: "Makes the Selenium instance and config available to tests") {
-	def holderClass = Class.forName("grails.plugins.selenium.SeleniumTestContextHolder", true, classLoader)
-	holderClass.initialise(selenium, seleniumConfig)
+target(registerSeleniumTestListeners: "Registers listeners for the Selenium test lifecycle") {
+	eventListener.addGrailsBuildListener(Class.forName("grails.plugins.selenium.lifecycle.TestContextNotifier", true, classLoader).newInstance(selenium))
+	eventListener.addGrailsBuildListener(Class.forName("grails.plugins.selenium.lifecycle.ScreenshotGrabber", true, classLoader).newInstance(selenium, seleniumConfig))
 }
 
-target(clearSeleniumTestContext: "Cleans up test context at the end of the suite") {
-	def holderClass = Class.forName("grails.plugins.selenium.SeleniumTestContextHolder", true, classLoader)
-	holderClass.clear()
+target(intialiseSeleniumHolder: "Makes the Selenium instance and config available to tests") {
+	def holderClass = Class.forName("grails.plugins.selenium.SeleniumHolder", true, classLoader)
+	holderClass.selenium = selenium
+}
+
+target(clearSeleniumHolder: "Cleans up test context at the end of the suite") {
+	def holderClass = Class.forName("grails.plugins.selenium.SeleniumHolder", true, classLoader)
+	holderClass.selenium = null
 }
 
 target(determineSeleniumUrl: "Determines URL Selenium tests will connect to") {

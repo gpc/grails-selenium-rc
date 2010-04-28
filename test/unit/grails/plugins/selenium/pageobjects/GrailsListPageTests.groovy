@@ -1,30 +1,28 @@
 package grails.plugins.selenium.pageobjects
 
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.SeleniumTestContextHolder
+import grails.plugins.selenium.SeleniumHolder
+import grails.plugins.selenium.SeleniumWrapper
 import org.gmock.WithGMock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
-import com.thoughtworks.selenium.Selenium
 
 @WithGMock
 class GrailsListPageTests {
 
-	Selenium mockSelenium
+	SeleniumWrapper mockSelenium
 
 	@Before
 	void setUp() {
-		mockSelenium = mock(Selenium)
-		SeleniumTestContextHolder.context = mock(SeleniumTestContext)
-		SeleniumTestContextHolder.context.getSelenium().returns(mockSelenium).stub()
+		mockSelenium = mock(SeleniumWrapper)
+		SeleniumHolder.selenium = mockSelenium
 	}
 
 	@After
 	void tearDown() {
-		SeleniumTestContextHolder.context = null
+		SeleniumHolder.selenium = null
 	}
 
 	@Test(expected = InvalidPageStateException)

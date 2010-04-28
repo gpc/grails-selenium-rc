@@ -1,3 +1,4 @@
+<%@ page import="org.springframework.context.support.AbstractApplicationContext" %>
 <html>
     <head>
         <title>Welcome to Grails</title>
@@ -76,6 +77,10 @@
 							<li>${plugin.name} - ${plugin.version}</li>
 						</g:each>
 
+					</ul>
+					<h1>Interesting Beans</h1>
+					<ul>
+						<li>${AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME} = ${applicationContext.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME)}</li>
 					</ul>
 				</div>
 				<div class="panelBtm">

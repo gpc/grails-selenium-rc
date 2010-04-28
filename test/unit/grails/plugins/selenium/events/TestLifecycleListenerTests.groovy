@@ -1,36 +1,32 @@
 package grails.plugins.selenium.events
 
-import grails.plugins.selenium.SeleniumTestContext
-import grails.plugins.selenium.SeleniumTestContextHolder
 import org.gmock.WithGMock
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import static grails.plugins.selenium.events.TestLifecycleListener.*
 import static org.hamcrest.CoreMatchers.anything
+import com.thoughtworks.selenium.Selenium
+import grails.plugins.selenium.SeleniumWrapper
 
 @WithGMock
 class TestLifecycleListenerTests {
 
+	SeleniumWrapper selenium
 	TestLifecycleListener listener
 
 	@Before
 	void setUp() {
-		listener = new MockTestLifecycleListener()
-	}
-
-	@After
-	void tearDown() {
-		SeleniumTestContextHolder.context = null		
+		selenium = mock(SeleniumWrapper)
+		listener = new MockTestLifecycleListener(selenium)
 	}
 
 	@Test
 	void passesTestCaseAndTestNameOnTestStartEvent() {
+		selenium.isAlive().returns(true).stub()
 		mock(listener) {
 			onTestStart("TestCaseName", "testName")
 		}
 		play {
-			SeleniumTestContextHolder.context = new SeleniumTestContext(null, null)
 			listener.receiveGrailsBuildEvent EVENT_TEST_CASE_START, ["TestCaseName"] as Object[]
 			listener.receiveGrailsBuildEvent EVENT_TEST_START, ["testName"] as Object[]
 		}
@@ -38,11 +34,11 @@ class TestLifecycleListenerTests {
 
 	@Test
 	void passesTestCaseAndTestNameOnTestFailureEvent() {
+		selenium.isAlive().returns(true).stub()
 		mock(listener) {
 			onTestFailure("TestCaseName", "testName")
 		}
 		play {
-			SeleniumTestContextHolder.context = new SeleniumTestContext(null, null)
 			listener.receiveGrailsBuildEvent EVENT_TEST_CASE_START, ["TestCaseName"] as Object[]
 			listener.receiveGrailsBuildEvent EVENT_TEST_FAILURE, ["testName"] as Object[]
 		}
@@ -50,12 +46,12 @@ class TestLifecycleListenerTests {
 
 	@Test
 	void ignoresEventsIfNotRunningSeleniumTests() {
+		selenium.isAlive().returns(false).stub()
 		mock(listener) {
 			onTestStart(anything(), anything()).never()
 			onTestFailure(anything(), anything()).never()
 		}
 		play {
-			SeleniumTestContextHolder.context = null
 			listener.receiveGrailsBuildEvent EVENT_TEST_CASE_START, ["TestCaseName"] as Object[]
 			listener.receiveGrailsBuildEvent EVENT_TEST_START, ["testName"] as Object[]
 			listener.receiveGrailsBuildEvent EVENT_TEST_FAILURE, ["testName"] as Object[]
@@ -64,4 +60,8 @@ class TestLifecycleListenerTests {
 
 }
 
-class MockTestLifecycleListener extends TestLifecycleListener { }
+class MockTestLifecycleListener extends TestLifecycleListener {
+	MockTestLifecycleListener(SeleniumWrapper selenium) {
+		super(selenium)
+	}
+}

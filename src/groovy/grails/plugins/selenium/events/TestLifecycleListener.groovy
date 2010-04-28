@@ -1,7 +1,9 @@
 package grails.plugins.selenium.events
 
+import com.thoughtworks.selenium.Selenium
 import grails.build.GrailsBuildListener
-import grails.plugins.selenium.SeleniumTestContextHolder
+import org.slf4j.LoggerFactory
+import grails.plugins.selenium.SeleniumWrapper
 
 abstract class TestLifecycleListener implements GrailsBuildListener {
 
@@ -10,9 +12,16 @@ abstract class TestLifecycleListener implements GrailsBuildListener {
 	public static final String EVENT_TEST_CASE_START = "TestCaseStart"
 
 	private String currentTestCaseName
+	protected SeleniumWrapper selenium
+
+	protected final log = LoggerFactory.getLogger(getClass())
+
+	TestLifecycleListener(SeleniumWrapper selenium) {
+		this.selenium = selenium
+	}
 
 	void receiveGrailsBuildEvent(String eventName, Object... args) {
-		if (SeleniumTestContextHolder.context == null) return
+		if (!selenium.alive) return
 		switch (eventName) {
 			case EVENT_TEST_CASE_START:
 				currentTestCaseName = args[0]

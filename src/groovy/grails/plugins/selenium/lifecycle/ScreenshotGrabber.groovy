@@ -2,17 +2,25 @@ package grails.plugins.selenium.lifecycle
 
 import com.thoughtworks.selenium.Selenium
 import com.thoughtworks.selenium.SeleniumException
-import grails.plugins.selenium.SeleniumTestContextHolder
 import grails.plugins.selenium.events.TestLifecycleListener
-import org.slf4j.LoggerFactory
 import static grails.util.GrailsNameUtils.getShortName
+import grails.plugins.selenium.SeleniumWrapper
 
 class ScreenshotGrabber extends TestLifecycleListener {
 
-	private final log = LoggerFactory.getLogger(ScreenshotGrabber)
+	static final DEFAULT_DIRECTORY = "target/test-reports/test-screenshots"
+
+	private final File screenshotDirectory
+	private final boolean enabled
+
+	ScreenshotGrabber(SeleniumWrapper selenium, ConfigObject config) {
+		super(selenium)
+		screenshotDirectory = new File(config.selenium.screenshot.dir ?: DEFAULT_DIRECTORY)
+		enabled = config.selenium.screenshot.onFail
+	}
 
 	protected void onTestFailure(String testCaseName, String testName) {
-		if (config.selenium.screenshot.onFail) {
+		if (enabled) {
 			try {
 				def path = generateScreenshotFilepath(testCaseName, testName)
 				log.debug "Grabbing screenshot to $path"
@@ -24,17 +32,7 @@ class ScreenshotGrabber extends TestLifecycleListener {
 	}
 
 	private String generateScreenshotFilepath(String testCaseName, String testName) {
-		def directory = new File(config.selenium.screenshot.dir)
 		def filename = "${getShortName(testCaseName)}.${testName}.png"
-		return new File(directory, filename).canonicalPath
+		return new File(screenshotDirectory, filename).canonicalPath
 	}
-
-	private ConfigObject getConfig() {
-		return SeleniumTestContextHolder.context.config
-	}
-
-	private Selenium getSelenium() {
-		return SeleniumTestContextHolder.context.selenium
-	}
-
 }

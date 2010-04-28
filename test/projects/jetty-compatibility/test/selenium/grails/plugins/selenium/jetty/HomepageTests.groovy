@@ -1,12 +1,12 @@
 package grails.plugins.selenium.jetty
 
-import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.SeleniumAware
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
 import static org.junit.matchers.JUnitMatchers.hasItem
 
-@Mixin(SeleniumTest)
+@Mixin(SeleniumAware)
 class HomepageTests {
 
 	@Test

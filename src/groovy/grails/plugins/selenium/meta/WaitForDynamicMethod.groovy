@@ -1,6 +1,5 @@
 package grails.plugins.selenium.meta
 
-import grails.plugins.selenium.SeleniumTestContextHolder
 import grails.plugins.selenium.condition.ClosureEvaluatingWait
 import java.util.regex.Pattern
 import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
@@ -35,6 +34,6 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 		} else {
 			throw new MissingMethodException(methodName, target.getClass(), arguments)
 		}
-		waitCondition.wait("$methodName(${arguments.join(', ')}) timed out", SeleniumTestContextHolder.context.timeout, SeleniumTestContextHolder.context.interval)
+		waitCondition.wait("$methodName(${arguments.join(', ')}) timed out", target.timeout.toLong())
 	}
 }

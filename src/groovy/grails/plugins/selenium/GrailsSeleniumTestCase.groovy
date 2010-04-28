@@ -2,21 +2,34 @@ package grails.plugins.selenium
 
 import com.thoughtworks.selenium.SeleneseTestBase
 import com.thoughtworks.selenium.Selenium
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * An adaptation of GroovySeleneseTestCase that expects a Selenium instance to be injected
  * by the test runner rather than creating its own. This means an entire suite of tests can
  * be run in a single browser session.
  */
-@Mixin (SeleniumTest)
+@Mixin(SeleniumAware)
+@Deprecated
 class GrailsSeleniumTestCase extends GroovyTestCase {
 
-	@Delegate private SeleneseTestBase base = new SeleneseTestBase()
+	@Delegate SeleneseTestBase base = new SeleneseTestBase()
 
 	@Override
 	void tearDown() {
 		super.tearDown()
 		checkForVerificationErrors()
+	}
+
+	/**
+	 * Returns the URL context path for the application. This is required to prefix URLs, e.g. to have
+	 * Selenium open the project root you would use: selenium.open("$contextPath/")
+	 */
+	String getContextPath() {
+		def appContext = ConfigurationHolder.config.app.context ?: ApplicationHolder.application.metadata."app.name"
+		if (!appContext.startsWith("/")) appContext = "/$appContext"
+		return appContext
 	}
 
 	/**
@@ -46,9 +59,7 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 						base."verify${negated ? 'False' : 'True'}" selenium."is$command"(* args)
 						break
 					case "waitFor":
-						waitFor {
-							negated ^ selenium."is$command"(* args)
-						}
+						selenium."$name"(* args)
 						break
 				}
 			} else if (Selenium.metaClass.respondsTo(selenium, "get$command")) {
@@ -63,9 +74,7 @@ class GrailsSeleniumTestCase extends GroovyTestCase {
 						base."verify${negated ? 'Not' : ''}Equals" expected, selenium."get$command"(* seleniumArgs)
 						break
 					case "waitFor":
-						waitFor {
-							negated ^ expected == selenium."get$command"(* seleniumArgs)
-						}
+						selenium."$name"(args[-1], * args[0..-2])
 						break
 				}
 			}
