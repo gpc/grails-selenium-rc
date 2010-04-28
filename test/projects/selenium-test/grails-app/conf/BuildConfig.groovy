@@ -22,7 +22,6 @@ grails.project.dependency.resolution = {
 		runtime ":hibernate:1.3.0.RC2"
 		runtime ":tomcat:1.3.0.RC2"
 		test ":build-test-data:1.1.0"
-		test ":spock:0.4-SNAPSHOT"
 	}
 }
 

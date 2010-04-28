@@ -2,6 +2,8 @@
 * Can we resolve selenium server using the dependency DSL?
 
 ## Testing
+* Coverage for using user extension scripts
+* Move spock coverage into main test project
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements

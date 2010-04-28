@@ -1,10 +1,11 @@
-package grails.plugins.selenium.test.spock
+package grails.plugins.selenium.test
 
 import grails.plugins.selenium.pageobjects.GrailsListPage
 import grails.plugins.selenium.test.Song
 import spock.lang.Specification
 
 class ListSongSpecification extends Specification {
+
 
 	void cleanupSpec() {
 		Song.list()*.delete()
