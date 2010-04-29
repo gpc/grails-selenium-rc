@@ -51,7 +51,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="grails-selenium-rc" />
-    <orderEntry type="module" module-name="jetty-compatibility-grailsPlugins" />
   </component>
 </module>
 
