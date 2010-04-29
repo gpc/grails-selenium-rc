@@ -1,46 +1,16 @@
-The simplest way to write Selenium tests is to create a class that extends @GroovyTestCase@ and add the @SeleniumTest@
-mixin that the plugin provides. The mixin class makes several properties and methods available, the most crucial of
-which is the running @Selenium@ instance. For example:
+The simplest way to write Selenium tests is to create a class that extends @GroovyTestCase@ and add the @SeleniumAware@
+mixin that the plugin provides. The mixin class simply makes the running instance of @Selenium@ available:
 
 {code}
-import grails.plugins.selenium.SeleniumTest
+import grails.plugins.selenium.SeleniumAware
 
-@Mixin(SeleniumTest)
+@Mixin(SeleniumAware)
 class HomepageTests extends GroovyTestCase {
     void testHomepageLoads() {
-        selenium.open "$contextPath/"
+        selenium.open "/"
         assertTrue selenium.isTextPresent("Welcome to Grails")
     }
 }
 {code}
 
-References to the @selenium@ property in the test will get the running @Selenium@ instance from the mixin class. You
-might also notice the @contextPath@ property used in the @open@ call. This is also provided by the mixin class and is a
-reference to the context that your application is running under.
-
-h3. Properties and methods of the SeleniumTest mixin
-{table}
-*Name* | *Description*
-selenium | The running Selenium instance that is used to interact with the browser.
-contextPath | The URL context path of the application under test. This needs to be prepended to all URLs you open with selenium.
-config | The Selenium configuration object.
-waitFor(String, Closure) | A method that allows your test to wait for some condition to become true.
-{table}
-
-h3. Using the waitFor method
-The @waitFor@ method is particularly useful when testing rich UIs where clicks do not cause the entire page to refresh
-but instead trigger AJAX actions that update portions of the page asynchronously. For example to click a button then
-wait for some text to appear before proceeding:
-
-{code}
-selenium.click("myButton")
-waitFor("Clicking myButtonId should have updated myDiv via AJAX") {
-    selenium.getText("myDiv") == "Some value"
-}
-{code}
-
-The @waitFor@ method will fail if the expected condition does not hold true after the default timeout specified with
-@selenium.defaultTimeout@ in your @SeleniumConfig.groovy@ file or 60 seconds if you have not specified a value.
-
-The message argument is optional but greatly assists in analysing test failures so it is recommended that you always
-provide it.
+References to the @selenium@ property in the test will get the running @Selenium@ instance from the mixin class.

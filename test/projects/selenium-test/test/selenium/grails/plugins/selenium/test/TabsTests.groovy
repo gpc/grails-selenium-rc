@@ -1,5 +1,7 @@
 package grails.plugins.selenium.test
 
+import static grails.plugins.selenium.condition.ClosureEvaluatingWait.waitFor
+
 class TabsTests extends AbstractTabsTestCase {
 
 	void testFirstTabIsInitiallySelected() {
@@ -12,7 +14,9 @@ class TabsTests extends AbstractTabsTestCase {
 		selenium.open "/tabs.gsp"
 		[3, 2, 1].each {i ->
 			selenium.click "//div[@id='tabs']/ul/li[$i]/a"
-			selenium.waitForVisible("tabs-$i")
+			waitFor("Timed out waiting for tabs-$i to become visible") {
+				selenium.isVisible("tabs-$i")
+			}
 			assertTabSelected i
 		}
 	}

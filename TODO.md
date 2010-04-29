@@ -7,6 +7,8 @@
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements
+* waitForText(locator, Matcher<String>), etc.
+* Wrap getting List<String> from ul/li in a helper method on SeleniumWrapper?
 * Support fixtures plugin via a controller and custom commands?
 * Run against running Selenium Server
 * JBehave needs different context setting listener
@@ -20,3 +22,5 @@
 ## Docs
 * Screenshots
 * Page objects
+* Constructor params in page objects
+* Tips - using context /

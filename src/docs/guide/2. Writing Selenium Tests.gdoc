@@ -10,11 +10,11 @@ simply need to connect to that running Selenium instance.
 {note}
 
 There are several options available for writing Selenium tests:
- # [Using The SeleniumTest Mixin|guide:2.1 Using the SeleniumTest Mixin]
- # [Extending GrailsSeleniumTestCase|guide:2.2 Extending GrailsSeleniumTestCase]
- # [Using The Page Object Pattern|guide:2.3 The Page Object Pattern]
+ # [Using The SeleniumAware Mixin|guide:2.1 Using the SeleniumTest Mixin]
+ # [Using Page Objects|guide:2.2 Using Page Objects]
+ # [Extending GrailsSeleniumTestCase|guide:2.3 Extending GrailsSeleniumTestCase]
 
-In all cases the Selenium RC plugin provides some enhancements to the Selenium client library via the Groovy meta class:
+In all cases the Selenium RC plugin provides some enhancements to the core @Selenium@ object:
  * [The Selenium Object|guide:2.4 The Selenium Object]
 
 You are not limited to writing Selenium tests as JUnit test cases.
