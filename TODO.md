@@ -1,4 +1,5 @@
 ## Bugs
+* What happens in Grails 1.2 when Hamcrest isn't present?
 * Can we resolve selenium server using the dependency DSL?
 
 ## Testing
