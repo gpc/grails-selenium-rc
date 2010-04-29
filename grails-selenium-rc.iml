@@ -46,9 +46,6 @@
           <root url="file://$MODULE_DIR$/lib" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.gmock/gmock/jars/gmock-0.8.0.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.seleniumhq.selenium.client-drivers/selenium-java-client-driver/jars/selenium-java-client-driver-1.0.2.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.seleniumhq.selenium.client-drivers/selenium-java-client-driver/sources/selenium-java-client-driver-1.0.2-sources.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.seleniumhq.selenium.core/selenium-core/jars/selenium-core-1.0.1.jar!/" />
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.hamcrest/hamcrest-all/sources/hamcrest-all-1.1-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.hamcrest/hamcrest-all/jars/hamcrest-all-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
