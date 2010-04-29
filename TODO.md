@@ -2,12 +2,10 @@
 * Can we resolve selenium server using the dependency DSL?
 
 ## Testing
-* Coverage for using user extension scripts
 * Move spock coverage into main test project
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements
-* Modify page object bases to use URL constructor pattern as per docs
 * Wrap getting List<String> from ul/li in a helper method on SeleniumWrapper?
 * Support fixtures plugin via a controller and custom commands?
 * Run against running Selenium Server

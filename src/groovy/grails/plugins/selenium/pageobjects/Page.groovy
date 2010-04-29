@@ -26,6 +26,9 @@ abstract class Page {
 	 * constructor should be used by factory methods in implementations that open the page. Ideally the URI itself
 	 * should not need to be known by tests.
 	 *
+	 * The uri passed to this constructor will be prepended with the application context path if it does not already
+	 * start with it.
+	 *
 	 * @throws UnexpectedPageException if opening uri does not take the browser to the page that this class represents.
 	 */
 	protected Page(String uri) throws UnexpectedPageException {
