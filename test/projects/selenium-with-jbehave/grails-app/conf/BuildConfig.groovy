@@ -19,7 +19,7 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.5'
 		test("org.jbehave:jbehave-core:2.5") {
 			excludes "junit-dep"
-		}
+    }
     }
 }
 
