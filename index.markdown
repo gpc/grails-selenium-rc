@@ -22,16 +22,16 @@ The Selenium RC plugin can be installed by entering `grails install-plugin selen
 	}
 
 ## Contents
-1. [Writing Selenium Tests](2.0-WritingSeleniumTests.markdown)
-	* [The @SeleniumAware Mixin](2.1-SeleniumAware.markdown)
-	* [Using Page Objects](2.2-PageObjects.markdown)
-	* [Extending GrailsSeleniumTestCase](2.3-GrailsSeleniumTestCase.markdown)
-	* [Enhancements to the Selenium Object](2.4-SeleniumObject.markdown)
-	* [Using Other Test Frameworks](2.5-OtherFrameworks.markdown)
-1. [Running Selenium RC Tests](3.0-RunningSelenium.markdown)
-1. [Selenium RC Configuration](4.0-Configuration.markdown)
-1. [Data-Driving Selenium RC Tests](5.0-DataDriving.markdown)
-1. [Using Selenium RC in Continuous Integration](6.0-ContinuousIntegration.markdown)
+1. [Writing Selenium Tests](2.0-WritingSeleniumTests.md)
+	* [The @SeleniumAware Mixin](2.1-SeleniumAware.md)
+	* [Using Page Objects](2.2-PageObjects.md)
+	* [Extending GrailsSeleniumTestCase](2.3-GrailsSeleniumTestCase.md)
+	* [Enhancements to the Selenium Object](2.4-SeleniumObject.md)
+	* [Using Other Test Frameworks](2.5-OtherFrameworks.md)
+1. [Running Selenium RC Tests](3.0-RunningSelenium.md)
+1. [Selenium RC Configuration](4.0-Configuration.md)
+1. [Data-Driving Selenium RC Tests](5.0-DataDriving.md)
+1. [Using Selenium RC in Continuous Integration](6.0-ContinuousIntegration.md)
 
 ## Source Code
 Source code for the plugin is hosted on [GitHub][2]. Please feel free to fork the project and submit pull requests back to the trunk.
