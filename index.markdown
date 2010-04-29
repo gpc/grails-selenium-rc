@@ -1,7 +1,3 @@
----
-layout: main
-title: Selenium RC Plugin
----
 # The Selenium RC Plugin
 The Selenium RC plugin aims to make [Selenium RC][1] a first class functional testing option for Grails.
 
