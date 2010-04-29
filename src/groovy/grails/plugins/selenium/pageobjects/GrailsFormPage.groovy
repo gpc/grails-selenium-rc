@@ -9,11 +9,11 @@ import org.apache.commons.lang.StringUtils
 abstract class GrailsFormPage extends GrailsPage {
 
 	GrailsFormPage() {
-		super(null)
+		super()
 	}
 
-	GrailsFormPage(String expectedTitle) {
-		super(expectedTitle)
+	protected GrailsFormPage(String uri) {
+		super(uri)
 	}
 
 	/**

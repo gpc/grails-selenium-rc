@@ -4,10 +4,20 @@ import grails.plugins.selenium.pageobjects.GrailsListPage
 
 class ListSongPage extends GrailsListPage {
 
+	ListSongPage() {
+		super()
+	}
+
+	private ListSongPage(String uri) {
+		super(uri)
+	}
+
 	static ListSongPage open() {
-		def page = new ListSongPage()
-		page.selenium.open "/song/list"
-		return page
+		return new ListSongPage("/song/list")
+	}
+
+	protected void verifyPage() {
+		pageTitleIs "Song List"
 	}
 
 }

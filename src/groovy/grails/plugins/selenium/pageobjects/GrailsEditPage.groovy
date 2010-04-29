@@ -6,16 +6,15 @@ package grails.plugins.selenium.pageobjects
 class GrailsEditPage extends GrailsFormPage {
 
 	static GrailsEditPage open(String uri) {
-		Page.open(uri)
-		return new GrailsEditPage()
+		return new GrailsEditPage(uri)
 	}
 
 	GrailsEditPage() {
-		super(/Edit \w+/)
+		super()
 	}
 
-	GrailsEditPage(String expectedTitle) {
-		super(expectedTitle)
+	protected GrailsEditPage(String uri) {
+		super(uri)
 	}
 
 	GrailsShowPage save() {
@@ -36,4 +35,7 @@ class GrailsEditPage extends GrailsFormPage {
 		return new GrailsListPage()
 	}
 
+	protected void verifyPage() {
+		pageTitleMatches ~/Edit \w+/
+	}
 }

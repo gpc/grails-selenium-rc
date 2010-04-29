@@ -6,16 +6,15 @@ package grails.plugins.selenium.pageobjects
 class GrailsListPage extends GrailsPage {
 
 	static GrailsListPage open(String uri) {
-		Page.open(uri)
-		return new GrailsListPage()
+		return new GrailsListPage(uri)
 	}
 
 	GrailsListPage() {
-		super(/\w+ List/)
+		super()
 	}
 
-	GrailsListPage(String expectedTitle) {
-		super(expectedTitle)
+	protected GrailsListPage(String uri) {
+		super(uri)
 	}
 
 	@Lazy List columnNames = (1..columnCount).collect {i ->
@@ -68,4 +67,7 @@ class GrailsListPage extends GrailsPage {
 		return this
 	}
 
+	protected void verifyPage() {
+		pageTitleMatches ~/\w+ List/
+	}
 }

@@ -8,8 +8,6 @@
 
 ## Enhancements
 * Modify page object bases to use URL constructor pattern as per docs
-* Page objects need static access to Selenium
-* waitForText(locator, Matcher<String>), etc.
 * Wrap getting List<String> from ul/li in a helper method on SeleniumWrapper?
 * Support fixtures plugin via a controller and custom commands?
 * Run against running Selenium Server

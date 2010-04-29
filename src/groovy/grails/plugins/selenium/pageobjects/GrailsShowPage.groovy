@@ -6,16 +6,15 @@ package grails.plugins.selenium.pageobjects
 class GrailsShowPage extends GrailsPage {
 
 	static GrailsShowPage open(String uri) {
-		Page.open(uri)
-		return new GrailsShowPage()
+		return new GrailsShowPage(uri)
 	}
 
 	GrailsShowPage() {
-		super(/Show \w+/)
+		super()
 	}
 
-	GrailsShowPage(String expectedTitle) {
-		super(expectedTitle)
+	protected GrailsShowPage(String uri) {
+		super(uri)
 	}
 
 	@Lazy List fieldNames = (0..<fieldCount).collect {i ->
@@ -46,8 +45,11 @@ class GrailsShowPage extends GrailsPage {
 		selenium.chooseOkOnNextConfirmation()
 		selenium.click "css=.buttons input.delete"
 		selenium.getConfirmation()
-		selenium.waitForPageToLoad "$selenium.defaultTimeout"
+		selenium.waitForPageToLoad()
 		return new GrailsListPage()
 	}
 
+	protected void verifyPage() {
+		pageTitleMatches ~/Show \w+/
+	}
 }

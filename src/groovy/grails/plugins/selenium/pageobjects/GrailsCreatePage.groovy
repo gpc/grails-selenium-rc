@@ -6,16 +6,15 @@ package grails.plugins.selenium.pageobjects
 class GrailsCreatePage extends GrailsFormPage {
 
 	static GrailsCreatePage open(String uri) {
-		Page.open(uri)
-		return new GrailsCreatePage()
+		return new GrailsCreatePage(uri)
 	}
 
 	GrailsCreatePage() {
-		super(/Create \w+/)
+		super()
 	}
 
-	GrailsCreatePage(String expectedTitle) {
-		super(expectedTitle)
+	protected GrailsCreatePage(String uri) {
+		super(uri)
 	}
 
 	GrailsShowPage save() {
@@ -28,4 +27,7 @@ class GrailsCreatePage extends GrailsFormPage {
 		return this
 	}
 
+	protected void verifyPage() {
+		pageTitleMatches ~/Create \w+/
+	}
 }

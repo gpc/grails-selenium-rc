@@ -6,11 +6,11 @@ package grails.plugins.selenium.pageobjects
 abstract class GrailsPage extends Page {
 
 	GrailsPage() {
-		super(null)
+		super()
 	}
 
-	GrailsPage(String expectedTitle) {
-		super(expectedTitle)
+	protected GrailsPage(String uri) {
+		super(uri)
 	}
 
 	/**

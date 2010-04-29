@@ -167,4 +167,15 @@ class GrailsFormPageTests {
 
 }
 
-class TestFormPage extends GrailsFormPage {}
+class TestFormPage extends GrailsFormPage {
+
+	TestFormPage() {
+		super()
+	}
+
+	protected TestFormPage(String uri) {
+		super(uri)
+	}
+
+	protected void verifyPage() { }
+}
