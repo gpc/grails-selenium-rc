@@ -6,6 +6,7 @@ import org.jbehave.scenario.steps.*
 import grails.plugins.selenium.*
 import com.thoughtworks.selenium.Selenium
 
+@Mixin(SeleniumAware)
 class HomepageSteps extends Steps {
 
 	@Given('I am not logged in')
@@ -22,6 +23,4 @@ class HomepageSteps extends Steps {
 	void verifyMessage(String message) {
 		assert selenium.isTextPresent(message)
 	}
-
-	@Lazy private Selenium selenium = SeleniumTestContextHolder.context.selenium
 }
