@@ -156,6 +156,16 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		}
 	}
 
+	@Test
+	void canWaitForSeleniumMethodThatRetunsStringToMatchHamcrestMatcher() {
+		mockSelenium.getText("whatever").returns("incorrect").times(2)
+		mockSelenium.getText("whatever").returns("correct")
+
+		play {
+			seleniumWrapper.waitForText("whatever", equalTo("correct"))
+		}
+	}
+
 	@Test(expected = WaitTimedOutException)
 	void waitForThrowsExceptionOnTimeout() {
 		mockSelenium.setTimeout("1000")
