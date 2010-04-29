@@ -25,7 +25,7 @@ class GrailsListPageTests {
 		SeleniumHolder.selenium = null
 	}
 
-	@Test(expected = InvalidPageStateException)
+	@Test(expected = UnexpectedPageException)
 	void openFailsIfWrongPageLoads() {
 		mockSelenium.getTitle().returns("WTF Page is this?")
 		play {

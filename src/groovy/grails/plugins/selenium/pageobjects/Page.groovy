@@ -29,11 +29,11 @@ abstract class Page {
 		ConfigurationHolder.config.grails.app.context
 	}
 
-	protected void validate() throws InvalidPageStateException {
+	protected void validate() throws UnexpectedPageException {
 		if (expectedTitle) {
 			def title = selenium.title
 			if (!(title ==~ expectedTitle)) {
-				throw new InvalidPageStateException("Expected page title '$expectedTitle' but found '$title'")
+				throw new UnexpectedPageException("Expected page title '$expectedTitle' but found '$title'")
 			}
 		}
 	}
