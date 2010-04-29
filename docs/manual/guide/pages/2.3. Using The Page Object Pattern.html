@@ -1,0 +1,21 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>2.3. Using The Page Object Pattern</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		Whether using the <code>SeleniumTest</code> mixin or extending <code>GrailsSeleniumTestCase</code> your tests interact directly with Selenium. Once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the details of the page. Some of the problems with this approach include:
+<ul class="star">
+<li>Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and therefore require you to hunt out instances if you change the page structure.</li>
+<li>Multiple Selenium commands representing a single <em class="italic">logical</em> action may be repeated in several tests or grouped together into utility classes that can easily get out of control and turn into 'God Objects'.</li>
+</ul><p class="paragraph"/>To truly decouple the functional intent of your tests from the raw Selenium interactions you can write 'page objects'. A page object represents a particular page within your application and defines methods and properties that allow your tests to interact with the page. The tests interact with the page objects, not directly with Selenium so they operate at a layer of abstraction from the fine details of the page. The advantages of this pattern include:
+<ul class="star">
+<li>Details of page can be refactored more easily as changes only need to be reflected in the page object, not the tests themselves.</li>
+<li>Complex interactions can be modelled in methods on the page object, meaning they can be reused in multiple tests.</li>
+<li>Navigation actions can be modelled as page object methods that return instances of other page objects representing the user's journey through the application.</li>
+<li>Page objects are very easy to write, can be expanded as necessary and greatly enhance the simplicity and readability of your tests.</li>
+</ul><p class="paragraph"/>When using the page object pattern your test classes can simply extend GroovyTestCase as they will not interact directly with Selenium.
+
+	</body>
+</html>
