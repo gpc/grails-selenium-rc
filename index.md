@@ -1,0 +1,70 @@
+# The Selenium RC Plugin
+The Selenium RC plugin aims to make [Selenium RC][1] a first class functional testing option for Grails.
+
+## Installation
+The Selenium RC plugin can be installed by entering `grails install-plugin selenium-rc` at the command line. Alternatively in Grails 1.3 you can add the plugin as a dependency to your application's `BuildConfig.groovy` file:
+
+	grails.project.dependency.resolution = {
+		repositories {
+			// ... repositories defined here
+			grailsCentral() // this repository is required for plugin resolution
+		}
+		dependencies {
+			// ... jar dependencies defined here
+		}
+		plugins {
+			test ":selenium-rc:1.0"
+		}
+	}
+
+## Contents
+1. [Writing Selenium Tests](2.0-WritingSeleniumTests.md)
+	* [The @SeleniumAware Mixin](2.1-SeleniumAware.md)
+	* [Using Page Objects](2.2-PageObjects.md)
+	* [Extending GrailsSeleniumTestCase](2.3-GrailsSeleniumTestCase.md)
+	* [Enhancements to the Selenium Object](2.4-SeleniumObject.md)
+	* [Using Other Test Frameworks](2.5-OtherFrameworks.md)
+1. [Running Selenium RC Tests](3.0-RunningSelenium.md)
+1. [Selenium RC Configuration](4.0-Configuration.md)
+1. [Data-Driving Selenium RC Tests](5.0-DataDriving.md)
+1. [Using Selenium RC in Continuous Integration](6.0-ContinuousIntegration.md)
+
+## Source Code
+Source code for the plugin is hosted on [GitHub][2]. Please feel free to fork the project and submit pull requests back to the trunk.
+
+## Bugs and Feature Requests
+Please raise bugs and feature requests against [Grails-Selenium-RC on JIRA][3].
+
+## Roadmap
+* Upgrade to Selenium 2.0 / WebDriver.
+* Support [Selenium Grid][4].
+* Support for other testing frameworks such as [EasyB][5].
+
+## Changelog
+#### Version 1.0
+* Optionally capture screenshot on test case failure
+* Selenium interface is decorated with waitFor* and *AndWait methods
+* Selenium runner's context text is set correctly at the start of each test
+* Firefox 3.6 and Firefox on OSX support via Selenium Server 1.0.3
+* Specify JavaScript user extensions via config and invoke user extension methods directly from Groovy
+* Optionally use `-remote` instead of config or system properties to run in remote mode
+
+#### Version 0.2
+* Added base classes for using the page object pattern with standard Grails pages
+* Added `selenium.remote` config option to allow tests to be run against a remote host
+* The config `selenium.slowResources` is now simply `selenium.slow` instead
+
+#### Version 0.1.1
+* Can now negate dynamic _assert/verify/waitFor_ calls in `GrailsSeleniumTestCase`
+* Fixed default Selenium URL to respect `server.port` setting, etc.
+* Fixed contextPath handling when `grails.app.context` is set in Config
+* Removed `ArrayCategory` class causing `VerifyError` in some odd circumstances
+
+#### Version 0.1
+* Initial release
+
+[1]: http://seleniumhq.org/projects/remote-control/ "Selenium Remote Control"
+[2]: http://github.com/robfletcher/grails-selenium-rc "Grails Selenium RC on GitHub"
+[3]: http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229 "Grails Selenium RC on JIRA"
+[4]: http://selenium-grid.seleniumhq.org/ "Selenium Grid"
+[5]: http://www.easyb.org/ "EasyB BDD Framework"
