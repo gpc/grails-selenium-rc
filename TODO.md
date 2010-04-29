@@ -18,5 +18,4 @@
 * Support additional test frameworks e.g. TestNG, EasyB, JBehave
 
 ## Docs
-* Screenshots
 * Tips - using context /

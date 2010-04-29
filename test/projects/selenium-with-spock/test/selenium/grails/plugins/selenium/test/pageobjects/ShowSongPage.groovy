@@ -5,9 +5,15 @@ import grails.plugins.selenium.pageobjects.GrailsShowPage
 class ShowSongPage extends GrailsShowPage {
 
 	static ShowSongPage open(id) {
-		def page = new ShowSongPage()
-		page.selenium.open "/song/show/$id"
-		return page
+		return new ShowSongPage("/song/show/$id")
+	}
+
+	ShowSongPage() {
+		super()
+	}
+
+	protected ShowSongPage(String uri) {
+		super(uri)
 	}
 
 }

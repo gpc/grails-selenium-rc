@@ -1,13 +1,19 @@
 package grails.plugins.selenium.test.pageobjects
 
-import grails.plugins.selenium.pageobjects.GrailsFormPage
+import grails.plugins.selenium.pageobjects.GrailsCreatePage
 
-class CreateSongPage extends GrailsFormPage {
+class CreateSongPage extends GrailsCreatePage {
 
 	static CreateSongPage open() {
-		def page = new CreateSongPage()
-		page.selenium.open "/song/create"
-		return page
+		return new CreateSongPage("/song/create")
+	}
+
+	CreateSongPage() {
+		super()
+	}
+
+	protected CreateSongPage(String uri) {
+		super(uri)
 	}
 
 	ShowSongPage submit() {
@@ -18,6 +24,10 @@ class CreateSongPage extends GrailsFormPage {
 	CreateSongPage submitExpectingFailure() {
 		selenium.clickAndWait "create"
 		return this
+	}
+
+	protected void verifyPage() {
+		pageTitleIs "Create Song"
 	}
 
 }
