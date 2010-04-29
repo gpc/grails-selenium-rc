@@ -1,7 +1,6 @@
 *.iws
 *.log
 *.zip
-docs/
 docs-*/
 .idea/
 eclipse/
