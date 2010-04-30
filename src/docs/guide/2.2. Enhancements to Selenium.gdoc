@@ -59,8 +59,14 @@ Selenium.prototype.getLoginState = function(locator) {
 h4. Calling user extensions from Groovy
 
 {code}
-selenium.login("rob", "password")
-assertEquals "Logged in as rob", selenium.loginState
+void testUserCanLogIn() {
+	selenium.open "/"
+	assertEquals "Not logged in", selenium.loginState
+	
+	selenium.open "/login"
+	selenium.login("rob", "password")
+	assertEquals "Logged in as rob", selenium.loginState
+}
 {code}
 
 h3. Using ClosureEvaluatingWait directly
