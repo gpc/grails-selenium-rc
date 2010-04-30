@@ -1,0 +1,26 @@
+h3. Installation
+
+The Selenium RC plugin can be installed by entering @grails install-plugin selenium-rc@ at the command line. Alternatively in Grails 1.3 you can add the plugin as a dependency to your application's @BuildConfig.groovy@ file:
+
+{code}
+grails.project.dependency.resolution = {
+	repositories {
+		// ... repositories defined here
+		grailsCentral() // this repository is required for plugin resolution
+	}
+	dependencies {
+		// ... jar dependencies defined here
+	}
+	plugins {
+		test ":selenium-rc:1.0"
+	}
+}
+{code}
+
+h3. Writing Selenium RC Tests
+
+Selenium tests should be placed under the @test/selenium@ directory. As with other test types you can use packages to group your tests if you wish.
+
+{warning}
+You should _not_ extend any of the base test classes in the Selenium API such as "SeleneseTestCase":api:com.thoughtworks.selenium.SeleneseTestCase or "GroovySeleneseTestCase":api:com.thoughtworks.selenium.GroovySeleneseTestCase as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single test! The plugin starts a Selenium instance for you when @grails test-app@ runs the functional test phase. Your tests simply need to connect to that running Selenium instance.
+{warning}

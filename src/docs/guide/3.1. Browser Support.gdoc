@@ -1,0 +1,19 @@
+The table below summarises browser/OS combinations that the plugin has been tested with and any issues known to exist with particular combinations. Please note these are likely issues of the Selenium library or the underlying browser rather than anything the plugin can do anything about.
+{table}
+ *Browser* | *selenium.browser* | *OS* | *Comments*
+ Firefox 3 | @\*firefox@ | Linux | Works perfectly.
+ Firefox 3.5 | @\*firefox@ | Linux | Works perfectly.
+ Firefox 3.5 | @\*firefox@ | OSX 10.6 | Works perfectly.
+ Firefox 3.6 | @\*firefox@ | OSX 10.6 | Works perfectly.
+ Safari 4 | @\*safari@ | OSX 10.6 | Multi-window mode doesn't work.
+ Firefox 3.5 | @\*firefox@ | Windows XP | Works perfectly.
+ Google Chrome | @\*googlechrome@ | Windows XP | Works perfectly.
+ Internet Explorer 6 | @\*iexplore@ | Windows XP | Single window mode causes JavaScript errors. Drag and drop problems.
+ Internet Explorer 7 | @\*iexplore@ | Windows XP | See Internet Explorer 6.
+ Opera 9 | @\*opera@ | Windows XP | Works perfectly.
+ Safari 4 | @\*safari@ | Windows XP | Multi-window mode doesn't work.
+{table}
+
+Selenium's @dragAndDropToObject@ command will fail in Internet Explorer if the target element (i.e. where you are dragging to) is outside the viewport. An imperfect workaround is to set @selenium.maximize@ in @SeleniumConfig.groovy@ so that the browser window is maximized on launch.
+
+If you are able to add to this list, whether to report issues or confirm success with particular browser/OS combinations please contact the plugin author.

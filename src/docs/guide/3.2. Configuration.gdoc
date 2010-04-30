@@ -1,0 +1,42 @@
+Installing the plugin should create an empty configuration file in @grails-app/conf/SeleniumConfig.groovy@ that can be customised according to your requirements. Configuration values are:
+
+{table}
+ *Key* | *Description* | *Default*
+ @selenium.browser@ | The browser Selenium will use | @\*firefox@ on Linux, @\*safari@ on OSX, @\*iexplore@ on Windows.
+ @selenium.defaultTimeout@ | The timeout in milliseconds after which an _...AndWait_ or _waitFor..._ method will fail | @60000@
+ @selenium.remote@ | If set to @true@ the test will run without starting the application. This is useful for running tests against an instance running on a remote host. | @false@
+ @selenium.server.host@ | The host the Selenium Server will run on. | @localhost@
+ @selenium.server.port@ | The port the Selenium Server will run on. | @4444@
+ @selenium.singleWindow@ | If @false@ Selenium will run in multiple windows which can be useful if your app has frame escape code. **Note:** this config value is ignored when selenium.browser is @\*iexplore@ or @\*safari@ as certain modes do not work with those browsers. | @true@ on all browsers other than @\*iexplore@
+ @selenium.slow@ | If set to @true@ the Selenium tests will run slowly for debugging. | @false@
+ @selenium.url@ | The base URL where the tests will be run. | @grails.serverURL@ in the main application config
+ @selenium.windowMaximize@ | If set to @true@ the browser window will be maximized when opened. Has no effect in single window mode. | @false@
+ @selenium.screenshot.dir@ | The directory where screenshots will be stored. | @target/test-reports/screenshots@
+ @selenium.screenshot.onFail@ | If set to @true@ a screenshot will be taken when a test fails. | @false@
+ @selenium.userExtensions@ | The path to an optional user extension JavaScript file. | None
+{table}
+
+h3. Environment specific configuration
+
+Environment specific configuration can be included in @SeleniumConfig.groovy@ just as it can in Grails' regular @Config.groovy@ file. For example:
+
+{code}
+selenium {
+	server {
+	    host = "localhost"
+	    port = 1234
+	}
+}
+environments {
+    test {
+        selenium.server.host = "www.pirates.bv"
+        selenium.server.port = 5678
+    }
+}
+{code}
+
+h3. Using system properties
+
+All configuration values can be overridden using system properties. This is probably most useful for overriding the browser used on individual developers' machines or continuous integration environments. For example to run Selenium tests using Firefox instead of your platform's default browser you can use @grails -Dselenium.browser=\*firefox test-app@ directly on the command line.
+
+To make such settings permanent on an individual machine add the required settings to the @JAVA_OPTS@ environment variable. For example, add @export JAVA_OPTS="$JAVA_OPTS -Dselenium.browser=\*firefox"@ to your @~/.profile@ file (Windows environment variables are set in the _Advanced_ tab of the _System Properties_ window).

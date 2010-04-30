@@ -1,0 +1,79 @@
+The @selenium@ property provided by the @SeleniumAware@ mixin is actually an extension of the standard [Selenium|api:com.thoughtworks.selenium.Selenium] object that enhances it in a number of ways.
+
+h3. waitFor...
+
+* Any _is..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters.
+* Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus an _'expectation'_ String.
+* Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a "Hamcrest Matcher":http://code.google.com/p/hamcrest/.
+
+{code}
+// waitFor... equivalents of is... methods
+selenium.isAlertPresent()
+selenium.waitForAlertPresent()
+
+selenium.isTextPresent("My Title")
+selenium.waitForTextPresent("My Title")
+
+// waitFor... equivalents of get... methods
+selenium.getAlert() == "Error"
+selenium.waitForAlert("Error")
+
+selenium.getText("css=h1") == "My Title"
+selenium.waitForText("css=h1", "My Title")
+
+// waitFor... with Hamcrest Matchers
+selenium.waitForText("css=h1", equalTo("My Title"))
+{code}
+
+h3. ...AndWait
+
+Any method can be appended with _AndWait_ so that it will wait for the page to load before returning. Obviously this only makes sense on commands that trigger a page load. For example @selenium.clickAndWait("css=input.myButton")@ will click the button _"myButton"_ and then wait for a new page to finish loading.
+
+{note}
+It is _not_ necessary to add _AndWait_ to the @open()@ command as it already waits for the page to finish loading before returning. Also be aware that _AndWait_ does _not_ wait for AJAX events. To handle AJAX updates to the page you should wait for a condition such as an element appearing or some text changing.
+{note}
+
+h3. waitForPageToLoad()
+
+The method @waitForPageToLoad(String)@ has an overridden version that requires no arguments and will use the timeout set using @setTimeout@ or the default timeout specified in configuration.
+
+h3. JavaScript user extensions
+
+Any _do..._ or _get..._ functions you have defined in a JavaScript user extensions file can be invoked directly from your Groovy code. The _do_ prefix should be dropped on action function calls. This is consistent with how the "Selenium IDE":http://seleniumhq.org/projects/ide/ handles user extensions.
+
+h4. User extension definitions in JavaScript
+
+{code:javascript}
+Selenium.prototype.doLogin = function(username, password) {
+	this.doType("css=input[name=j_username]", username);
+	this.doType("css=input[name=j_password]", password);
+	this.doClick("css=input[type=submit]");
+	return this.doWaitForPageToLoad(this.defaultTimeout);
+}
+
+Selenium.prototype.getLoginState = function(locator) {
+	return this.getText("css=.loginInfo");
+};
+{code}
+
+h4. Calling user extensions from Groovy
+
+{code}
+selenium.login("rob", "password")
+assertEquals "Logged in as rob", selenium.loginState
+{code}
+
+h3. Using ClosureEvaluatingWait directly
+
+The plugin uses the class @grails.plugins.selenium.condition.ClosureEvaluatingWait@ to implement the _waitFor..._ and _...AndWait_ methods. If you want to you can use the class directly. For example:
+
+{code}
+import static grails.plugins.selenium.condition.ClosureEvaluatingWait.waitFor
+
+selenium.click("myButton")
+waitFor("Clicking myButtonId should have updated myDiv via AJAX") {
+    selenium.getText("myDiv") == "Some value"
+}
+{code}
+
+The @waitFor@ method will fail if the expected condition does not hold true after the default timeout.

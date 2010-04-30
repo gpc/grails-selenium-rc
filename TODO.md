@@ -20,3 +20,4 @@
 
 ## Docs
 * Tips - using context /
+* Using a fixture controller

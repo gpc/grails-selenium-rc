@@ -1,0 +1,13 @@
+Selenium tests are placed in @test/selenium@ and are executed as part of the functional test phase with the standard @grails test-app@ or @grails test-app functional:@ commands. As with unit and integration tests you can run individual tests or groups of tests by specifying the test names without the _"Tests"_ suffix. Again, like unit and integration tests you can use @grails test-app -rerun@ to rerun failing tests.
+
+In Grails 1.2+ you can use the new syntax to isolate Selenium tests from other test types. For example @grails test-app :selenium@ or @grails test-app functional:selenium@
+
+The plugin will automatically start Selenium Server and Selenium instances at the start of the suite and close them down cleanly at the end so your tests do not need to (and indeed should not) do so.
+
+h3. Capturing screenshots on test failures
+
+By setting @selenium.screenshot.onFail@ to @true@ in your @SeleniumConfig.groovy@ file you can have Selenium capture a screenshot when any test fails. By default screenshots are saved to @target/test-reports/screenshots@ and named according to the test case and test that failed.
+
+{warning}
+Selenium's screenshot functionality is imperfect. It does not grab an image of the browser window but of the entire desktop. This may be useful so long as the browser that Selenium is driving is visible (i.e. not hidden behind other windows) when the screenshot is taken.
+{warning}
