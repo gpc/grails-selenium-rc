@@ -1,4 +1,4 @@
-The simplest way to write Selenium tests is to create a class that extends [GroovyTestCase|api:groovy.util.GroovyTestCase] and add the @SeleniumAware@ mixin that the plugin provides. The mixin class simply makes the running instance of [Selenium|api:com.thoughtworks.selenium.Selenium] available:
+The simplest way to write Selenium tests is to create a class that extends "GroovyTestCase":http://groovy.codehaus.org/gapi/groovy/util/GroovyTestCase.html and add the @SeleniumAware@ mixin that the plugin provides. The mixin class simply makes the running instance of "Selenium":http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html available:
 
 {code}
 import grails.plugins.selenium.SeleniumAware

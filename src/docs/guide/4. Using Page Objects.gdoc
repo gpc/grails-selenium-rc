@@ -1,7 +1,7 @@
 Simple Selenium RC tests will interact directly with the @selenium@ object to drive the browser. However, once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the fine-grained details of the page. Some of the problems with this approach include:
 
-* Page element locators (whether _XPath_, _CSS_, element Ids, etc.) are repeated throughout the tests and have to be changed in many places when you change the page structure.
-* Multiple Selenium commands representing a single _logical_ action may be repeated in several tests. Utility class that group commands together can easily get out of control and turn into "God Objects":http://en.wikipedia.org/wiki/God_object.
+* Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and have to be changed in many places when you change the page structure.
+* Multiple Selenium commands representing a single _logical_ action may be repeated in several tests. Utility class that group commands together can easily get out of control and fall prey to the "God Objects":http://en.wikipedia.org/wiki/God_object anti-pattern.
 
 h3. What is a page object?
 

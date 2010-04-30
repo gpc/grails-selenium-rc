@@ -99,7 +99,7 @@ Even if your page object does not cache any state, consider having such a method
 
 h3. Observing the state of the page
 
-A page object class typically has methods that observe the state of the page, such as _getWidgetTitle()_, _getHighlightedNavigationItem()_, _isLoginFormVisible()_, _getErrorMessages()_, etc. You implement these by grabbing data from the page using Selenium and converting where necessary into a more logical format for your tests to make assertions about. For example:
+A page object class typically has methods that observe the state of the page, such as _getWidgetTitle_ or _getHighlightedNavigationLink_ etc. You implement these by grabbing data from the page using Selenium and converting where necessary into a more logical format for your tests to make assertions about. For example:
 
 {code}
 String getFlashMessage() {
@@ -136,7 +136,7 @@ List<String> getErrorMessages() {
 }
 {code}
 
-This page object method returns a _List_ of all the error messages displayed on the page or an empty list if there aren't any error messages. First it counts how many _li_ elements appear inside the _"errors"_ _div_ using Selenium's @getXpathCount@ method then applies @collect@ to a Groovy range, calling Selenium's @getText@ method for each _li_ in turn. If the @getXpathCount@ call returns zero the method simply returns an empty list.
+This page object method returns a _List_ of all the error messages displayed on the page or an empty list if there aren't any error messages. First it counts how many _li_ elements appear inside the _"errors" div_ using Selenium's @getXpathCount@ method then applies @collect@ to a Groovy range, calling Selenium's @getText@ method for each _li_ in turn. If the @getXpathCount@ call returns zero the method simply returns an empty list.
 
 The test now doesn't have to worry about how to scrape error messages from the page, it can make nice simple assertions such as:
 

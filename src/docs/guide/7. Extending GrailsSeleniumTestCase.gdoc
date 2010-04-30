@@ -1,12 +1,12 @@
 {warning}
-The @GrailsSeleniumTestCase@ class is considered deprecated. It is still available for backwards compatibility but will not be enhanced any further and may be removed in a future plugin version. The plugin now decorates the [Selenium|api:com.thoughtworks.selenium.Selenium] object itself with _waitFor_ methods and the "Hamcrest matcher":http://code.google.com/p/hamcrest/ API provides a better alternative to the assertion methods provided by @SeleneseTestBase@.
+The @GrailsSeleniumTestCase@ class is considered deprecated. It is still available for backwards compatibility but will not be enhanced any further and may be removed in a future plugin version. The plugin now decorates the "Selenium":http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html object itself with _waitFor_ methods and the "Hamcrest matcher":http://code.google.com/p/hamcrest/ API provides a better alternative to the assertion methods provided by @SeleneseTestBase@.
 {warning}
 
-Instead of using the @SeleniumAware@ mixin you can extend @grails.plugins.selenium.GrailsSeleniumTestCase@ which provides everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions provided by the [SeleneseTestBase|api:com.thoughtworks.selenium.SeleneseTestBase] class as well as the various _verify_ methods, the _seleniumEquals_ method, etc.
+Instead of using the @SeleniumAware@ mixin you can extend @grails.plugins.selenium.GrailsSeleniumTestCase@ which provides everything the mixin does with some additional capabilities. Firstly you can use some of the more advanced assertions provided by the "SeleneseTestBase":http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestBase.html class as well as the various _verify_ methods, the _seleniumEquals_ method, etc.
 
 h3. Using _assert..._, _verify..._ and _waitFor..._ convenience methods
 
-Extending @GrailsSeleniumTestCase@ enables you to directly _assert, verify_ or _waitFor_ certain Selenium conditions. Any [Selenium|api:com.thoughtworks.selenium.Selenium] method starting with _is_ can be used as a boolean assertion by replacing the _is_ with _assert, verify_ or _waitFor_ in the method call. Likewise any Selenium method starting with _get_ can be used as an equality assertion. Some examples:
+Extending @GrailsSeleniumTestCase@ enables you to directly _assert, verify_ or _waitFor_ certain Selenium conditions. Any "Selenium":http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html method starting with _is_ can be used as a boolean assertion by replacing the _is_ with _assert, verify_ or _waitFor_ in the method call. Likewise any Selenium method starting with _get_ can be used as an equality assertion. Some examples:
 
 {code}
 assertTrue selenium.isTextPresent("Welcome to Grails")      // normal form

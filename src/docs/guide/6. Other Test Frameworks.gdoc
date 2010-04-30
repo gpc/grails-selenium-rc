@@ -1,6 +1,6 @@
 Selenium tests do not have to be written as JUnit test cases. The @SeleniumAware@ mixin could be applied to almost any test case written in another framework. Page objects are also agnostic of the test framework.
 
-Currently the plugin has tested support for "Spock":http://grails.org/plugin/spock. Also, when using Grails 1.3+ tests can be written using JUnit 4 conventions. Other testing frameworks such as "EasyB":http://www.easyb.org/ and "JBehave":http://jbehave.org/, may well work with a limited amount of effort.
+Currently the plugin has tested support for the "Spock":http://grails.org/plugin/spock plugin. Also, when using Grails 1.3+ tests can be written using JUnit 4 conventions. Other testing frameworks such as "EasyB":http://www.easyb.org/ and "JBehave":http://jbehave.org/ may well work with a limited amount of effort.
 
 h3. Writing Selenium tests with JUnit 4
 
@@ -21,7 +21,7 @@ class HomepageTests {
 }
 {code}
 	
-Notice that the test does not extend any base class and annotates each test method with `@Test`.
+Notice that the test annotates each test method with "\@Test":http://www.junit.org/apidocs/org/junit/Test.html and does not extend a base class.
 
 h3. Writing Selenium tests with Spock
 

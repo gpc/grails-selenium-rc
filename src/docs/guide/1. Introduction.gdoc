@@ -2,27 +2,27 @@ The Selenium RC plugin aims to make "Selenium RC":http://seleniumhq.org/projects
 
 h3. Source Code
 
-Source code for the plugin is hosted on "GitHub":http://github.com/robfletcher/grails-selenium-rc. Please feel free to fork the project and submit pull requests back to the trunk.
+Source code for the plugin is hosted on "GitHub":http://github.com/robfletcher/grails-selenium-rc - Please feel free to fork the project and submit pull requests back to the trunk.
 
 h3. Bugs and Feature Requests
 
-Please raise bugs and feature requests against "Grails-Selenium-RC on JIRA":http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229.
+Please raise bugs and feature requests against "Grails-Selenium-RC on JIRA":http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229
 
 h3. Roadmap
 
-* Upgrade to Selenium 2.0 / WebDriver.
-* Support "Selenium Grid":http://selenium-grid.seleniumhq.org/.
-* Support for other testing frameworks such as "EasyB":http://www.easyb.org/.
+* Upgrade to Selenium 2.0 / WebDriver
+* Support "Selenium Grid":http://selenium-grid.seleniumhq.org/
+* Support for other testing frameworks such as "EasyB":http://www.easyb.org/
 
 h3. Changelog
 h4. Version 1.0
 
 * Optionally capture screenshot on test case failure
-* Selenium interface is decorated with waitFor* and *AndWait methods
+* Selenium interface is decorated with _waitFor\*_ and _\*AndWait_ methods
 * Selenium runner's context text is set correctly at the start of each test
 * Firefox 3.6 and Firefox on OSX support via Selenium Server 1.0.3
 * Specify JavaScript user extensions via config and invoke user extension methods directly from Groovy
-* Optionally use `-remote` instead of config or system properties to run in remote mode
+* Optionally use @-remote@ instead of config or system properties to run in remote mode
 
 h4. Version 0.2
 
