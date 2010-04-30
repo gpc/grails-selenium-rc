@@ -11,9 +11,9 @@ import java.util.regex.Pattern
 abstract class Page {
 
 	/**
-	 * Constructor that expects the browser to be on the correct page at the time the constructor is called.
-	 * This constructor should be used by navigation methods in other page objects that perform some action such as
-	 * clicking a link that should load the page that this class represents.
+	 * Constructor that expects the browser to be on the correct page at the time it is called. This constructor will
+	 * typically be used by navigation methods in other page objects that perform some action such as clicking a link
+	 * that should load the page that this class represents.
 	 *
 	 * @throws UnexpectedPageException if the browser is not currently on the page that this class represents.
 	 */
