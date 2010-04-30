@@ -157,6 +157,16 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 	}
 
 	@Test
+	void canWaitForNoArgsSeleniumMethodThatReturnsString() {
+		mockSelenium.getTitle().returns("incorrect").times(2)
+		mockSelenium.getTitle().returns("correct")
+
+		play {
+			seleniumWrapper.waitForTitle("correct")
+		}
+	}
+
+	@Test
 	void canWaitForSeleniumMethodThatRetunsStringToMatchHamcrestMatcher() {
 		mockSelenium.getText("whatever").returns("incorrect").times(2)
 		mockSelenium.getText("whatever").returns("correct")

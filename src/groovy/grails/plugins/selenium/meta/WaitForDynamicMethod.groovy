@@ -23,8 +23,9 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 			}
 		} else if (target.respondsTo("get$seleniumCommand")) {
 			waitCondition.condition = {
-				def expected = arguments[-1]
-				def actual = target."get$seleniumCommand"(* arguments[0..-2])
+				def argsList = arguments as List
+				def expected = argsList.pop()
+				def actual = target."get$seleniumCommand"(* argsList)
 				if (expected instanceof Matcher) {
 					expected.matches(actual)
 				} else {
