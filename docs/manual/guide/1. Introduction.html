@@ -5,34 +5,31 @@
      	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
      </head>
 	<body class="body">
-		<h1><a name="1. Introduction">1. Introduction</a></h1>The Selenium RC plugin aims to make <a href="http://seleniumhq.org/projects/remote-control/" target="blank">Selenium RC</a> a first class functional
-testing option for Grails.<p class="paragraph"/><h2>Source Code</h2>
-Source code for the plugin is hosted on <a href="http://github.com/robfletcher/grails-selenium-rc" target="blank">GitHub</a>. Please feel free to
-fork the project and submit pull requests back to the trunk.<p class="paragraph"/><h2>Bugs and Feature Requests</h2>
-Please raise bugs and feature requests against <a href="http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229" target="blank">Grails-Selenium-RC on JIRA</a>.<p class="paragraph"/><h2>Roadmap</h2>
+		<h1><a name="1. Introduction">1. Introduction</a></h1>The Selenium RC plugin aims to make <a href="http://seleniumhq.org/projects/remote-control/" target="blank">Selenium RC</a> a first class functional testing option for Grails.<p class="paragraph"/><h3>Source Code</h3><p class="paragraph"/>Source code for the plugin is hosted on <a href="http://github.com/robfletcher/grails-selenium-rc" target="blank">GitHub</a> - Please feel free to fork the project and submit pull requests back to the trunk.<p class="paragraph"/><h3>Bugs and Feature Requests</h3><p class="paragraph"/>Please raise bugs and feature requests against <a href="http://jira.codehaus.org/browse/GRAILSPLUGINS/component/14229" target="blank">Grails-Selenium-RC on JIRA</a><p class="paragraph"/><h3>Roadmap</h3>
 <ul class="star">
-<li>Upgrade to Selenium 2.0 / WebDriver.</li>
-<li>Support automatic generation of screenshots when assertions fail.</li>
-<li><a href="http://selenium-grid.seleniumhq.org/" target="blank">Selenium Grid</a> support.</li>
-<li>Support for other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a>, <a href="http://testng.org/" target="blank">TestNG</a>, etc.</li>
-</ul><p class="paragraph"/><h2>Changelog</h2>
-<h4>Version 0.2</h4>
-New Features&#8230;
+<li>Upgrade to Selenium 2.0 / WebDriver</li>
+<li>Support <a href="http://selenium-grid.seleniumhq.org/" target="blank">Selenium Grid</a></li>
+<li>Support for other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a></li>
+</ul><p class="paragraph"/><h3>Changelog</h3>
+<h4>Version 1.0</h4>
+<ul class="star">
+<li>Optionally capture screenshot on test case failure</li>
+<li>Selenium interface is decorated with <em class="italic">waitFor&#42;</em> and <em class="italic">&#42;AndWait</em> methods</li>
+<li>Selenium runner's context text is set correctly at the start of each test</li>
+<li>Firefox 3.6 and Firefox on OSX support via Selenium Server 1.0.3</li>
+<li>Specify JavaScript user extensions via config and invoke user extension methods directly from Groovy</li>
+<li>Optionally use <code>-remote</code> instead of config or system properties to run in remote mode</li>
+</ul><p class="paragraph"/><h4>Version 0.2</h4>
 <ul class="star">
 <li>Added base classes for using the page object pattern with standard Grails pages</li>
 <li>Added <code>selenium.remote</code> config option to allow tests to be run against a remote host</li>
-</ul><p class="paragraph"/>Changes&#8230;
-<ul class="star">
 <li>The config <code>selenium.slowResources</code> is now simply <code>selenium.slow</code> instead</li>
 </ul><p class="paragraph"/><h4>Version 0.1.1</h4>
-Fixes&#8230;
-<ul class="star">
-<li>Fixed default Selenium URL to respect <code>server.port</code> setting, etc.</li>
-<li>Fixed contextPath handling when <code>app.context</code> is set in Config</li>
-<li>Removed <code>ArrayCategory</code> class causing <code>VerifyError</code> in some odd circumstances</li>
-</ul><p class="paragraph"/>New Features&#8230;
 <ul class="star">
 <li>Can now negate dynamic <em class="italic">assert/verify/waitFor</em> calls in <code>GrailsSeleniumTestCase</code></li>
+<li>Fixed default Selenium URL to respect <code>server.port</code> setting, etc.</li>
+<li>Fixed contextPath handling when <code>grails.app.context</code> is set in Config</li>
+<li>Removed <code>ArrayCategory</code> class causing <code>VerifyError</code> in some odd circumstances</li>
 </ul><p class="paragraph"/><h4>Version 0.1</h4>
 <ul class="star">
 <li>Initial release</li>

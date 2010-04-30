@@ -1,0 +1,130 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>4. Using Page Objects</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		<h1><a name="4. Using Page Objects">4. Using Page Objects</a></h1>Simple Selenium RC tests will interact directly with the <code>selenium</code> object to drive the browser. However, once you go beyond a handful of simple tests this can make your tests difficult to maintain as they are dealing with the fine-grained details of the page. Some of the problems with this approach include:
+<ul class="star">
+<li>Page element locators (whether XPath, CSS, element Ids, etc.) are repeated throughout the tests and have to be changed in many places when you change the page structure.</li>
+<li>Multiple Selenium commands representing a single <em class="italic">logical</em> action may be repeated in several tests. Utility class that group commands together can easily get out of control and fall prey to the <a href="http://en.wikipedia.org/wiki/God_object" target="blank">God Objects</a> anti-pattern.</li>
+</ul><p class="paragraph"/><h3>What is a page object?</h3><p class="paragraph"/>To truly decouple the functional intent of your tests from the raw Selenium interactions you can write 'page objects'. A page object represents a particular page within your application and defines methods and properties that allow your tests to interact with the page. The tests interact with the page objects, not directly with Selenium so they operate at a layer of abstraction from the fine details of the page. The advantages of this pattern include:
+<ul class="star">
+<li>Details of page can be refactored more easily as changes only need to be reflected in the page object, not the tests themselves.</li>
+<li>Complex interactions can be modelled in methods on the page object, meaning they can be reused in multiple tests.</li>
+<li>Navigation actions can be modelled as page object methods that return instances of other page objects representing the user's journey through the application.</li>
+<li>Page objects are very easy to write, can be expanded as necessary and greatly enhance the simplicity and readability of your tests.</li>
+</ul><p class="paragraph"/>When using the page object pattern your test classes will typically not interact directly with Selenium. Instead the page object classes themselves will do so. Page objects can use the <code>SeleniumAware</code> mixin to access Selenium just as tests can.
+<h2><a name="4.1. Writing Page Object Classes">4.1. Writing Page Object Classes</a></h2>The following is a guide to writing page objects. It is not definitive and does not specify patterns that the Selenium RC plugin <em class="italic">requires</em> but rather those I have found effective. If you want to, or the nature of your app requires you to take a different approach then by all means do so.<p class="paragraph"/>Generally you should let the behaviour of the page object be guided by the tests that use it - i.e. don't write a gigantic page object with rich behaviour before you need it. It's very easy to refactor direct selenium calls out of a test and into page object methods as you go.<p class="paragraph"/><h3>Constructing page objects</h3><p class="paragraph"/>A good approach to constructing page objects is to have:
+<ul class="star">
+<li>A no-argument constructor that can be used by other page objects' navigation methods and expects the browser to already be on the right page.</li>
+<li>A private constructor that opens the page by URL, i.e. as though the user had typed the URL in the browser's location bar or used a bookmark.</li>
+<li>A factory method that calls the by-URL constructor but does not itself require the URL as an argument.</li>
+</ul><p class="paragraph"/>The factory method might take parameters if the URL of the page can vary (e.g. the factory method for a Grails edit page might take a domain object's id and use it to construct a <code>/domainClass/edit/$id</code> style URL). The point is that ideally the page object should encapsulate the details of the URL so the tests don't have to know about it. For example:<p class="paragraph"/><div class="code"><pre>class HomePage &#123;
+	<span class="java&#45;keyword">private</span> <span class="java&#45;keyword">static</span> <span class="java&#45;keyword">final</span> URL = <span class="java&#45;quote">"/home"</span><p class="paragraph"/>	// factory method that opens the home page
+	<span class="java&#45;keyword">static</span> HomePage open() &#123;
+		<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> HomePage(URL)
+	&#125;<p class="paragraph"/>	// constructor called by navigation methods in other page objects
+	HomePage() &#123;
+		verifyPage()
+	&#125;<p class="paragraph"/>	// constructor called by the factory method
+	<span class="java&#45;keyword">private</span> HomePage open(<span class="java&#45;object">String</span> url) &#123;
+		selenium.open(url)
+		verifyPage()
+	&#125;
+&#125;<p class="paragraph"/>class SomeOtherPage &#123;
+	// &#8230; constructors, etc.<p class="paragraph"/>	HomePage clickHomeLink() &#123;
+		selenium.clickAndWait(<span class="java&#45;quote">"css=a&#35;home"</span>)
+		<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> HomePage() // uses the no&#45;arg constructor of HomePage
+	&#125;
+&#125;</pre></div><p class="paragraph"/><h3>Verifying the page</h3><p class="paragraph"/>Page objects should <em class="italic">not</em> make assertions; that is the job of the test. Page objects are there to provide the data and perform the actions that allow the test to do that job.<p class="paragraph"/>The only exception to this rule is that when constructing a new page object it is wise to do some kind of check to ensure the browser is actually on the page it should be. Typically this is done by checking something simple like the page title and throwing an exception if it is not correct. If the browser ends up on the wrong page the test has made an incorrect assumption about some aspect of navigation so an exception is appropriate. For example the <em class="italic">verifyPage</em> method referenced above could be implemented as:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">private</span> void verifyPage() &#123;
+	def title = selenium.title
+	<span class="java&#45;keyword">if</span> (title != <span class="java&#45;quote">"Home"</span>) &#123;
+		<span class="java&#45;keyword">throw</span> <span class="java&#45;keyword">new</span> UnexpectedPageException(<span class="java&#45;quote">"Expected home page but found '$title'"</span>)
+	&#125;
+&#125;</pre></div><p class="paragraph"/><blockquote class="note">
+The class <code>grails.plugins.selenium.pageobjects.Page</code> provides public no-arg and protected URL-based constructors and an abstract <em class="italic">verifyPage</em> method so it is a good base for adopting this pattern.
+</blockquote><p class="paragraph"/><h3>Navigation</h3><p class="paragraph"/>Navigation type methods in page objects will typically return another page object. When the navigation in question is deterministic this is as simple as:<p class="paragraph"/><div class="code"><pre>HomePage clickHomeLink() &#123;
+	selenium.clickAndWait(<span class="java&#45;quote">"css=a&#35;home"</span>)
+	<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> HomePage()
+&#125;</pre></div><p class="paragraph"/>Remember that the constructor of the <em class="italic">HomePage</em> class will check that the browser is on the correct page and throw an exception if it isn't.<p class="paragraph"/>When navigation can have different results in different circumstances the most effective approach is to implement multiple navigation methods that reflect this. Again, page objects that verify browser state in their constructors make this easy. For example, imagine and application where only a logged in user can click on the <em class="italic">"My Profile"</em> link, if an anonymous user does so they will be presented with the login page rather than their profile. Navigation methods that reflect this rule could be implemented like this:<p class="paragraph"/><div class="code"><pre>ProfilePage clickProfileLinkAsLoggedInUser() &#123;
+	selenium.clickAndWait(<span class="java&#45;quote">"css=a&#35;profile"</span>)
+	<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> ProfilePage()
+&#125;<p class="paragraph"/>LoginPage clickProfileLinkAsAnonymousUser() &#123;
+	selenium.clickAndWait(<span class="java&#45;quote">"css=a&#35;profile"</span>)
+	<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> LoginPage()
+&#125;</pre></div><p class="paragraph"/>Because the test knows the expected state, it can simply call the different methods in different circumstances.<p class="paragraph"/><h3>Refreshing the page</h3><p class="paragraph"/>You can consider a page refresh to be a navigation method. For example, if your page object caches the results of various observer methods yet you expect data to change if the page is refreshed then a simple method that calls <code>selenium.refreshAndWait()</code> then returns a new instance of the same page object class would work nicely.<p class="paragraph"/>Even if your page object does not cache any state, consider having such a method anyway (it can even just return <code>this</code>) so that refactoring is easier if you <em class="italic">do</em> start caching state.<p class="paragraph"/><h3>Observing the state of the page</h3><p class="paragraph"/>A page object class typically has methods that observe the state of the page, such as <em class="italic">getWidgetTitle</em> or <em class="italic">getHighlightedNavigationLink</em> etc. You implement these by grabbing data from the page using Selenium and converting where necessary into a more logical format for your tests to make assertions about. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;object">String</span> getFlashMessage() &#123;
+	hasFlashMessage() ? selenium.getText(<span class="java&#45;quote">"css=.message"</span>) : <span class="java&#45;keyword">null</span>
+&#125;<p class="paragraph"/><span class="java&#45;object">boolean</span> hasFlashMessage() &#123;
+	<span class="java&#45;keyword">return</span> selenium.isElementPresent(<span class="java&#45;quote">"css=.message"</span>)
+&#125;</pre></div><p class="paragraph"/>Here the <em class="italic">hasFlashMessage</em> method is used by <em class="italic">getFlashMessage</em> to avoid the nasty exception that will get thrown if <em class="italic">getFlashMessage</em> attempts to get text on an element that does not exist. If the test <em class="italic">expects</em> no flash message it would be inappropriate to have to catch an exception in order to pass. The page object handles the fiddly details of the interaction with Selenium so the test can use expressive assertions such as:<p class="paragraph"/><div class="code"><pre>assertFalse page.hasFlashMessage()
+assertNull page.flashMessage
+assertEquals <span class="java&#45;quote">"Not logged in"</span>, page.flashMessage</pre></div><p class="paragraph"/><h3>List and table data</h3><p class="paragraph"/>Getting data from a list is a little awkward in Selenium. Again, by encapsulating such things in a page object they don't clutter up your tests. For example:<p class="paragraph"/><div class="code"><pre>List&#60;<span class="java&#45;object">String</span>&#62; getErrorMessages() &#123;
+	def errorCount = selenium.getXpathCount(<span class="java&#45;quote">"//div&#91;@class='errors'&#93;/ul/li"</span>)
+	<span class="java&#45;keyword">if</span> (errorCount &#62; 0) &#123;
+		<span class="java&#45;keyword">return</span> (1..errorCount).collect &#123; i &#45;&#62;
+			selenium.getText(<span class="java&#45;quote">"//div&#91;@class='errors'&#93;/ul/li&#91;$i&#93;"</span>)
+		&#125;
+	&#125; <span class="java&#45;keyword">else</span> &#123;
+		<span class="java&#45;keyword">return</span> &#91;&#93;
+	&#125;
+&#125;</pre></div><p class="paragraph"/>This page object method returns a <em class="italic">List</em> of all the error messages displayed on the page or an empty list if there aren't any error messages. First it counts how many <em class="italic">li</em> elements appear inside the <em class="italic">"errors" div</em> using Selenium's <code>getXpathCount</code> method then applies <code>collect</code> to a Groovy range, calling Selenium's <code>getText</code> method for each <em class="italic">li</em> in turn. If the <code>getXpathCount</code> call returns zero the method simply returns an empty list.<p class="paragraph"/>The test now doesn't have to worry about how to scrape error messages from the page, it can make nice simple assertions such as:<p class="paragraph"/><div class="code"><pre>assertTrue page.errorMessages.isEmpty()
+assertEquals 1, page.errorMessages.size()
+assertThat page.errorMessages, hasItem(<span class="java&#45;quote">"Credit card number is invalid"</span>)</pre></div><p class="paragraph"/><blockquote class="note">
+One caveat here is that <em class="italic">n+1</em> Selenium commands are executed every time you call <em class="italic">getErrorMessages</em> so when dealing with large lists it may be wise to lazy-initialise a private field in the page object the first time the method is called then simply return that value on subsequent calls. Groovy's <a href="http://groovy.codehaus.org/Lazy+transformation" target="blank">@Lazy</a> annotation can be used to good effect to achieve this.
+</blockquote><p class="paragraph"/><h3>Interacting with the page</h3><p class="paragraph"/>Page objects will also frequently implement methods to allow the test to click buttons, type in fields and so on. These can be as simple as:<p class="paragraph"/><div class="code"><pre>void typePassword(<span class="java&#45;object">String</span> password) &#123;
+	selenium.type(<span class="java&#45;quote">"css=input&#91;type=password&#93;"</span>, password)
+&#125;</pre></div><p class="paragraph"/>More complex interactions such as dealing with AJAX functionality are also possible. Here's an example of performing an AJAX-enabled search:<p class="paragraph"/><div class="code"><pre><span class="java&#45;object">int</span> search(<span class="java&#45;object">String</span> query) &#123;
+	selenium.type(<span class="java&#45;quote">"css=input&#91;name=q&#93;"</span>, query)
+	selenium.click(css=input&#91;type=button&#93;)
+	selenium.waitForElementPresent(<span class="java&#45;quote">"css=.searchResults"</span>)
+	<span class="java&#45;keyword">return</span> selenium.getXpathCount(<span class="java&#45;quote">"//div&#91;@class='searchResults'&#93;/ul/li"</span>)
+&#125;</pre></div><p class="paragraph"/>The method types the query, clicks the <em class="italic">search</em> button, then waits for a change of page state that indicates that the AJAX call has completed before finally returning the count of how many items were found.<p class="paragraph"/><blockquote class="note">
+When waiting for AJAX completion it is vital that the condition you are waiting for is not true before the AJAX call begins otherwise the <em class="italic">waitFor...</em> could return immediately before anything actually happens. In the example above the call to <code>waitForElementPresent("css=.searchResults")</code> would not be appropriate if the <em class="italic">.searchResults</em> element might already be on the page. Getting this right is non-trivial but at least when using page objects you only have to get it right in one place!
+</blockquote><p class="paragraph"/><h3>Leveraging Groovy with your page objects</h3><p class="paragraph"/>You can get quite creative by overriding Groovy's <code>methodMissing</code> and <code>propertyMissing</code> to get data from or interact with your pages. For example, overriding property setters on a page object to get the current value of and type in form fields whose <em class="italic">id</em> is the property name is as easy as:<p class="paragraph"/><div class="code"><pre>def propertyMissing(<span class="java&#45;object">String</span> name) &#123;
+	<span class="java&#45;keyword">if</span> (!selenium.isElementPresent(name))
+		<span class="java&#45;keyword">throw</span> <span class="java&#45;keyword">new</span> MissingPropertyException(name)
+	&#125;
+	<span class="java&#45;keyword">return</span> selenium.getValue(name)
+&#125;<p class="paragraph"/>def propertyMissing(<span class="java&#45;object">String</span> name, value) &#123;
+	<span class="java&#45;keyword">if</span> (!selenium.isElementPresent(name))
+		<span class="java&#45;keyword">throw</span> <span class="java&#45;keyword">new</span> MissingPropertyException(name)
+	&#125;
+	selenium.type(name, value)
+&#125;</pre></div><p class="paragraph"/>A test can then do this:<p class="paragraph"/><div class="code"><pre>// type in form fields using dynamic property access
+page.username = <span class="java&#45;quote">"blackbeard"</span>
+page.password = <span class="java&#45;quote">"yarr"</span><p class="paragraph"/>// get values from form fields using dynamic property access
+assertThat page.username, equalTo(<span class="java&#45;quote">"blackbeard"</span>)</pre></div><p class="paragraph"/><h3>Page object scope</h3><p class="paragraph"/>Although the name <em class="italic">page objects</em> might encourage you to use a one-class-per-page approach this does not have to be the case. Sometimes it might be appropriate to create a single 'page object' class that actually models a group of pages (e.g. the CRUD pages for a particular domain class).<p class="paragraph"/>Likewise, for complex pages or modules that are used on a number of pages you should consider decomposing further to 'module objects'. For example:<p class="paragraph"/><div class="code"><pre>class NavigationModule &#123;
+	List&#60;<span class="java&#45;object">String</span>&#62; getNavigationLinkNames() &#123; &#8230; &#125;
+	<span class="java&#45;object">String</span> getHighlightedNavigationItem() &#123; &#8230; &#125;
+	HomePage clickHomeLink() &#123; &#8230; &#125;
+	ProfilePage clickUserProfileLink() &#123; &#8230; &#125;
+	// etc.
+&#125;<p class="paragraph"/>class HomePage &#123;
+	NavigationModule getNavigationModule() &#123;
+		<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> NavigationModule()
+	&#125;
+	// &#8230; other methods <span class="java&#45;keyword">for</span> dealing with home page
+&#125;<p class="paragraph"/>class ProfilePage &#123;
+	NavigationModule getNavigationModule() &#123;
+		<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">new</span> NavigationModule()
+	&#125;
+	// &#8230; other methods <span class="java&#45;keyword">for</span> dealing with profile page
+&#125;<p class="paragraph"/>class NavigationTests &#123;
+	@Test whenNavigatingBetweenPagesTheCorrectNavElementIsHighlighted() &#123;
+		def homepage = HomePage.open()
+		assertThat homepage.navigationModule.highlightedNavigationItem, equalTo(<span class="java&#45;quote">"Home"</span>)<p class="paragraph"/>		def profilepage = homepage.navigationModule.clickUserProfileLink()
+		assertThat profilepage.navigationModule.hightlightedNavigationItem, equalTo(<span class="java&#45;quote">"My Profile"</span>)
+	&#125;
+&#125;</pre></div><p class="paragraph"/>In this example both the home and profile pages share the same navigation module (perhaps as part of their <em class="italic">SiteMesh</em> template), so it makes sense that the code for interacting with that module is split out into its own class to avoid re-implementing all the navigation methods in both.
+<h2><a name="4.2. Supplied Page Object Classes">4.2. Supplied Page Object Classes</a></h2>The plugin provides some base classes for page objects. These can be used as-is for simple scenarios, extended (or ignored completely of course). All the classes are in the <code>grails.plugins.selenium.pageobjects</code> package. Refer to the API documentation for more details.
+<ul class="star">
+<li><code>Page</code> is the root of the page object heirarchy. It provides no-arg and URL-based constructors and the abstract <em class="italic">verifyPage</em> method.</li>
+<li><code>GrailsListPage</code> represents a scaffolded <em class="italic">list</em> page and provides easy access to data in a list table, access to the pagination controls, etc.</li>
+<li><code>GrailsShowPage</code> represents a scaffolded <em class="italic">show</em> page and provides property access to data in a typical <em class="italic">show</em> page.</li>
+<li><code>GrailsCreatePage</code> and <code>GrailsEditPage</code> represent scaffolded <em class="italic">create</em> and <em class="italic">edit</em> pages and translate <code>page.field = "value"</code> type calls to Selenium commands that type in form fields.</li>
+<li><code>UnexpectedPageException</code> is an exception class thrown when a page object is constructed but the browser is not on the correct page.</li>
+</ul><p class="paragraph"/>
+	</body>
+</html>

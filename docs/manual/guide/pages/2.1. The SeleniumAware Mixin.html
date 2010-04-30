@@ -1,0 +1,17 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>2.1. The SeleniumAware Mixin</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		The simplest way to write Selenium tests is to create a class that extends <a href="http://groovy.codehaus.org/gapi/groovy/util/GroovyTestCase.html" target="blank">GroovyTestCase</a> and add the <code>SeleniumAware</code> mixin that the plugin provides. The mixin class simply makes the running instance of <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a> available:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.plugins.selenium.SeleniumAware<p class="paragraph"/>@Mixin(SeleniumAware)
+class HomepageTests <span class="java&#45;keyword">extends</span> GroovyTestCase &#123;
+    void testHomepageLoads() &#123;
+        selenium.open <span class="java&#45;quote">"/"</span>
+        assertTrue selenium.isTextPresent(<span class="java&#45;quote">"Welcome to Grails"</span>)
+    &#125;
+&#125;</pre></div><p class="paragraph"/>References to the <code>selenium</code> property in the test will get the running <code>Selenium</code> instance from the mixin class.
+
+	</body>
+</html>

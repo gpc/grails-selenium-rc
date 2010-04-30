@@ -1,0 +1,13 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>3. Running Selenium RC Tests</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		Selenium tests are placed in <code>test/selenium</code> and are executed as part of the functional test phase with the standard <code>grails test-app</code> or <code>grails test-app functional:</code> commands. As with unit and integration tests you can run individual tests or groups of tests by specifying the test names without the <em class="italic">"Tests"</em> suffix. Again, like unit and integration tests you can use <code>grails test-app -rerun</code> to rerun failing tests.<p class="paragraph"/>In Grails 1.2+ you can use the new syntax to isolate Selenium tests from other test types. For example <code>grails test-app :selenium</code> or <code>grails test-app functional:selenium</code><p class="paragraph"/>The plugin will automatically start Selenium Server and Selenium instances at the start of the suite and close them down cleanly at the end so your tests do not need to (and indeed should not) do so.<p class="paragraph"/><h3>Capturing screenshots on test failures</h3><p class="paragraph"/>By setting <code>selenium.screenshot.onFail</code> to <code>true</code> in your <code>SeleniumConfig.groovy</code> file you can have Selenium capture a screenshot when any test fails. By default screenshots are saved to <code>target/test-reports/screenshots</code> and named according to the test case and test that failed.<p class="paragraph"/><blockquote class="warning">
+Selenium's screenshot functionality is imperfect. It does not grab an image of the browser window but of the entire desktop. This may be useful so long as the browser that Selenium is driving is visible (i.e. not hidden behind other windows) when the screenshot is taken.
+</blockquote>
+
+	</body>
+</html>

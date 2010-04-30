@@ -1,0 +1,17 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>4.2. Supplied Page Object Classes</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		The plugin provides some base classes for page objects. These can be used as-is for simple scenarios, extended (or ignored completely of course). All the classes are in the <code>grails.plugins.selenium.pageobjects</code> package. Refer to the API documentation for more details.
+<ul class="star">
+<li><code>Page</code> is the root of the page object heirarchy. It provides no-arg and URL-based constructors and the abstract <em class="italic">verifyPage</em> method.</li>
+<li><code>GrailsListPage</code> represents a scaffolded <em class="italic">list</em> page and provides easy access to data in a list table, access to the pagination controls, etc.</li>
+<li><code>GrailsShowPage</code> represents a scaffolded <em class="italic">show</em> page and provides property access to data in a typical <em class="italic">show</em> page.</li>
+<li><code>GrailsCreatePage</code> and <code>GrailsEditPage</code> represent scaffolded <em class="italic">create</em> and <em class="italic">edit</em> pages and translate <code>page.field = "value"</code> type calls to Selenium commands that type in form fields.</li>
+<li><code>UnexpectedPageException</code> is an exception class thrown when a page object is constructed but the browser is not on the correct page.</li>
+</ul><p class="paragraph"/>
+	</body>
+</html>

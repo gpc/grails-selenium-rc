@@ -1,0 +1,24 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>2. Getting Started</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		<h3>Installation</h3><p class="paragraph"/>The Selenium RC plugin can be installed by entering <code>grails install-plugin selenium-rc</code> at the command line. Alternatively in Grails 1.3 you can add the plugin as a dependency to your application's <code>BuildConfig.groovy</code> file:<p class="paragraph"/><div class="code"><pre>grails.project.dependency.resolution = &#123;
+	repositories &#123;
+		// &#8230; repositories defined here
+		grailsCentral() // <span class="java&#45;keyword">this</span> repository is required <span class="java&#45;keyword">for</span> plugin resolution
+	&#125;
+	dependencies &#123;
+		// &#8230; jar dependencies defined here
+	&#125;
+	plugins &#123;
+		test <span class="java&#45;quote<a href="selenium&#45;rc:1.0"</span>">></a>
+	&#125;
+&#125;</pre></div><p class="paragraph"/><h3>Writing Selenium RC Tests</h3><p class="paragraph"/>Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if you wish.<p class="paragraph"/><blockquote class="warning">
+You should <em class="italic">not</em> extend any of the base test classes in the Selenium API such as <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestCase.html" target="blank">SeleneseTestCase</a> or <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html" target="blank">GroovySeleneseTestCase</a> as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single test! The plugin starts a Selenium instance for you when <code>grails test-app</code> runs the functional test phase. Your tests simply need to connect to that running Selenium instance.
+</blockquote>
+
+	</body>
+</html>

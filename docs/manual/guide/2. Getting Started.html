@@ -1,0 +1,61 @@
+<html>
+     <head>
+     	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+     	<title>2. Getting Started</title>
+     	<link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8">
+     </head>
+	<body class="body">
+		<h1><a name="2. Getting Started">2. Getting Started</a></h1><h3>Installation</h3><p class="paragraph"/>The Selenium RC plugin can be installed by entering <code>grails install-plugin selenium-rc</code> at the command line. Alternatively in Grails 1.3 you can add the plugin as a dependency to your application's <code>BuildConfig.groovy</code> file:<p class="paragraph"/><div class="code"><pre>grails.project.dependency.resolution = &#123;
+	repositories &#123;
+		// &#8230; repositories defined here
+		grailsCentral() // <span class="java&#45;keyword">this</span> repository is required <span class="java&#45;keyword">for</span> plugin resolution
+	&#125;
+	dependencies &#123;
+		// &#8230; jar dependencies defined here
+	&#125;
+	plugins &#123;
+		test <span class="java&#45;quote<a href="selenium&#45;rc:1.0"</span>">></a>
+	&#125;
+&#125;</pre></div><p class="paragraph"/><h3>Writing Selenium RC Tests</h3><p class="paragraph"/>Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if you wish.<p class="paragraph"/><blockquote class="warning">
+You should <em class="italic">not</em> extend any of the base test classes in the Selenium API such as <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestCase.html" target="blank">SeleneseTestCase</a> or <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html" target="blank">GroovySeleneseTestCase</a> as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single test! The plugin starts a Selenium instance for you when <code>grails test-app</code> runs the functional test phase. Your tests simply need to connect to that running Selenium instance.
+</blockquote>
+<h2><a name="2.1. The SeleniumAware Mixin">2.1. The SeleniumAware Mixin</a></h2>The simplest way to write Selenium tests is to create a class that extends <a href="http://groovy.codehaus.org/gapi/groovy/util/GroovyTestCase.html" target="blank">GroovyTestCase</a> and add the <code>SeleniumAware</code> mixin that the plugin provides. The mixin class simply makes the running instance of <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a> available:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.plugins.selenium.SeleniumAware<p class="paragraph"/>@Mixin(SeleniumAware)
+class HomepageTests <span class="java&#45;keyword">extends</span> GroovyTestCase &#123;
+    void testHomepageLoads() &#123;
+        selenium.open <span class="java&#45;quote">"/"</span>
+        assertTrue selenium.isTextPresent(<span class="java&#45;quote">"Welcome to Grails"</span>)
+    &#125;
+&#125;</pre></div><p class="paragraph"/>References to the <code>selenium</code> property in the test will get the running <code>Selenium</code> instance from the mixin class.
+<h2><a name="2.2. Enhancements to Selenium">2.2. Enhancements to Selenium</a></h2>The <code>selenium</code> property provided by the <code>SeleniumAware</code> mixin is actually an extension of the standard <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a> object that enhances it in a number of ways.<p class="paragraph"/><h3>waitFor...</h3>
+<ul class="star">
+<li>Any <em class="italic">is...</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters</li>
+<li>Any <em class="italic">get...</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus an <em class="italic">'expectation'</em> String</li>
+<li>Any <em class="italic">get...</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus a <a href="http://code.google.com/p/hamcrest/" target="blank">Hamcrest Matcher</a></li>
+</ul><p class="paragraph"/><div class="code"><pre>// waitFor&#8230; equivalents of is&#8230; methods
+selenium.isAlertPresent()
+selenium.waitForAlertPresent()<p class="paragraph"/>selenium.isTextPresent(<span class="java&#45;quote">"My Title"</span>)
+selenium.waitForTextPresent(<span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// waitFor&#8230; equivalents of get&#8230; methods
+selenium.getAlert() == <span class="java&#45;quote">"Error"</span>
+selenium.waitForAlert(<span class="java&#45;quote">"Error"</span>)<p class="paragraph"/>selenium.getText(<span class="java&#45;quote">"css=h1"</span>) == <span class="java&#45;quote">"My Title"</span>
+selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, <span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// waitFor&#8230; with Hamcrest Matchers
+selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, equalTo(<span class="java&#45;quote">"My Title"</span>))</pre></div><p class="paragraph"/><h3>...AndWait</h3><p class="paragraph"/>Any method can be appended with <em class="italic">AndWait</em> so that it will wait for the page to load before returning. Obviously this only makes sense on commands that trigger a page load. For example <code>selenium.clickAndWait("css=input.myButton")</code> will click the button <em class="italic">"myButton"</em> and then wait for a new page to finish loading.<p class="paragraph"/><blockquote class="note">
+It is <em class="italic">not</em> necessary to add <em class="italic">AndWait</em> to the <code>open()</code> command as it already waits for the page to finish loading before returning. Also be aware that <em class="italic">AndWait</em> does <em class="italic">not</em> wait for AJAX events. To handle AJAX updates to the page you should wait for a condition such as an element appearing or some text changing.
+</blockquote><p class="paragraph"/><h3>waitForPageToLoad()</h3><p class="paragraph"/>The method <code>waitForPageToLoad(String)</code> has an overridden version that requires no arguments and will use the timeout set using <code>setTimeout</code> or the default timeout specified in configuration.<p class="paragraph"/><h3>JavaScript user extensions</h3><p class="paragraph"/>Any <em class="italic">do...</em> or <em class="italic">get...</em> functions you have defined in a JavaScript user extensions file can be invoked directly from your Groovy code. The <em class="italic">do</em> prefix should be dropped on action function calls. This is consistent with how the <a href="http://seleniumhq.org/projects/ide/" target="blank">Selenium IDE</a> handles user extensions.<p class="paragraph"/><h4>User extension definitions in JavaScript</h4><p class="paragraph"/><div class="code"><pre>Selenium.prototype.doLogin = function(username, password) &#123;
+	<span class="java&#45;keyword">this</span>.doType(<span class="java&#45;quote">"css=input&#91;name=j_username&#93;"</span>, username);
+	<span class="java&#45;keyword">this</span>.doType(<span class="java&#45;quote">"css=input&#91;name=j_password&#93;"</span>, password);
+	<span class="java&#45;keyword">this</span>.doClick(<span class="java&#45;quote">"css=input&#91;type=submit&#93;"</span>);
+	<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">this</span>.doWaitForPageToLoad(<span class="java&#45;keyword">this</span>.defaultTimeout);
+&#125;<p class="paragraph"/>Selenium.prototype.getLoginState = function(locator) &#123;
+	<span class="java&#45;keyword">return</span> <span class="java&#45;keyword">this</span>.getText(<span class="java&#45;quote">"css=.loginInfo"</span>);
+&#125;;</pre></div><p class="paragraph"/><h4>Calling user extensions from Groovy</h4><p class="paragraph"/><div class="code"><pre>void testUserCanLogIn() &#123;
+	selenium.open <span class="java&#45;quote">"/"</span>
+	assertEquals <span class="java&#45;quote">"Not logged in"</span>, selenium.loginState<p class="paragraph"/>	selenium.open <span class="java&#45;quote">"/login"</span>
+	selenium.login(<span class="java&#45;quote">"rob"</span>, <span class="java&#45;quote">"password"</span>)
+	assertEquals <span class="java&#45;quote">"Logged in as rob"</span>, selenium.loginState
+&#125;</pre></div><p class="paragraph"/><h3>Using ClosureEvaluatingWait directly</h3><p class="paragraph"/>The plugin uses the class <code>grails.plugins.selenium.condition.ClosureEvaluatingWait</code> to implement the <em class="italic">waitFor...</em> and <em class="italic">...AndWait</em> methods. If you want to you can use the class directly. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> <span class="java&#45;keyword">static</span> grails.plugins.selenium.condition.ClosureEvaluatingWait.waitFor<p class="paragraph"/>selenium.click(<span class="java&#45;quote">"myButton"</span>)
+waitFor(<span class="java&#45;quote">"Clicking myButtonId should have updated myDiv via AJAX"</span>) &#123;
+    selenium.getText(<span class="java&#45;quote">"myDiv"</span>) == <span class="java&#45;quote">"Some value"</span>
+&#125;</pre></div><p class="paragraph"/>The <code>waitFor</code> method will fail if the expected condition does not hold true after the default timeout.
+
+	</body>
+</html>
