@@ -2,6 +2,7 @@ package grails.plugin.selenium.packaging
 
 import grails.test.AbstractCliTestCase
 import java.util.zip.ZipFile
+import org.codehaus.groovy.grails.plugins.*
 
 class PluginPackagingTests extends AbstractCliTestCase {
 
@@ -10,7 +11,7 @@ class PluginPackagingTests extends AbstractCliTestCase {
 		assertEquals 0, waitForProcess()
 		verifyHeader()
 
-		def packagedPlugin = new File("grails-selenium-rc-1.0-SNAPSHOT.zip") // TODO: work this out rather than hardcoding
+		def packagedPlugin = new File("grails-selenium-rc-${pluginVersion}.zip") 
 		assertTrue packagedPlugin.isFile()
 
 		def zipFile = new ZipFile(packagedPlugin)
@@ -26,6 +27,10 @@ class PluginPackagingTests extends AbstractCliTestCase {
 		} finally {
 			zipFile.close()
 		}
+	}
+	
+	def getPluginVersion() {
+		"1.0" // TODO: work this out rather than hardcoding
 	}
 
 }
