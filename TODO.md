@@ -1,5 +1,5 @@
 ## Bugs
-* What happens in Grails 1.2 when Hamcrest isn't present?
+* Hamcrest dependency isn't getting exported properly
 * Can we resolve selenium server using the dependency DSL?
 
 ## Testing
@@ -7,8 +7,9 @@
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements
-* Wrap getting List<String> from ul/li in a helper method on SeleniumWrapper?
-* Support fixtures plugin via a controller and custom commands?
+* SeleniumWrapper.waitForNot*
+* Better access to waitFor method
+* Overrides of waitFor method to make message optional, etc.
 * Run against running Selenium Server
 * JBehave needs different context setting listener
 
