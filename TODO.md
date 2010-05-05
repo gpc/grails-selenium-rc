@@ -7,6 +7,7 @@
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements
+* GrailsFormPage needs to support radio buttons
 * SeleniumWrapper.waitForNot*
 * Better access to waitFor method
 * Overrides of waitFor method to make message optional, etc.
@@ -22,3 +23,4 @@
 ## Docs
 * Tips - using context /
 * Using a fixture controller
+* Is withNewSession always a good idea for setup?

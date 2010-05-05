@@ -58,3 +58,38 @@ Again, the @withTransaction@ block ensures that the deletes are flushed and comm
 h3. Test-wide data setup in JUnit 4 tests
 
 In Grails 1.3+ you can have set up and tear down methods that run before and after _all_ tests in a class rather than each individual test by using @static void@ methods with "\@BeforeClass":http://www.junit.org/apidocs/org/junit/BeforeClass.html and "\@AfterClass":http://www.junit.org/apidocs/org/junit/AfterClass.html annotations. Obviously this will not be appropriate for all test cases. In particular any tests that create or edit data may well have to use a per-method tear down. However, when appropriate it can be a good optimization.
+
+h3. The Hibernate session
+
+There is a situation in which you need to be aware of the Hibernate session when data driving tests. If you are:
+
+* Setting up data in _setUp_ or the start of a test
+* Then using Selenium to modify that data (e.g. by using an edit page)
+* Then deleting the data in _tearDown_
+
+You need to wrap the initial creation of the data in a _withNewSession_ block. For example:
+
+{code}
+def songId
+
+void setUp() {
+	super.setUp()
+	Song.withNewSession {
+		songId = Song.build(title: "Desert Song", artist: "Edward Sharpe & the Magnetic Zeros").id
+	}
+}
+
+void testEditingData() {
+	def editPage = EditSongPage.open(id)
+	// ... manipulate and save the data
+}
+
+void tearDown() {
+	super.tearDown()
+	Song.withTransaction {
+		Song.list()*.delete() // would throw an exception if the object it tries to delete is stale
+	}
+}
+{code}
+
+The reason is that creating the record stores it in the Hibernate session on the thread used by the test. Selenium then makes the application modify the data *in a different session* after which your test will find the object in the test's session is stale when it tries to delete it. Creating the data in a new session means that when the deletion happens the object is not in the session at all.
