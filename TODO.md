@@ -7,6 +7,7 @@
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements
+* version number needs to be automatic in _Events
 * SeleniumWrapper.waitForNot*
 * Better access to waitFor method
 * Overrides of waitFor method to make message optional, etc.
