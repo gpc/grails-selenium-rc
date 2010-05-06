@@ -11,7 +11,6 @@
 * Don't shut down between junit and spock tests
 * GrailsFormPage needs to support radio buttons
 * Better access to waitFor method
-* waitFor... with regex pattern expectation
 * Overrides of waitFor method to make message optional, etc.
 * Add a create-selenium-test script and template
 * Add a create-selenium-page script and template
