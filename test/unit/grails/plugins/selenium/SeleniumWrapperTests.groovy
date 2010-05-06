@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.assertThat
-import static org.junit.matchers.JUnitMatchers.*
+import static org.junit.matchers.JUnitMatchers.hasItem
 
 @WithGMock
 class SeleniumWrapperTests extends GrailsUnitTestCase {
@@ -147,12 +147,32 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 	}
 
 	@Test
+	void canWaitForSeleniumMethodThatReturnsBooleanNegated() {
+		mockSelenium.isTextPresent("whatever").returns(true).times(2)
+		mockSelenium.isTextPresent("whatever").returns(false)
+
+		play {
+			seleniumWrapper.waitForNotTextPresent("whatever")
+		}
+	}
+
+	@Test
 	void canWaitForSeleniumMethodThatReturnsString() {
 		mockSelenium.getText("whatever").returns("incorrect").times(2)
 		mockSelenium.getText("whatever").returns("correct")
 
 		play {
 			seleniumWrapper.waitForText("whatever", "correct")
+		}
+	}
+
+	@Test
+	void canWaitForSeleniumMethodThatReturnsStringNegated() {
+		mockSelenium.getText("whatever").returns("incorrect").times(2)
+		mockSelenium.getText("whatever").returns("correct")
+
+		play {
+			seleniumWrapper.waitForNotText("whatever", "incorrect")
 		}
 	}
 
@@ -167,6 +187,16 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 	}
 
 	@Test
+	void canWaitForNoArgsSeleniumMethodThatReturnsStringNegated() {
+		mockSelenium.getTitle().returns("incorrect").times(2)
+		mockSelenium.getTitle().returns("correct")
+
+		play {
+			seleniumWrapper.waitForNotTitle("incorrect")
+		}
+	}
+
+	@Test
 	void canWaitForSeleniumMethodThatRetunsStringToMatchHamcrestMatcher() {
 		mockSelenium.getText("whatever").returns("incorrect").times(2)
 		mockSelenium.getText("whatever").returns("correct")
@@ -174,6 +204,11 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		play {
 			seleniumWrapper.waitForText("whatever", equalTo("correct"))
 		}
+	}
+
+	@Test(expected = MissingMethodException)
+	void cannotUseWaitForNotWithHamcrestMatcher() {
+		seleniumWrapper.waitForNotText("whatever", equalTo("correct"))
 	}
 
 	@Test(expected = WaitTimedOutException)

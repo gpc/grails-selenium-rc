@@ -8,14 +8,15 @@
 * Test against different Grails versions 1.2.0+
 
 ## Enhancements
+* Don't shut down between junit and spock tests
 * GrailsFormPage needs to support radio buttons
 * version number needs to be automatic in _Events
-* SeleniumWrapper.waitForNot*
 * Better access to waitFor method
 * waitFor... with regex pattern expectation
 * Overrides of waitFor method to make message optional, etc.
 * Add a create-selenium-test script and template
 * Add a create-selenium-page script and template
+* Use matcher descriptions in waitFor*
 * Run against running Selenium Server
 * JBehave needs different context setting listener
 

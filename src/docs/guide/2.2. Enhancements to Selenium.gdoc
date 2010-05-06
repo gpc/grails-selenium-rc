@@ -25,6 +25,18 @@ selenium.waitForText("css=h1", "My Title")
 selenium.waitForText("css=h1", equalTo("My Title"))
 {code}
 
+h3. waitForNot...
+
+Any time you can use _waitFor_ you can also use _waitForNot_ except when using a Hamcrest Matcher (in which case you would simply use the _not_ Matcher). For example:
+
+{code}
+selenium.waitForNotVisible("css=.panel")
+selenium.waitForNotText("css=h1", "My Title")
+
+// Hamcrest has its own negation matcher, so waitForNot* isn't supported
+selenium.waitForText(not(equalTo("My Title")))
+{code}
+
 h3. ...AndWait
 
 Any method can be appended with _AndWait_ so that it will wait for the page to load before returning. Obviously this only makes sense on commands that trigger a page load. For example @selenium.clickAndWait("css=input.myButton")@ will click the button _"myButton"_ and then wait for a new page to finish loading.

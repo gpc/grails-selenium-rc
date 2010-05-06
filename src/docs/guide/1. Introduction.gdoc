@@ -15,6 +15,10 @@ h3. Roadmap
 * Support for other testing frameworks such as "EasyB":http://www.easyb.org/
 
 h3. Changelog
+h4. Version 1.0.2
+
+* Adds waitForNot* to Selenium object
+
 h4. Version 1.0.1
 
 * Fixes a bug in Windows if the test report dir path contains backslashes

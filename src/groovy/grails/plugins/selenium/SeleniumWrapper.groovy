@@ -84,7 +84,7 @@ class SeleniumWrapper {
 	}
 
 	def methodMissing(String methodName, args) {
-		DynamicMethodInvocation method = DYNAMIC_METHODS.find {it.isMethodMatch(methodName)}
+		DynamicMethodInvocation method = DYNAMIC_METHODS.find { it.isMethodMatch(methodName) }
 		if (method) {
 			def mc = SeleniumWrapper.metaClass
 			// register the method invocation for next time
