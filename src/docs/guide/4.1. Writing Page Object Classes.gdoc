@@ -27,7 +27,7 @@ class HomePage {
 	}
 
 	// constructor called by the factory method
-	private HomePage open(String url) {
+	private HomePage(String url) {
 		selenium.open(url)
 		verifyPage()
 	}
