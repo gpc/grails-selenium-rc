@@ -1,6 +1,6 @@
 <html>
 	<head>
-		  <title>selenium-rc 1.0 - Reference Documentation</title>
+		  <title>selenium-rc 1.0.1 - Reference Documentation</title>
 		  <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Style" charset="utf-8">	
 	</head>
     <body class="body">
@@ -15,7 +15,7 @@
 				<div class="message">selenium-rc</div>
 				<h1>selenium-rc - Reference Documentation</h1>
 				<p><strong>Authors:</strong> Rob Fletcher</p>
-				<p><strong>Version:</strong> 1.0</p>				
+				<p><strong>Version:</strong> 1.0.1</p>				
 				<em></em>
 		</div>                       
 		
@@ -30,7 +30,10 @@
 <li>Support <a href="http://selenium-grid.seleniumhq.org/" target="blank">Selenium Grid</a></li>
 <li>Support for other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a></li>
 </ul><p class="paragraph"/><h3>Changelog</h3>
-<h4>Version 1.0</h4>
+<h4>Version 1.0.1</h4>
+<ul class="star">
+<li>Fixes a bug in Windows if the test report dir path contains backslashes</li>
+</ul><p class="paragraph"/><h4>Version 1.0</h4>
 <ul class="star">
 <li>Optionally capture screenshot on test case failure</li>
 <li>Selenium interface is decorated with <em class="italic">waitFor&#42;</em> and <em class="italic">&#42;AndWait</em> methods</li>
@@ -144,7 +147,7 @@ environments &#123;
 	HomePage() &#123;
 		verifyPage()
 	&#125;<p class="paragraph"/>	// constructor called by the factory method
-	<span class="java&#45;keyword">private</span> HomePage open(<span class="java&#45;object">String</span> url) &#123;
+	<span class="java&#45;keyword">private</span> HomePage(<span class="java&#45;object">String</span> url) &#123;
 		selenium.open(url)
 		verifyPage()
 	&#125;
