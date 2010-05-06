@@ -1,5 +1,6 @@
 ## Bugs
 * Hamcrest dependency isn't getting exported properly
+* SeleniumConfig.groovy gets overwritten on upgrade
 * Can we resolve selenium server using the dependency DSL?
 
 ## Testing
@@ -10,7 +11,10 @@
 * GrailsFormPage needs to support radio buttons
 * SeleniumWrapper.waitForNot*
 * Better access to waitFor method
+* waitFor... with regex pattern expectation
 * Overrides of waitFor method to make message optional, etc.
+* Add a create-selenium-test script and template
+* Add a create-selenium-page script and template
 * Run against running Selenium Server
 * JBehave needs different context setting listener
 
