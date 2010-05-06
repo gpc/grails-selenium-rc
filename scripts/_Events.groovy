@@ -2,7 +2,9 @@ includeTargets << new File("$seleniumRcPluginDir/scripts/_Selenium.groovy")
 
 eventCreateWarStart = { warName, stagingDir ->
 	ant.delete dir: "${stagingDir}/WEB-INF/classes/grails/plugins/selenium"
-	ant.delete dir: "${stagingDir}/plugins/selenium-rc-1.0.1"
+	ant.delete(includeEmptyDirs: true) {
+		fileset dir: "${stagingDir}/plugins", includes: "selenium-rc-*"	
+	}
 }
 
 eventAllTestsStart = {
