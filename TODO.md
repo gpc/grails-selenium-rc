@@ -9,6 +9,7 @@
 
 ## Enhancements
 * GrailsFormPage needs to support radio buttons
+* version number needs to be automatic in _Events
 * SeleniumWrapper.waitForNot*
 * Better access to waitFor method
 * waitFor... with regex pattern expectation
