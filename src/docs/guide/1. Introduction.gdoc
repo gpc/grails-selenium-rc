@@ -18,6 +18,7 @@ h3. Changelog
 h4. Version 1.0.2
 
 * Adds waitForNot* to Selenium object
+* Adds waitFor* using regex Pattern expectation
 
 h4. Version 1.0.1
 

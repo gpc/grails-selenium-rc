@@ -4,6 +4,7 @@ h3. waitFor...
 
 * Any _is..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters
 * Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus an _'expectation'_ String
+* Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a @java.util.Pattern@
 * Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a "Hamcrest Matcher":http://code.google.com/p/hamcrest/
 
 {code}
@@ -20,6 +21,10 @@ selenium.waitForAlert("Error")
 
 selenium.getText("css=h1") == "My Title"
 selenium.waitForText("css=h1", "My Title")
+
+// waitFor... with Pattern
+selenium.getText("css=h1") ==~ ~/\w+ Title/
+selenium.waitForText("css=h1", ~/\w+ Title/) // note: this is a compiled regex pattern with a leading ~
 
 // waitFor... with Hamcrest Matchers
 selenium.waitForText("css=h1", equalTo("My Title"))

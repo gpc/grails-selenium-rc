@@ -206,6 +206,26 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		}
 	}
 
+	@Test
+	void canWaitForSeleniumMethodThatRetunsStringToMatchRegexPattern() {
+		mockSelenium.getText("whatever").returns("incorrect").times(2)
+		mockSelenium.getText("whatever").returns("correct")
+
+		play {
+			seleniumWrapper.waitForText("whatever", ~/c\w+/)
+		}
+	}
+
+	@Test
+	void canWaitForSeleniumMethodThatRetunsStringToMatchRegexPatternNegated() {
+		mockSelenium.getText("whatever").returns("incorrect").times(2)
+		mockSelenium.getText("whatever").returns("correct")
+
+		play {
+			seleniumWrapper.waitForNotText("whatever", ~/in\w+/)
+		}
+	}
+
 	@Test(expected = MissingMethodException)
 	void cannotUseWaitForNotWithHamcrestMatcher() {
 		seleniumWrapper.waitForNotText("whatever", equalTo("correct"))

@@ -34,6 +34,8 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 						throw new MissingMethodException(methodName, target.getClass(), arguments)
 					}
 					expected.matches(actual)
+				} else if (expected instanceof Pattern) {
+					actual ==~ expected ^ negated
 				} else {
 					actual == expected ^ negated
 				}
