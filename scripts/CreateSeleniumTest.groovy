@@ -12,7 +12,8 @@ target(main: "Creates a new Grails Selenium RC test") {
 
 createSeleniumTest = { Map args = [:] ->
     def superClass = args["superClass"] ?: "GroovyTestCase"
-	createArtifact(name: args["name"], suffix: "${args['suffix']}Tests", type: "SeleniumTests", path: "test/selenium", superClass: superClass)
+	def template = grailsVersion.startsWith("1.2") ? "JUnit3SeleniumTests" : "JUnit4SeleniumTests"
+	createArtifact(name: args["name"], suffix: "${args['suffix']}Tests", type: template, path: "test/selenium", superClass: superClass)
 }
 
 setDefaultTarget(main)
