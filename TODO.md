@@ -10,7 +10,6 @@
 ## Enhancements
 * Don't shut down between junit and spock tests
 * GrailsFormPage needs to support radio buttons
-* version number needs to be automatic in _Events
 * Better access to waitFor method
 * waitFor... with regex pattern expectation
 * Overrides of waitFor method to make message optional, etc.
