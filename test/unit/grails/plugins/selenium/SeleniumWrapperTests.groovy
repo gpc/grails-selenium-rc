@@ -242,6 +242,22 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		}
 	}
 
+	@Test
+	void waitForGeneratesCorrectMessageOnTimeout() {
+		mockSelenium.setTimeout("1000")
+		mockSelenium.getText("whatever").returns("incorrect").stub()
+
+		play {
+			seleniumWrapper.timeout = "1000" // otherwise this test will take 10 seconds
+			try {
+				seleniumWrapper.waitForText("whatever", "correct")
+				fail "Should have throw WaitTimedOutException"
+			} catch (WaitTimedOutException e) {
+				assertThat e.message, equalTo("Timed out waiting for getText(whatever) to be \"correct\"")
+			}
+		}
+	}
+
 	@Test(expected = MissingMethodException)
 	void waitForFailsForInvalidSeleniumMethod() {
 		seleniumWrapper.waitForBlahBlahBlah("foo")

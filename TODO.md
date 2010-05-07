@@ -13,7 +13,6 @@
 * Better access to waitFor method
 * Overrides of waitFor method to make message optional, etc.
 * Add a create-selenium-page script and template
-* Use matcher descriptions in waitFor*
 * Run against running Selenium Server
 * JBehave needs different context setting listener
 
