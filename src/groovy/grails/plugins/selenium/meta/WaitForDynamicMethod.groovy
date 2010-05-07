@@ -21,16 +21,14 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 		def m = methodName =~ WAIT_FOR_PATTERN
 		def seleniumCommand = m[0][2]
 		boolean negated = m[0][1] == "Not"
+		List argsList = arguments as List
 
-		List argsList
 		Matcher matcher
 		if (target.respondsTo("is$seleniumCommand")) {
 			seleniumCommand = "is$seleniumCommand"
-			argsList = arguments as List
 			matcher = equalTo(!negated)
 		} else if (target.respondsTo("get$seleniumCommand")) {
 			seleniumCommand = "get$seleniumCommand"
-			argsList = arguments as List
 			def expected = argsList.pop()
 			matcher = getMatcher(expected, negated)
 		}
