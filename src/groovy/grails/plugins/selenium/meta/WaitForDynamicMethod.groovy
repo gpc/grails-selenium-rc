@@ -3,10 +3,9 @@ package grails.plugins.selenium.meta
 import grails.plugins.selenium.condition.ClosureEvaluatingWait
 import java.util.regex.Pattern
 import org.codehaus.groovy.grails.commons.metaclass.AbstractDynamicMethodInvocation
-import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.StringDescription
-import org.hamcrest.TypeSafeMatcher
+import static grails.plugins.selenium.condition.PatternMatcher.matchesPattern
 import static org.hamcrest.Matchers.equalTo
 import static org.hamcrest.Matchers.not
 
@@ -65,28 +64,11 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 			}
 			matcher = expected
 		} else if (expected instanceof Pattern) {
-			matcher = new PatternMatcher(expected)
+			matcher = matchesPattern(expected)
 		} else {
 			matcher = equalTo(expected)
 		}
 		if (negated) matcher = not(matcher)
 		return matcher
-	}
-}
-
-class PatternMatcher extends TypeSafeMatcher<String> {
-
-	private final Pattern expectedPattern
-
-	PatternMatcher(Pattern expectedPattern) {
-		this.expectedPattern = expectedPattern
-	}
-
-	boolean matchesSafely(String item) {
-		return item ==~ expectedPattern
-	}
-
-	void describeTo(Description description) {
-		description.appendText("a string matching the regular expression $expectedPattern")
 	}
 }
