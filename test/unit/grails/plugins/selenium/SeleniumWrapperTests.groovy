@@ -137,6 +137,18 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 	}
 
 	@Test
+	void canAppendAndWaitToSeleniumMethodsWithNoArguments() {
+		ordered {
+			mockSelenium.refresh()
+			mockSelenium.waitForPageToLoad(DEFAULT_TIMEOUT)
+		}
+
+		play {
+			seleniumWrapper.refreshAndWait()
+		}
+	}
+
+	@Test
 	void canWaitForSeleniumMethodThatReturnsBoolean() {
 		mockSelenium.isTextPresent("whatever").returns(false).times(2)
 		mockSelenium.isTextPresent("whatever").returns(true)
