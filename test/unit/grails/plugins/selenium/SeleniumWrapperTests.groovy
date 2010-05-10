@@ -154,7 +154,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.isTextPresent("whatever").returns(true)
 
 		play {
-			seleniumWrapper.waitForTextPresent("whatever")
+			assertTrue seleniumWrapper.waitForTextPresent("whatever")
 		}
 	}
 
@@ -164,7 +164,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.isTextPresent("whatever").returns(false)
 
 		play {
-			seleniumWrapper.waitForNotTextPresent("whatever")
+			assertTrue seleniumWrapper.waitForNotTextPresent("whatever")
 		}
 	}
 
@@ -174,7 +174,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getText("whatever").returns("correct")
 
 		play {
-			seleniumWrapper.waitForText("whatever", "correct")
+			assertTrue seleniumWrapper.waitForText("whatever", "correct")
 		}
 	}
 
@@ -184,7 +184,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getText("whatever").returns("correct")
 
 		play {
-			seleniumWrapper.waitForNotText("whatever", "incorrect")
+			assertTrue seleniumWrapper.waitForNotText("whatever", "incorrect")
 		}
 	}
 
@@ -194,7 +194,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getTitle().returns("correct")
 
 		play {
-			seleniumWrapper.waitForTitle("correct")
+			assertTrue seleniumWrapper.waitForTitle("correct")
 		}
 	}
 
@@ -204,7 +204,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getTitle().returns("correct")
 
 		play {
-			seleniumWrapper.waitForNotTitle("incorrect")
+			assertTrue seleniumWrapper.waitForNotTitle("incorrect")
 		}
 	}
 
@@ -214,7 +214,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getText("whatever").returns("correct")
 
 		play {
-			seleniumWrapper.waitForText("whatever", equalTo("correct"))
+			assertTrue seleniumWrapper.waitForText("whatever", equalTo("correct"))
 		}
 	}
 
@@ -224,7 +224,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getText("whatever").returns("correct")
 
 		play {
-			seleniumWrapper.waitForText("whatever", ~/c\w+/)
+			assertTrue seleniumWrapper.waitForText("whatever", ~/c\w+/)
 		}
 	}
 
@@ -234,7 +234,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getText("whatever").returns("correct")
 
 		play {
-			seleniumWrapper.waitForNotText("whatever", ~/in\w+/)
+			assertTrue seleniumWrapper.waitForNotText("whatever", ~/in\w+/)
 		}
 	}
 

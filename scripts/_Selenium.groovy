@@ -7,7 +7,6 @@ selenium = null
 target(registerSeleniumTestType: "Registers the selenium test type with the appropriate test phase") {
 	depends(loadSeleniumConfig)
 
-	def phase = "functional"
 	if (testOptions.remote || seleniumConfig.selenium.remote) {
 		event "StatusUpdate", ["Running Selenium in remote mode"]
 		// override the functional test phase prep so it does not start the app
@@ -16,12 +15,11 @@ target(registerSeleniumTestType: "Registers the selenium test type with the appr
 		functionalTestPhaseCleanUp = integrationTestPhaseCleanUp
 	}
 
-	event "StatusUpdate", ["Selenium tests will run in the ${phase} phase"]
-	binding."${phase}Tests" << "selenium"
+	binding.functionalTests << "selenium"
 
 	if (binding.variables.containsKey("spockPluginDir")) {
 		def specTestTypeClass = loadSpecTestTypeClass()
-		binding."${phase}Tests" << specTestTypeClass.newInstance("spock-selenium", "selenium")
+		binding.functionalTests << specTestTypeClass.newInstance("spock-selenium", "selenium")
 	}
 }
 

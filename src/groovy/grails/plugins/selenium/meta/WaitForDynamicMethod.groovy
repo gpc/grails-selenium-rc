@@ -43,6 +43,7 @@ class WaitForDynamicMethod extends AbstractDynamicMethodInvocation {
 			matcher.matches(actual)
 		}
 		waitCondition.wait(getMessage(seleniumCommand, argsList, matcher), target.timeout.toLong())
+		return true
 	}
 
 	private String getMessage(String seleniumCommand, List argsList, Matcher matcher) {
