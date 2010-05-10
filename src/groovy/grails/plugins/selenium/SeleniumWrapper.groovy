@@ -30,6 +30,12 @@ class SeleniumWrapper {
 		this.config = config
 	}
 
+	void open(String uri) {
+		// Selenium's default open command sends a HEAD and a GET unless "true" is specified but there is no override on
+		// the Java client
+		commandProcessor.doCommand("open", [uri, "true"] as String[])
+	}
+
 	String getDefaultTimeout() {
 		config.selenium.defaultTimeout
 	}
