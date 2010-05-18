@@ -13,3 +13,5 @@ grails.project.dependency.resolution = {
 		compile "org.hamcrest:hamcrest-all:1.1"
     }
 }
+
+grails.plugin.location."selenium-rc" = "../../.."

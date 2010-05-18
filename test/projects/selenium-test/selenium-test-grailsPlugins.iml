@@ -28,10 +28,6 @@
       <sourceFolder url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/build-test-data-1.1.0/grails-app/controllers" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/build-test-data-1.1.0/grails-app/services" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/selenium-rc-1.0.1">
-      <sourceFolder url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/selenium-rc-1.0.1/src/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/selenium-rc-1.0.1/src/groovy" isTestSource="false" />
-    </content>
     <content url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/tomcat-1.2.2">
       <sourceFolder url="file://$USER_HOME_GRAILS$/1.2.2/projects/selenium-test/plugins/tomcat-1.2.2/src/groovy" isTestSource="false" />
     </content>
