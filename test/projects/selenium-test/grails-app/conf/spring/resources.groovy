@@ -1,4 +1,5 @@
-// Place your Spring DSL code here
+import com.energizedwork.grails.binding.CustomPropertyEditorRegistrar
+
 beans = {
-    
+    customPropertyEditorRegistrar(CustomPropertyEditorRegistrar)
 }

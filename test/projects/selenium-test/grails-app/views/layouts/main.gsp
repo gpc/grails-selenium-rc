@@ -1,22 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title><g:layoutTitle default="Grails" /></title>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-        <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery-ui.css')}"/>
-        <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
-		<g:javascript src="jquery.min.js"/>
-		<g:javascript src="jquery-ui.min.js"/>
-        <g:layoutHead />
-    </head>
-    <body>
-        <div id="grailsLogo" class="logo"><a href="http://grails.org"><img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails" border="0" /></a></div>
-		<div class="loginInfo">
-			<g:isLoggedIn>Logged in as <g:loggedInUserInfo field="username"/></g:isLoggedIn>
-			<g:isNotLoggedIn>Not logged in</g:isNotLoggedIn>
+<html>
+	<head>
+		<title><g:layoutTitle default="Grails"/></title>
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}"/>
+		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon"/>
+		<g:layoutHead/>
+		<g:javascript library="application"/>
+	</head>
+	<body>
+		<div id="spinner" class="spinner" style="display:none;">
+			<img src="${resource(dir: 'images', file: 'spinner.gif')}" alt="Spinner"/>
 		</div>
-        <g:layoutBody />
-    </body>
+		<div id="grailsLogo" class="logo"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails" border="0"/></a></div>
+		<div class="loginInfo">
+			<g:isLoggedIn><g:message code="label.logged.in.user" args="[loggedInUserInfo(field: 'username')]" default="Logged in as {0}"/></g:isLoggedIn>
+			<g:isNotLoggedIn><g:message code="label.not.logged.in" default="Not logged in"/></g:isNotLoggedIn>
+		</div>
+		<g:layoutBody/>
+	</body>
 </html>

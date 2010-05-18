@@ -1,10 +1,12 @@
-import grails.plugins.selenium.test.auth.Role
+import musicstore.auth.*
 
 class BootStrap {
 
 	def init = { servletContext ->
-		if (Role.countByAuthority("ROLE_USER") == 0) {
-			new Role(description: "A standard user", authority: "ROLE_USER").save(failOnError: true)
+		[ROLE_USER: "A standard user", ROLE_ADMIN: "An administrator"].each { authority, description ->
+			if (Role.countByAuthority(authority) == 0) {
+				new Role(authority: authority, description: description).save(failOnError: true, flush: true)
+			}
 		}
 	}
 

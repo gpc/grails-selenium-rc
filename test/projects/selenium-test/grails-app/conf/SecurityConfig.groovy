@@ -4,8 +4,8 @@ security {
 
 	active = true
 
-	loginUserDomainClass = "grails.plugins.selenium.test.auth.User"
-	authorityDomainClass = "grails.plugins.selenium.test.auth.Role"
+	loginUserDomainClass = "musicstore.auth.User"
+	authorityDomainClass = "musicstore.auth.Role"
 
 	useRequestMapDomainClass = false
 	useControllerAnnotations = true
