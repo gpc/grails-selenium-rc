@@ -83,8 +83,9 @@ class FormSubmissionTests extends GroovyTestCase {
 
 	void testCanUpdateData() {
 		def id
-		Song.withNewSession {
+		Song.withNewSession { session ->
 			id = Song.build(title: "Desert Song", artist: new Artist(name: "Edward Sharpe & the Magnetic Zeros")).id
+			session.flush()
 		}
 
 		def editPage = EditSongPage.open(id)
