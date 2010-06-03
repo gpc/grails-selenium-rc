@@ -7,6 +7,7 @@
           <root url="file://$MODULE_DIR$/web-app" relative="/" />
           <root url="file://$MODULE_DIR$/web-app" relative="/" />
           <root url="file://$MODULE_DIR$/web-app" relative="/" />
+          <root url="file://$MODULE_DIR$/web-app" relative="/" />
         </webroots>
         <sourceRoots />
       </configuration>
@@ -14,6 +15,7 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="Grails" name="Grails" removed="false">
+          <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/web-app/WEB-INF/applicationContext.xml</file>
@@ -30,19 +32,28 @@
       <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/selenium" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/functional" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/grails-app/utils" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/grails-app/services" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/grails-app/taglib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Grails User Library">
-        <CLASSES />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib" />
+        </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="grails-selenium-rc" />
     <orderEntry type="library" name="grails-1.2.1" level="application" />
+    <orderEntry type="module" module-name="selenium-with-spock-grailsPlugins" />
   </component>
 </module>
 
