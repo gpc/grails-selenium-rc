@@ -28,7 +28,24 @@ Data-driving using direct access to application domain classes is <strong class=
     Song.withTransaction &#123;
         Song.list()&#42;.delete()
     &#125;
-&#125;</pre></div><p class="paragraph"/>Again, the <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems deleting will get reported right away causing the test to fail.<p class="paragraph"/><h3>Test-wide data setup in JUnit 4 tests</h3><p class="paragraph"/>In Grails 1.3+ you can have set up and tear down methods that run before and after <em class="italic">all</em> tests in a class rather than each individual test by using <code>static void</code> methods with <a href="http://www.junit.org/apidocs/org/junit/BeforeClass.html" target="blank">&#64;BeforeClass</a> and <a href="http://www.junit.org/apidocs/org/junit/AfterClass.html" target="blank">&#64;AfterClass</a> annotations. Obviously this will not be appropriate for all test cases. In particular any tests that create or edit data may well have to use a per-method tear down. However, when appropriate it can be a good optimization.
-
+&#125;</pre></div><p class="paragraph"/>Again, the <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems deleting will get reported right away causing the test to fail.<p class="paragraph"/><h3>Test-wide data setup in JUnit 4 tests</h3><p class="paragraph"/>In Grails 1.3+ you can have set up and tear down methods that run before and after <em class="italic">all</em> tests in a class rather than each individual test by using <code>static void</code> methods with <a href="http://www.junit.org/apidocs/org/junit/BeforeClass.html" target="blank">&#64;BeforeClass</a> and <a href="http://www.junit.org/apidocs/org/junit/AfterClass.html" target="blank">&#64;AfterClass</a> annotations. Obviously this will not be appropriate for all test cases. In particular any tests that create or edit data may well have to use a per-method tear down. However, when appropriate it can be a good optimization.<p class="paragraph"/><h3>The Hibernate session</h3><p class="paragraph"/>There is a situation in which you need to be aware of the Hibernate session when data driving tests. If you are:
+<ul class="star">
+<li>Setting up data in <em class="italic">setUp</em> or the start of a test</li>
+<li>Then using Selenium to modify that data (e.g. by using an edit page)</li>
+<li>Then deleting the data in _tearDown_</li>
+</ul><p class="paragraph"/>You need to wrap the initial creation of the data in a <em class="italic">withNewSession</em> block. For example:<p class="paragraph"/><div class="code"><pre>def songId<p class="paragraph"/>void setUp() &#123;
+	<span class="java&#45;keyword">super</span>.setUp()
+	Song.withNewSession &#123;
+		songId = Song.build(title: <span class="java&#45;quote">"Desert Song"</span>, artist: <span class="java&#45;quote">"Edward Sharpe &#38; the Magnetic Zeros"</span>).id
+	&#125;
+&#125;<p class="paragraph"/>void testEditingData() &#123;
+	def editPage = EditSongPage.open(id)
+	// &#8230; manipulate and save the data
+&#125;<p class="paragraph"/>void tearDown() &#123;
+	<span class="java&#45;keyword">super</span>.tearDown()
+	Song.withTransaction &#123;
+		Song.list()&#42;.delete() // would <span class="java&#45;keyword">throw</span> an exception <span class="java&#45;keyword">if</span> the object it tries to delete is stale
+	&#125;
+&#125;</pre></div><p class="paragraph"/>The reason is that creating the record stores it in the Hibernate session on the thread used by the test. Selenium then makes the application modify the data <strong class="bold">in a different session</strong> after which your test will find the object in the test's session is stale when it tries to delete it. Creating the data in a new session means that when the deletion happens the object is not in the session at all.
 	</body>
 </html>

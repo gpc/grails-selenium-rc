@@ -1,6 +1,6 @@
 <html>
 	<head>
-		  <title>selenium-rc 1.0.1 - Reference Documentation</title>
+		  <title>selenium-rc 1.0.2 - Reference Documentation</title>
 		  <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Style" charset="utf-8">	
 	</head>
     <body class="body">
@@ -15,7 +15,7 @@
 				<div class="message">selenium-rc</div>
 				<h1>selenium-rc - Reference Documentation</h1>
 				<p><strong>Authors:</strong> Rob Fletcher</p>
-				<p><strong>Version:</strong> 1.0.1</p>				
+				<p><strong>Version:</strong> 1.0.2</p>				
 				<em></em>
 		</div>                       
 		
@@ -29,8 +29,15 @@
 <li>Upgrade to Selenium 2.0 / WebDriver</li>
 <li>Support <a href="http://selenium-grid.seleniumhq.org/" target="blank">Selenium Grid</a></li>
 <li>Support for other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a></li>
-</ul><p class="paragraph"/><h3>Changelog</h3>
-<h4>Version 1.0.1</h4>
+<li>Use waitFor(message, closure) directly on <code>selenium</code> object</li>
+</ul><p class="paragraph"/><h3>Changelog</h3><p class="paragraph"/><h4>Version 1.0.2</h4>
+<ul class="star">
+<li>Adds waitForNot* to Selenium object</li>
+<li>Adds waitFor* using regex Pattern expectation</li>
+<li>Adds <em class="italic">grails create-selenium-test</em> script</li>
+<li>Adds <em class="italic">grails create-selenium-page</em> script</li>
+<li>Prevents Selenium sending HEAD and GET requests when the open command is used</li>
+</ul><p class="paragraph"/><h4>Version 1.0.1</h4>
 <ul class="star">
 <li>Fixes a bug in Windows if the test report dir path contains backslashes</li>
 </ul><p class="paragraph"/><h4>Version 1.0</h4>
@@ -66,7 +73,7 @@
 	plugins &#123;
 		test <span class="java&#45;quote<a href="selenium&#45;rc:1.0"</span>">></a>
 	&#125;
-&#125;</pre></div><p class="paragraph"/><h3>Writing Selenium RC Tests</h3><p class="paragraph"/>Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if you wish.<p class="paragraph"/><blockquote class="warning">
+&#125;</pre></div><p class="paragraph"/><h3>Writing Selenium RC Tests</h3><p class="paragraph"/>Selenium tests should be placed under the <code>test/selenium</code> directory. As with other test types you can use packages to group your tests if you wish. The plugin also provides a script <em class="italic">grails create-selenium-test</em> that can be used in the same way as the default scripts such as <em class="italic">grails create-unit-test</em> to create Selenium tests based on a template.<p class="paragraph"/><blockquote class="warning">
 You should <em class="italic">not</em> extend any of the base test classes in the Selenium API such as <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/SeleneseTestCase.html" target="blank">SeleneseTestCase</a> or <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/GroovySeleneseTestCase.html" target="blank">GroovySeleneseTestCase</a> as these tests will attempt to create a separate Selenium instance (and open another browser window) for every single test! The plugin starts a Selenium instance for you when <code>grails test-app</code> runs the functional test phase. Your tests simply need to connect to that running Selenium instance.
 </blockquote>
 <h2><a name="2.1. The SeleniumAware Mixin">2.1. The SeleniumAware Mixin</a></h2>The simplest way to write Selenium tests is to create a class that extends <a href="http://groovy.codehaus.org/gapi/groovy/util/GroovyTestCase.html" target="blank">GroovyTestCase</a> and add the <code>SeleniumAware</code> mixin that the plugin provides. The mixin class simply makes the running instance of <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a> available:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> grails.plugins.selenium.SeleniumAware<p class="paragraph"/>@Mixin(SeleniumAware)
@@ -76,21 +83,29 @@ class HomepageTests <span class="java&#45;keyword">extends</span> GroovyTestCase
         assertTrue selenium.isTextPresent(<span class="java&#45;quote">"Welcome to Grails"</span>)
     &#125;
 &#125;</pre></div><p class="paragraph"/>References to the <code>selenium</code> property in the test will get the running <code>Selenium</code> instance from the mixin class.
-<h2><a name="2.2. Enhancements to Selenium">2.2. Enhancements to Selenium</a></h2>The <code>selenium</code> property provided by the <code>SeleniumAware</code> mixin is actually an extension of the standard <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a> object that enhances it in a number of ways.<p class="paragraph"/><h3>waitFor...</h3>
+<h2><a name="2.2. Enhancements to Selenium">2.2. Enhancements to Selenium</a></h2>The <code>selenium</code> property provided by the <code>SeleniumAware</code> mixin is actually an extension of the standard <a href="http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html" target="blank">Selenium</a> object that enhances it in a number of ways.<p class="paragraph"/><h3>waitFor*</h3>
 <ul class="star">
-<li>Any <em class="italic">is...</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters</li>
-<li>Any <em class="italic">get...</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus an <em class="italic">'expectation'</em> String</li>
-<li>Any <em class="italic">get...</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus a <a href="http://code.google.com/p/hamcrest/" target="blank">Hamcrest Matcher</a></li>
-</ul><p class="paragraph"/><div class="code"><pre>// waitFor&#8230; equivalents of is&#8230; methods
+<li>Any <em class="italic">is&#42;</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters</li>
+<li>Any <em class="italic">get&#42;</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus an <em class="italic">'expectation'</em> String</li>
+<li>Any <em class="italic">get&#42;</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus a <code>java.util.Pattern</code></li>
+<li>Any <em class="italic">get&#42;</em> methods in <code>Selenium</code> have an equivalent <em class="italic">waitFor</em> taking the same parameters plus a <a href="http://code.google.com/p/hamcrest/" target="blank">Hamcrest Matcher</a></li>
+</ul><p class="paragraph"/><div class="code"><pre>// waitFor&#42; equivalents of is&#42; methods
 selenium.isAlertPresent()
 selenium.waitForAlertPresent()<p class="paragraph"/>selenium.isTextPresent(<span class="java&#45;quote">"My Title"</span>)
-selenium.waitForTextPresent(<span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// waitFor&#8230; equivalents of get&#8230; methods
+selenium.waitForTextPresent(<span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// waitFor&#42; equivalents of get&#42; methods
 selenium.getAlert() == <span class="java&#45;quote">"Error"</span>
 selenium.waitForAlert(<span class="java&#45;quote">"Error"</span>)<p class="paragraph"/>selenium.getText(<span class="java&#45;quote">"css=h1"</span>) == <span class="java&#45;quote">"My Title"</span>
-selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, <span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// waitFor&#8230; with Hamcrest Matchers
-selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, equalTo(<span class="java&#45;quote">"My Title"</span>))</pre></div><p class="paragraph"/><h3>...AndWait</h3><p class="paragraph"/>Any method can be appended with <em class="italic">AndWait</em> so that it will wait for the page to load before returning. Obviously this only makes sense on commands that trigger a page load. For example <code>selenium.clickAndWait("css=input.myButton")</code> will click the button <em class="italic">"myButton"</em> and then wait for a new page to finish loading.<p class="paragraph"/><blockquote class="note">
+selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, <span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// waitFor&#42; with Pattern
+selenium.getText(<span class="java&#45;quote">"css=h1"</span>) ==~ ~/&#119;+ Title/
+selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, ~/&#119;+ Title/) // note: <span class="java&#45;keyword">this</span> is a compiled regex pattern with a leading ~<p class="paragraph"/>// waitFor&#42; with Hamcrest Matchers
+selenium.waitForText(<span class="java&#45;quote">"css=h1"</span>, equalTo(<span class="java&#45;quote">"My Title"</span>))</pre></div><p class="paragraph"/><h3>waitForNot*</h3><p class="paragraph"/>Any time you can use <em class="italic">waitFor&#42;</em> you can also use <em class="italic">waitForNot&#42;</em> except when using a Hamcrest Matcher (in which case you would simply use the <em class="italic">not</em> Matcher). For example:<p class="paragraph"/><div class="code"><pre>selenium.waitForNotVisible(<span class="java&#45;quote">"css=.panel"</span>)
+selenium.waitForNotText(<span class="java&#45;quote">"css=h1"</span>, <span class="java&#45;quote">"My Title"</span>)<p class="paragraph"/>// Hamcrest has its own negation matcher, so waitForNot&#42; isn't supported
+selenium.waitForText(not(equalTo(<span class="java&#45;quote">"My Title"</span>)))</pre></div><p class="paragraph"/><h3>waitFor(String, Closure)</h3><p class="paragraph"/>You can also wait for arbitrary conditions using the <em class="italic">waitFor</em> method passing a message and a closure that returns a <em class="italic">boolean</em> value. For example:<p class="paragraph"/><div class="code"><pre>selenium.click(<span class="java&#45;quote">"myButton"</span>)
+selenium.waitFor(<span class="java&#45;quote">"Clicking myButtonId should have updated myDiv via AJAX"</span>) &#123;
+    selenium.getText(<span class="java&#45;quote">"myDiv"</span>) == <span class="java&#45;quote">"Some value"</span>
+&#125;</pre></div><p class="paragraph"/>The <code>waitFor</code> method will fail if the expected condition does not hold true after the default timeout.<p class="paragraph"/><h3>*AndWait</h3><p class="paragraph"/>Any method can be appended with <em class="italic">AndWait</em> so that it will wait for the page to load before returning. Obviously this only makes sense on commands that trigger a page load. For example <code>selenium.clickAndWait("css=input.myButton")</code> will click the button <em class="italic">"myButton"</em> and then wait for a new page to finish loading.<p class="paragraph"/><blockquote class="note">
 It is <em class="italic">not</em> necessary to add <em class="italic">AndWait</em> to the <code>open()</code> command as it already waits for the page to finish loading before returning. Also be aware that <em class="italic">AndWait</em> does <em class="italic">not</em> wait for AJAX events. To handle AJAX updates to the page you should wait for a condition such as an element appearing or some text changing.
-</blockquote><p class="paragraph"/><h3>waitForPageToLoad()</h3><p class="paragraph"/>The method <code>waitForPageToLoad(String)</code> has an overridden version that requires no arguments and will use the timeout set using <code>setTimeout</code> or the default timeout specified in configuration.<p class="paragraph"/><h3>JavaScript user extensions</h3><p class="paragraph"/>Any <em class="italic">do...</em> or <em class="italic">get...</em> functions you have defined in a JavaScript user extensions file can be invoked directly from your Groovy code. The <em class="italic">do</em> prefix should be dropped on action function calls. This is consistent with how the <a href="http://seleniumhq.org/projects/ide/" target="blank">Selenium IDE</a> handles user extensions.<p class="paragraph"/><h4>User extension definitions in JavaScript</h4><p class="paragraph"/><div class="code"><pre>Selenium.prototype.doLogin = function(username, password) &#123;
+</blockquote><p class="paragraph"/><h3>waitForPageToLoad()</h3><p class="paragraph"/>The method <code>waitForPageToLoad(String)</code> has an overridden version that requires no arguments and will use the timeout set using <code>setTimeout</code> or the default timeout specified in configuration.<p class="paragraph"/><h3>JavaScript user extensions</h3><p class="paragraph"/>Any <em class="italic">do&#42;</em> or <em class="italic">get&#42;</em> functions you have defined in a JavaScript user extensions file can be invoked directly from your Groovy code. The <em class="italic">do</em> prefix should be dropped on action function calls. This is consistent with how the <a href="http://seleniumhq.org/projects/ide/" target="blank">Selenium IDE</a> handles user extensions.<p class="paragraph"/><h4>User extension definitions in JavaScript</h4><p class="paragraph"/><div class="code"><pre>Selenium.prototype.doLogin = function(username, password) &#123;
 	<span class="java&#45;keyword">this</span>.doType(<span class="java&#45;quote">"css=input&#91;name=j_username&#93;"</span>, username);
 	<span class="java&#45;keyword">this</span>.doType(<span class="java&#45;quote">"css=input&#91;name=j_password&#93;"</span>, password);
 	<span class="java&#45;keyword">this</span>.doClick(<span class="java&#45;quote">"css=input&#91;type=submit&#93;"</span>);
@@ -102,10 +117,7 @@ It is <em class="italic">not</em> necessary to add <em class="italic">AndWait</e
 	assertEquals <span class="java&#45;quote">"Not logged in"</span>, selenium.loginState<p class="paragraph"/>	selenium.open <span class="java&#45;quote">"/login"</span>
 	selenium.login(<span class="java&#45;quote">"rob"</span>, <span class="java&#45;quote">"password"</span>)
 	assertEquals <span class="java&#45;quote">"Logged in as rob"</span>, selenium.loginState
-&#125;</pre></div><p class="paragraph"/><h3>Using ClosureEvaluatingWait directly</h3><p class="paragraph"/>The plugin uses the class <code>grails.plugins.selenium.condition.ClosureEvaluatingWait</code> to implement the <em class="italic">waitFor...</em> and <em class="italic">...AndWait</em> methods. If you want to you can use the class directly. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> <span class="java&#45;keyword">static</span> grails.plugins.selenium.condition.ClosureEvaluatingWait.waitFor<p class="paragraph"/>selenium.click(<span class="java&#45;quote">"myButton"</span>)
-waitFor(<span class="java&#45;quote">"Clicking myButtonId should have updated myDiv via AJAX"</span>) &#123;
-    selenium.getText(<span class="java&#45;quote">"myDiv"</span>) == <span class="java&#45;quote">"Some value"</span>
-&#125;</pre></div><p class="paragraph"/>The <code>waitFor</code> method will fail if the expected condition does not hold true after the default timeout.
+&#125;</pre></div>
 <h1><a name="3. Running Selenium RC Tests">3. Running Selenium RC Tests</a></h1>Selenium tests are placed in <code>test/selenium</code> and are executed as part of the functional test phase with the standard <code>grails test-app</code> or <code>grails test-app functional:</code> commands. As with unit and integration tests you can run individual tests or groups of tests by specifying the test names without the <em class="italic">"Tests"</em> suffix. Again, like unit and integration tests you can use <code>grails test-app -rerun</code> to rerun failing tests.<p class="paragraph"/>In Grails 1.2+ you can use the new syntax to isolate Selenium tests from other test types. For example <code>grails test-app :selenium</code> or <code>grails test-app functional:selenium</code><p class="paragraph"/>The plugin will automatically start Selenium Server and Selenium instances at the start of the suite and close them down cleanly at the end so your tests do not need to (and indeed should not) do so.<p class="paragraph"/><h3>Capturing screenshots on test failures</h3><p class="paragraph"/>By setting <code>selenium.screenshot.onFail</code> to <code>true</code> in your <code>SeleniumConfig.groovy</code> file you can have Selenium capture a screenshot when any test fails. By default screenshots are saved to <code>target/test-reports/screenshots</code> and named according to the test case and test that failed.<p class="paragraph"/><blockquote class="warning">
 Selenium's screenshot functionality is imperfect. It does not grab an image of the browser window but of the entire desktop. This may be useful so long as the browser that Selenium is driving is visible (i.e. not hidden behind other windows) when the screenshot is taken.
 </blockquote>
@@ -266,8 +278,25 @@ Data-driving using direct access to application domain classes is <strong class=
     Song.withTransaction &#123;
         Song.list()&#42;.delete()
     &#125;
-&#125;</pre></div><p class="paragraph"/>Again, the <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems deleting will get reported right away causing the test to fail.<p class="paragraph"/><h3>Test-wide data setup in JUnit 4 tests</h3><p class="paragraph"/>In Grails 1.3+ you can have set up and tear down methods that run before and after <em class="italic">all</em> tests in a class rather than each individual test by using <code>static void</code> methods with <a href="http://www.junit.org/apidocs/org/junit/BeforeClass.html" target="blank">&#64;BeforeClass</a> and <a href="http://www.junit.org/apidocs/org/junit/AfterClass.html" target="blank">&#64;AfterClass</a> annotations. Obviously this will not be appropriate for all test cases. In particular any tests that create or edit data may well have to use a per-method tear down. However, when appropriate it can be a good optimization.
-<h1><a name="6. Other Test Frameworks">6. Other Test Frameworks</a></h1>Selenium tests do not have to be written as JUnit test cases. The <code>SeleniumAware</code> mixin could be applied to almost any test case written in another framework. Page objects are also agnostic of the test framework.<p class="paragraph"/>Currently the plugin has tested support for the <a href="http://grails.org/plugin/spock" target="blank">Spock</a> plugin. Also, when using Grails 1.3+ tests can be written using JUnit 4 conventions. Other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a> and <a href="http://jbehave.org/" target="blank">JBehave</a> may well work with a limited amount of effort.<p class="paragraph"/><h3>Writing Selenium tests with JUnit 4</h3><p class="paragraph"/>Grails 1.3+ uses JUnit 4 by default and although you can carry on writing tests as before JUnit 4 provides some nice enhancements such as the <code>assertThat</code> method that works the <a href="http://code.google.com/p/hamcrest/" target="blank">Hamcrest matcher</a> API.<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> org.junit.&#42;
+&#125;</pre></div><p class="paragraph"/>Again, the <code>withTransaction</code> block ensures that the deletes are flushed and committed to the database and that any problems deleting will get reported right away causing the test to fail.<p class="paragraph"/><h3>Test-wide data setup in JUnit 4 tests</h3><p class="paragraph"/>In Grails 1.3+ you can have set up and tear down methods that run before and after <em class="italic">all</em> tests in a class rather than each individual test by using <code>static void</code> methods with <a href="http://www.junit.org/apidocs/org/junit/BeforeClass.html" target="blank">&#64;BeforeClass</a> and <a href="http://www.junit.org/apidocs/org/junit/AfterClass.html" target="blank">&#64;AfterClass</a> annotations. Obviously this will not be appropriate for all test cases. In particular any tests that create or edit data may well have to use a per-method tear down. However, when appropriate it can be a good optimization.<p class="paragraph"/><h3>The Hibernate session</h3><p class="paragraph"/>There is a situation in which you need to be aware of the Hibernate session when data driving tests. If you are:
+<ul class="star">
+<li>Setting up data in <em class="italic">setUp</em> or the start of a test</li>
+<li>Then using Selenium to modify that data (e.g. by using an edit page)</li>
+<li>Then deleting the data in _tearDown_</li>
+</ul><p class="paragraph"/>You need to wrap the initial creation of the data in a <em class="italic">withNewSession</em> block. For example:<p class="paragraph"/><div class="code"><pre>def songId<p class="paragraph"/>void setUp() &#123;
+	<span class="java&#45;keyword">super</span>.setUp()
+	Song.withNewSession &#123;
+		songId = Song.build(title: <span class="java&#45;quote">"Desert Song"</span>, artist: <span class="java&#45;quote">"Edward Sharpe &#38; the Magnetic Zeros"</span>).id
+	&#125;
+&#125;<p class="paragraph"/>void testEditingData() &#123;
+	def editPage = EditSongPage.open(id)
+	// &#8230; manipulate and save the data
+&#125;<p class="paragraph"/>void tearDown() &#123;
+	<span class="java&#45;keyword">super</span>.tearDown()
+	Song.withTransaction &#123;
+		Song.list()&#42;.delete() // would <span class="java&#45;keyword">throw</span> an exception <span class="java&#45;keyword">if</span> the object it tries to delete is stale
+	&#125;
+&#125;</pre></div><p class="paragraph"/>The reason is that creating the record stores it in the Hibernate session on the thread used by the test. Selenium then makes the application modify the data <strong class="bold">in a different session</strong> after which your test will find the object in the test's session is stale when it tries to delete it. Creating the data in a new session means that when the deletion happens the object is not in the session at all.<h1><a name="6. Other Test Frameworks">6. Other Test Frameworks</a></h1>Selenium tests do not have to be written as JUnit test cases. The <code>SeleniumAware</code> mixin could be applied to almost any test case written in another framework. Page objects are also agnostic of the test framework.<p class="paragraph"/>Currently the plugin has tested support for the <a href="http://grails.org/plugin/spock" target="blank">Spock</a> plugin. Also, when using Grails 1.3+ tests can be written using JUnit 4 conventions. Other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a> and <a href="http://jbehave.org/" target="blank">JBehave</a> may well work with a limited amount of effort.<p class="paragraph"/><h3>Writing Selenium tests with JUnit 4</h3><p class="paragraph"/>Grails 1.3+ uses JUnit 4 by default and although you can carry on writing tests as before JUnit 4 provides some nice enhancements such as the <code>assertThat</code> method that works the <a href="http://code.google.com/p/hamcrest/" target="blank">Hamcrest matcher</a> API.<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> org.junit.&#42;
 <span class="java&#45;keyword">import</span> grails.plugins.selenium.&#42;
 <span class="java&#45;keyword">import</span> <span class="java&#45;keyword">static</span> org.junit.Assert.&#42;
 <span class="java&#45;keyword">import</span> <span class="java&#45;keyword">static</span> org.hamcrest.CoreMatchers.&#42;<p class="paragraph"/>@Mixin(SeleniumAware)

@@ -10,8 +10,15 @@
 <li>Upgrade to Selenium 2.0 / WebDriver</li>
 <li>Support <a href="http://selenium-grid.seleniumhq.org/" target="blank">Selenium Grid</a></li>
 <li>Support for other testing frameworks such as <a href="http://www.easyb.org/" target="blank">EasyB</a></li>
-</ul><p class="paragraph"/><h3>Changelog</h3>
-<h4>Version 1.0.1</h4>
+<li>Use waitFor(message, closure) directly on <code>selenium</code> object</li>
+</ul><p class="paragraph"/><h3>Changelog</h3><p class="paragraph"/><h4>Version 1.0.2</h4>
+<ul class="star">
+<li>Adds waitForNot* to Selenium object</li>
+<li>Adds waitFor* using regex Pattern expectation</li>
+<li>Adds <em class="italic">grails create-selenium-test</em> script</li>
+<li>Adds <em class="italic">grails create-selenium-page</em> script</li>
+<li>Prevents Selenium sending HEAD and GET requests when the open command is used</li>
+</ul><p class="paragraph"/><h4>Version 1.0.1</h4>
 <ul class="star">
 <li>Fixes a bug in Windows if the test report dir path contains backslashes</li>
 </ul><p class="paragraph"/><h4>Version 1.0</h4>
