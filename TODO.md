@@ -10,7 +10,6 @@
 ## Enhancements
 * Don't shut down between junit and spock tests
 * GrailsFormPage needs to support radio buttons
-* Add a create-selenium-page script and template
 * Run against running Selenium Server
 * JBehave needs different context setting listener
 
