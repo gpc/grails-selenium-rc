@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.codehaus.groovy.grails.commons.metaclass.DynamicMethodInvocation
+import grails.plugins.selenium.condition.ClosureEvaluatingWait
 
 /**
  * Enhances a standard Selenium object with a handful of new methods.
@@ -103,6 +104,12 @@ class SeleniumWrapper {
 	void stop() {
 		alive = false
 		selenium.stop()
+	}
+
+	void waitFor(String timeoutMessage, Closure condition) {
+		def wait = new ClosureEvaluatingWait()
+		wait.condition = condition
+		wait.wait(timeoutMessage, getTimeout().toLong())
 	}
 
 	def methodMissing(String methodName, args) {

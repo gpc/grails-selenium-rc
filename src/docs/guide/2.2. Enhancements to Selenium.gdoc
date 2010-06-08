@@ -1,38 +1,38 @@
 The @selenium@ property provided by the @SeleniumAware@ mixin is actually an extension of the standard "Selenium":http://release.seleniumhq.org/selenium-remote-control/1.0-beta-2/doc/java/com/thoughtworks/selenium/Selenium.html object that enhances it in a number of ways.
 
-h3. waitFor...
+h3. waitFor*
 
-* Any _is..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters
-* Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus an _'expectation'_ String
-* Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a @java.util.Pattern@
-* Any _get..._ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a "Hamcrest Matcher":http://code.google.com/p/hamcrest/
+* Any _is\*_ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters
+* Any _get\*_ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus an _'expectation'_ String
+* Any _get\*_ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a @java.util.Pattern@
+* Any _get\*_ methods in @Selenium@ have an equivalent _waitFor_ taking the same parameters plus a "Hamcrest Matcher":http://code.google.com/p/hamcrest/
 
 {code}
-// waitFor... equivalents of is... methods
+// waitFor* equivalents of is* methods
 selenium.isAlertPresent()
 selenium.waitForAlertPresent()
 
 selenium.isTextPresent("My Title")
 selenium.waitForTextPresent("My Title")
 
-// waitFor... equivalents of get... methods
+// waitFor* equivalents of get* methods
 selenium.getAlert() == "Error"
 selenium.waitForAlert("Error")
 
 selenium.getText("css=h1") == "My Title"
 selenium.waitForText("css=h1", "My Title")
 
-// waitFor... with Pattern
+// waitFor* with Pattern
 selenium.getText("css=h1") ==~ ~/\w+ Title/
 selenium.waitForText("css=h1", ~/\w+ Title/) // note: this is a compiled regex pattern with a leading ~
 
-// waitFor... with Hamcrest Matchers
+// waitFor* with Hamcrest Matchers
 selenium.waitForText("css=h1", equalTo("My Title"))
 {code}
 
-h3. waitForNot...
+h3. waitForNot*
 
-Any time you can use _waitFor_ you can also use _waitForNot_ except when using a Hamcrest Matcher (in which case you would simply use the _not_ Matcher). For example:
+Any time you can use _waitFor\*_ you can also use _waitForNot\*_ except when using a Hamcrest Matcher (in which case you would simply use the _not_ Matcher). For example:
 
 {code}
 selenium.waitForNotVisible("css=.panel")
@@ -42,7 +42,20 @@ selenium.waitForNotText("css=h1", "My Title")
 selenium.waitForText(not(equalTo("My Title")))
 {code}
 
-h3. ...AndWait
+h3. waitFor(String, Closure)
+
+You can also wait for arbitrary conditions using the _waitFor_ method passing a message and a closure that returns a _boolean_ value. For example:
+
+{code}
+selenium.click("myButton")
+selenium.waitFor("Clicking myButtonId should have updated myDiv via AJAX") {
+    selenium.getText("myDiv") == "Some value"
+}
+{code}
+
+The @waitFor@ method will fail if the expected condition does not hold true after the default timeout.
+
+h3. *AndWait
 
 Any method can be appended with _AndWait_ so that it will wait for the page to load before returning. Obviously this only makes sense on commands that trigger a page load. For example @selenium.clickAndWait("css=input.myButton")@ will click the button _"myButton"_ and then wait for a new page to finish loading.
 
@@ -56,7 +69,7 @@ The method @waitForPageToLoad(String)@ has an overridden version that requires n
 
 h3. JavaScript user extensions
 
-Any _do..._ or _get..._ functions you have defined in a JavaScript user extensions file can be invoked directly from your Groovy code. The _do_ prefix should be dropped on action function calls. This is consistent with how the "Selenium IDE":http://seleniumhq.org/projects/ide/ handles user extensions.
+Any _do\*_ or _get\*_ functions you have defined in a JavaScript user extensions file can be invoked directly from your Groovy code. The _do_ prefix should be dropped on action function calls. This is consistent with how the "Selenium IDE":http://seleniumhq.org/projects/ide/ handles user extensions.
 
 h4. User extension definitions in JavaScript
 
@@ -85,18 +98,3 @@ void testUserCanLogIn() {
 	assertEquals "Logged in as rob", selenium.loginState
 }
 {code}
-
-h3. Using ClosureEvaluatingWait directly
-
-The plugin uses the class @grails.plugins.selenium.condition.ClosureEvaluatingWait@ to implement the _waitFor..._ and _...AndWait_ methods. If you want to you can use the class directly. For example:
-
-{code}
-import static grails.plugins.selenium.condition.ClosureEvaluatingWait.waitFor
-
-selenium.click("myButton")
-waitFor("Clicking myButtonId should have updated myDiv via AJAX") {
-    selenium.getText("myDiv") == "Some value"
-}
-{code}
-
-The @waitFor@ method will fail if the expected condition does not hold true after the default timeout.

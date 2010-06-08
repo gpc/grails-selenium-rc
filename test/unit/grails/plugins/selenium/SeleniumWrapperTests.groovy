@@ -265,7 +265,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.isTextPresent("whatever").returns(false).stub()
 
 		play {
-			seleniumWrapper.timeout = "1000" // otherwise this test will take 10 seconds
+			seleniumWrapper.timeout = "1000" // otherwise this test will take 30 seconds
 			seleniumWrapper.waitForTextPresent("whatever")
 		}
 	}
@@ -276,7 +276,7 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 		mockSelenium.getText("whatever").returns("incorrect").stub()
 
 		play {
-			seleniumWrapper.timeout = "1000" // otherwise this test will take 10 seconds
+			seleniumWrapper.timeout = "1000" // otherwise this test will take 30 seconds
 			try {
 				seleniumWrapper.waitForText("whatever", "correct")
 				fail "Should have throw WaitTimedOutException"
@@ -316,6 +316,31 @@ class SeleniumWrapperTests extends GrailsUnitTestCase {
 	void methodsWithNonStringArgsAreNotTreatedAsUserExtensionCalls() {
 		play {
 			seleniumWrapper.whatever("foo", 1)
+		}
+	}
+
+	@Test
+	void canUseWaitForWithClosure() {
+		mockSelenium.getText("whatever").returns("incorrect").times(2)
+		mockSelenium.getText("whatever").returns("correct")
+
+		play {
+			seleniumWrapper.waitFor("whatever to be correct") {
+				seleniumWrapper.getText("whatever") == "correct"
+			}
+		}
+	}
+
+	@Test(expected = WaitTimedOutException)
+	void waitForWithClosureFailsOnTimeout() {
+		mockSelenium.setTimeout("1000")
+		mockSelenium.getText("whatever").returns("incorrect").stub()
+
+		play {
+			seleniumWrapper.timeout = "1000" // otherwise this test will take 30 seconds
+			seleniumWrapper.waitFor("whatever to be correct") {
+				seleniumWrapper.getText("whatever") == "correct"
+			}
 		}
 	}
 }

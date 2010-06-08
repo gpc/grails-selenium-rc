@@ -13,6 +13,7 @@ h3. Roadmap
 * Upgrade to Selenium 2.0 / WebDriver
 * Support "Selenium Grid":http://selenium-grid.seleniumhq.org/
 * Support for other testing frameworks such as "EasyB":http://www.easyb.org/
+* Use waitFor(message, closure) directly on @selenium@ object
 
 h3. Changelog
 
