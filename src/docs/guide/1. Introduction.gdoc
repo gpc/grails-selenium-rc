@@ -22,6 +22,7 @@ h4. Version 1.0.2
 * Adds waitForNot* to Selenium object
 * Adds waitFor* using regex Pattern expectation
 * Adds _grails create-selenium-test_ script
+* Adds _grails create-selenium-page_ script
 * Prevents Selenium sending HEAD and GET requests when the open command is used
 
 h4. Version 1.0.1
