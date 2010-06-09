@@ -156,7 +156,6 @@
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-test/selenium-test-grailsPlugins.iml" filepath="$PROJECT_DIR$/test/projects/selenium-test/selenium-test-grailsPlugins.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-jbehave/selenium-with-jbehave.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-jbehave/selenium-with-jbehave.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock.iml" />
-      <module fileurl="file://$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock-grailsPlugins.iml" filepath="$PROJECT_DIR$/test/projects/selenium-with-spock/selenium-with-spock-grailsPlugins.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
