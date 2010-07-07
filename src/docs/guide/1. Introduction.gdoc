@@ -10,10 +10,9 @@ Please raise bugs and feature requests against "Grails-Selenium-RC on JIRA":http
 
 h3. Roadmap
 
-* Upgrade to Selenium 2.0 / WebDriver
+* Upgrade to Selenium 2.0 / WebDriver (certain things need to be in place before I consider this to be worthwhile. e.g. selecting page elements by CSS selector is currently unsupported in WebDriver).
 * Support "Selenium Grid":http://selenium-grid.seleniumhq.org/
 * Support for other testing frameworks such as "EasyB":http://www.easyb.org/
-* Use waitFor(message, closure) directly on @selenium@ object
 
 h3. Changelog
 

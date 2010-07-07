@@ -12,4 +12,4 @@ To truly decouple the functional intent of your tests from the raw Selenium inte
 * Navigation actions can be modelled as page object methods that return instances of other page objects representing the user's journey through the application.
 * Page objects are very easy to write, can be expanded as necessary and greatly enhance the simplicity and readability of your tests.
 
-When using the page object pattern your test classes will typically not interact directly with Selenium. Instead the page object classes themselves will do so. Page objects can use the @SeleniumAware@ mixin to access Selenium just as tests can.
+When using the page object pattern your test classes will typically not interact directly with Selenium. Instead the page object classes themselves will do so. Page objects can use the @SeleniumAware@ mixin to access Selenium just as tests can. This works both ways in that the page objects are agnostic of the test framework as well meaning you can re-use the same page objects in tests written using JUnit, Spock or any other framework.
