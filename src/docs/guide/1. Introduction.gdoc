@@ -16,6 +16,10 @@ h3. Roadmap
 
 h3. Changelog
 
+h4. Version 1.0.3
+
+* GRAILSPLUGINS-2263 - screenshot directory is now cleaned prior to test run
+
 h4. Version 1.0.2
 
 * Adds waitForNot* to Selenium object
