@@ -40,7 +40,9 @@ target(registerSeleniumTestType: "Registers the selenium test type with the appr
 }
 
 target(startSelenium: "Starts Selenium and launches a browser") {
-	startSeleniumServer()
+	if( seleniumConfig.selenium.server.start ) {
+		startSeleniumServer()
+	}
 
 	// this isn't done in initial config construction as it requires app config to be loaded and use of -clean can cause problems
 	depends(determineSeleniumUrl)
@@ -54,7 +56,10 @@ target(stopSelenium: "Stops Selenium") {
 	event "StatusUpdate", ["Stopping Selenium session"]
 	seleniumRunner.stopSelenium()
 	selenium = null
-	stopSeleniumServer()
+	
+	if( seleniumConfig.selenium.server.start ) {
+		stopSeleniumServer()
+	}
 }
 
 target(registerSeleniumTestListeners: "Registers listeners for the Selenium test lifecycle") {
