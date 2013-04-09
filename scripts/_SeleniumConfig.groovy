@@ -19,6 +19,7 @@ import grails.util.GrailsUtil
 seleniumUrl = null
 seleniumConfig = null
 
+
 target(loadSeleniumConfig: "Loads Selenium config into seleniumConfig variable") {
 	event "StatusUpdate", ["loading selenium config"]
 	depends(loadDefaultConfig, mergeApplicationConfig, mergeSystemProperties)
@@ -36,6 +37,7 @@ selenium {
 	slow = false
 	singleWindow = true
 	windowMaximize = false
+	startSeleniumServer = true
 	screenshot {
 		dir = "${testReportsDir.path.replace(File.separator, '/')}/screenshots"
 		onFail = false
